@@ -278,6 +278,10 @@ tr:last-child td{border-bottom:0}
 .aciklama .basi{display:flex; align-items:center; gap:7px; font-weight:700; margin-bottom:6px; font-size:13px; letter-spacing:.04em; text-transform:uppercase}
 .aciklama.iyi .basi{color:var(--dogru)}
 .aciklama.kotu .basi{color:var(--yanlis)}
+.dogru-cevap{
+  margin-bottom:8px; padding:7px 10px; border-radius:7px;
+  background:var(--dogru-zemin); color:var(--dogru); font-weight:600; line-height:1.4;
+}
 
 /* Sonuç */
 .sonuc{text-align:center; padding:30px 20px}
@@ -766,13 +770,16 @@ UNITELER.push(
 <tr><td>2</td><td><b>Temeller</b><br><em>(eğlenceli temeller)</em></td><td>K 6–8 / E 6–9</td><td>Temel hareket becerileri: koşma, atlama, atma, yakalama. Oyun ağırlıklı, ölçme yok</td></tr>
 <tr><td>3</td><td><b>Öğrenmeyi öğrenme</b><br><em>(antrenman yapmayı öğrenme)</em></td><td>K 8–11 / E 9–12</td><td>Genel spor becerileri, birden çok branş denemesi. <b>Beceri öğrenmenin altın çağı</b></td></tr>
 <tr><td>4</td><td><b>Antrenman için antrenman</b></td><td>K 11–15 / E 12–16</td><td><b>Fizyolojik adaptasyon:</b> aerobik kapasite, kuvvet ve dayanıklılığın sistemli yüklenmeyle geliştirilmesi. Sporcunun motoru burada kurulur</td></tr>
-<tr><td>5</td><td><b>Yarışmak için antrenman</b></td><td>K 15–19 / E 16–20</td><td>Branşa özelleşme, yarışma deneyimi, bireysel güçlü yönlerin geliştirilmesi</td></tr>
+<tr><td>5</td><td><b>Yarışmak için antrenman</b><br><em>(performans geliştirme aşaması)</em></td><td>K 15–19 / E 16–20</td><td>Branşa özelleşme ve yarışma deneyimi. <b>Oyun ve taktik stratejileri bu aşamada geliştirilir</b></td></tr>
 <tr><td>6</td><td><b>Kazanmak için antrenman</b></td><td>Erken yetişkinlik</td><td>Elit performans: teknik detayların mükemmelleştirilmesi, taktik incelik, yarışma yönetimi</td></tr>
 <tr><td>7</td><td><b>Aktif yaşam</b></td><td>Her yaş</td><td>Yarışmayı bıraktıktan sonra da spora bağlı kalmak. Modelin nihai hedefi</td></tr>
 </tbody></table></div>
-<p>4., 5. ve 6. aşamalar birlikte <b>performans geliştirme</b> bloğunu oluşturur; ilk üç aşama ise <b>fiziksel okuryazarlık</b> bloğudur.</p>
+<div class="kutu"><span class="etiket">Sınavda geçen adlandırma</span>
+Kaynak kitapçıkta 5. aşama (<b>yarışmak için antrenman</b>) <b>performans geliştirme aşaması</b> adıyla geçer ve bu aşamanın işi <b>oyun ve taktik stratejilerinin geliştirilmesidir</b>.<br>
+Karıştırma: <b>fizyolojik adaptasyon</b> bir önceki aşamanın (antrenman için antrenman), <b>teknik detayların mükemmelleştirilmesi</b> ise bir sonraki aşamanın (kazanmak için antrenman) işidir.</div>
+<p>İlk üç aşama birlikte <b>fiziksel okuryazarlık</b> bloğunu oluşturur.</p>
 <div class="karistirma"><span class="etiket">Aşamaları ayırt etmenin anahtarı</span>
-Soru "hangi aşama" diye sorduğunda <b>o aşamaya özgü</b> olanı ara. <b>Motivasyon</b> ve <b>yaralanma önleme</b> her aşamada geçerlidir, bu yüzden hiçbir aşamayı ayırt etmez — klasik çeldiricidir. <b>Fizyolojik adaptasyon</b> performans geliştirmenin, <b>teknik mükemmelleştirme</b> ve <b>oyun stratejisi</b> ise elit aşamanın işaretidir.</div>
+Soru "hangi aşama" diye sorduğunda <b>o aşamaya özgü</b> olanı ara. <b>Motivasyon</b> ve <b>yaralanma önleme</b> her aşamada geçerlidir, bu yüzden hiçbir aşamayı ayırt etmez — klasik çeldiricidir. Ayırt edici işaretler şunlardır: <b>fizyolojik adaptasyon</b> → antrenman için antrenman; <b>oyun ve taktik stratejileri</b> → performans geliştirme (yarışmak için antrenman); <b>teknik detayların mükemmelleştirilmesi</b> → kazanmak için antrenman.</div>
 <h3>Modelin dayandığı kavramlar</h3>
 <div class="tablo-sar"><table>
 <thead><tr><th>Kavram</th><th>Ne demek</th></tr></thead>
@@ -1064,7 +1071,7 @@ SORULAR.push(
 {u:14, s:"Aşağıdakilerden hangisi antrenörün rollerinden biri DEĞİLDİR?", c:["Öğretici","Model ve lider","Güdüleyici","Sporcunun sağlık raporunu düzenleyen hekim","Yönetici ve planlayıcı"], d:3, a:"Antrenör öğretici, eğitici, model, lider, yönetici, güdüleyici ve iletişimcidir; ancak tıbbi tanı ve rapor hekimin yetkisindedir."},
 
 /* --- Uzun Süreli Sporcu Gelişim Modeli (LTAD) --- */
-{u:15, s:"Uzun Süreli Sporcu Gelişim Modelinde performans geliştirme aşaması aşağıdakilerden hangisini içerir?", c:["Sporcunun motivasyonunun artırılması","Yaralanma önleme stratejilerinin uygulanması","Teknik detayların mükemmelleştirilmesi","Oyun stratejilerinin geliştirilmesi","Fizyolojik adaptasyonun teşvik edilmesi"], d:4, a:"Performans geliştirme aşaması sporcunun fizyolojik alt yapısının kurulduğu dönemdir: aerobik kapasite, kuvvet ve dayanıklılık sistemli yüklenmeyle geliştirilir. Teknik mükemmelleştirme ve oyun stratejisi elit aşamanın, motivasyon ve yaralanma önleme ise her aşamanın konusudur; bu yüzden aşamayı ayırt etmezler."},
+{u:15, s:"Uzun Süreli Sporcu Gelişim Modelinde performans geliştirme aşaması aşağıdakilerden hangisini içerir?", c:["Sporcunun motivasyonunun artırılması","Yaralanma önleme stratejilerinin uygulanması","Teknik detayların mükemmelleştirilmesi","Oyun stratejilerinin geliştirilmesi","Fizyolojik adaptasyonun teşvik edilmesi"], d:3, a:"Performans geliştirme aşaması, sporcunun yarışma ortamına hazırlandığı evredir; burada oyun ve taktik stratejileri geliştirilir. Fizyolojik adaptasyon bir ÖNCEKİ aşamanın (antrenman için antrenman), teknik detayların mükemmelleştirilmesi ise bir SONRAKİ aşamanın (kazanmak için antrenman) işidir. Motivasyon ve yaralanma önleme her aşamada geçerli olduğu için aşamayı ayırt etmez."},
 {u:15, s:"Uzun Süreli Sporcu Gelişim Modelinin temel mantığı nedir?", c:["Sporcuyu en kısa sürede yarışmaya hazırlamak","Her aşamanın kendine özgü önceliği olduğunu ve sıranın bozulmaması gerektiğini kabul etmek","Tüm yaş gruplarına aynı programı uygulamak","Yalnızca elit sporcuları kapsamak","Yetenekli olmayanları erken elemek"], d:1, a:"Model, gelişimi yaşam boyuna yayar; bir aşamanın işi ne ertelenebilir ne de öne çekilebilir. Erken uzmanlaşmanın temel eleştirisi de budur."},
 {u:15, s:"LTAD modelinde temel hareket becerilerinin (koşma, atlama, atma, yakalama) oyun ağırlıklı biçimde kazandırıldığı aşama hangisidir?", c:["Aktif başlangıç","Temeller (eğlenceli temeller)","Performans geliştirme","Elit performans","Aktif yaşam"], d:1, a:"Temeller aşamasında amaç geniş bir hareket dağarcığı kurmaktır; branşa özgü teknik değil, temel beceri çeşitliliği önceliklidir."},
 {u:15, s:"LTAD modelinde teknik detayların mükemmelleştirilmesi ve yarışma yönetimi hangi aşamanın işidir?", c:["Aktif başlangıç","Temeller","Öğrenmeyi öğrenme","Elit performans (kazanmayı öğrenme)","Aktif yaşam"], d:3, a:"Teknik ince ayar ve taktik incelik, fizyolojik alt yapı kurulduktan sonra elit aşamada ele alınır."},
@@ -1073,7 +1080,7 @@ SORULAR.push(
 {u:15, s:"Bir soruda 'motivasyonun artırılması' ve 'yaralanma önleme' seçenekleri LTAD aşamalarını ayırt etmek için neden yetersizdir?", c:["Modelde yer almadıkları için","Her aşamada geçerli genel ilkeler oldukları için","Yalnızca elit sporcuyu ilgilendirdikleri için","Ölçülemedikleri için","Yalnızca çocuklar için geçerli oldukları için"], d:1, a:"Tüm aşamalarda geçerli olan bir madde tek bir aşamanın ayırt edici özelliği olamaz. Sınavda bu tür 'her yere uyan' seçenekler tipik çeldiricidir."},
 {u:15, s:"LTAD modeline göre erken uzmanlaşma neden sakıncalıdır?", c:["Sporcunun motivasyonunu artırdığı için","Aşamaların sırasını bozarak temel hareket alt yapısını eksik bıraktığı için","Yarışma sayısını azalttığı için","Antrenör sayısını artırdığı için","Fizyolojik adaptasyonu hızlandırdığı için"], d:1, a:"Erken uzmanlaşma, temel beceri ve genel gelişim aşamalarını atlayarak dar bir alt yapı üzerine performans kurar; sakatlık, tükenmişlik ve erken kopmayla sonuçlanır."},
 {u:15, s:"LTAD modelinde 'aktif başlangıç' aşamasının önceliği nedir?", c:["Branş tekniği öğretmek","Hareketi sevdirmek ve günlük fiziksel etkinlik alışkanlığı kazandırmak","Yarışmaya hazırlamak","Kuvvet antrenmanına başlamak","Yetenek seçimi yapmak"], d:1, a:"0–6 yaş aralığında amaç performans değil, harekete karşı olumlu tutum ve düzenli etkinlik alışkanlığıdır."},
-{u:15, s:"Ergenlik döneminde sistemli yüklenmeyle aerobik kapasite ve kuvvetin geliştirilmesi LTAD'ın hangi aşamasına denk gelir?", c:["Temeller","Öğrenmeyi öğrenme","Performans geliştirme","Aktif yaşam","Aktif başlangıç"], d:2, a:"Performans geliştirme aşamasında sporcunun fizyolojik kapasitesi kurulur; bu aşama atlanırsa üst düzey performansın dayanacağı zemin oluşmaz."},
+{u:15, s:"Ergenlik döneminde sistemli yüklenmeyle aerobik kapasite ve kuvvetin geliştirilmesi LTAD'ın hangi aşamasına denk gelir?", c:["Temeller","Öğrenmeyi öğrenme","Antrenman için antrenman","Aktif yaşam","Aktif başlangıç"], d:2, a:"Antrenman için antrenman aşamasında sporcunun fizyolojik kapasitesi kurulur; bu aşama atlanırsa üst düzey performansın dayanacağı zemin oluşmaz. Bir sonraki aşama olan performans geliştirme (yarışmak için antrenman) ise oyun ve taktik stratejilerine ayrılır."},
 
 /* --- LTAD: aşamalar, pencereler, yaş kavramları, özelleşme --- */
 {u:15, s:"Uzun Süreli Sporcu Gelişim Modeli kaç aşamadan oluşur ve son aşaması hangisidir?", c:["Beş aşama; son aşama kazanmak için antrenman","Yedi aşama; son aşama aktif yaşam","Üç aşama; son aşama özelleşme","Dört aşama; son aşama yarışmak için antrenman","Altı aşama; son aşama elit performans"], d:1, a:"Model yedi aşamalıdır ve aktif başlangıçla başlayıp aktif yaşamla biter. Son aşamanın yarışma değil yaşam boyu hareketlilik olması, modelin amacını özetler."},
@@ -1231,7 +1238,7 @@ function konularCiz(){
   }).join("");
   $("#unite-listesi").querySelectorAll(".unite").forEach(b =>
     b.onclick = () => uniteAc(+b.dataset.u));
-  $("#dipnot").innerHTML = `Toplam <b>${SORULAR.length}</b> soru, hepsi 5 şıklı ve açıklamalı. İlerleme bu tarayıcıya kaydedilir; kaldığın yerden devam edebilirsin.`;
+  $("#dipnot").innerHTML = `Toplam <b>${SORULAR.length}</b> soru, hepsi 5 şıklı ve açıklamalı. İlerleme bu tarayıcıya kaydedilir; kaldığın yerden devam edebilirsin.<br><br><b>Şıklar her seferinde karıştırılır</b> — aynı soru ikinci kez karşına çıktığında doğru cevap başka harfte olur. Bu bilerek yapıldı: harfin yerini değil cevabın kendisini öğrenmen için. Bu yüzden cevap harfle değil, metniyle gösteriliyor.`;
 }
 
 function uniteAc(uid){
@@ -1333,7 +1340,8 @@ function sikSec(gosterimIx){
   }
   $("#aciklama-yeri").innerHTML = `
     <div class="aciklama ${dogruMu ? "iyi" : "kotu"}">
-      <div class="basi">${dogruMu ? "✓ Doğru" : "✕ Yanlış — doğrusu " + HARF[dogruGosterim]}</div>
+      <div class="basi">${dogruMu ? "✓ Doğru" : "✕ Yanlış"}</div>
+      ${dogruMu ? "" : `<div class="dogru-cevap"><b>Doğru cevap:</b> ${kacisla(s.c[s.d])}</div>`}
       <div>${kacisla(s.a)}</div>
     </div>
     <div class="dg-sira"><button class="dg ana genis" id="ileri">${oturum.i + 1 < oturum.liste.length ? "Sonraki soru →" : "Bitir ve sonucu gör"}</button></div>`;
