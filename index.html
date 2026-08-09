@@ -1,0 +1,1564 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sporda Öğrenme ve Öğretme — Çalışma Bankası</title>
+</head>
+<body>
+<!--ARTIFACT-BASLA-->
+<style>
+/* ---------- Tokens: açık tema temel, koyu tema üzerine yazar ---------- */
+:root{
+  --zemin:#F3F4F1;
+  --kart:#FFFFFF;
+  --kart-2:#EBEDE8;
+  --cizgi:#D6D9D2;
+  --cizgi-güç:#B9BEB4;
+  --metin:#1C211B;
+  --metin-yumusak:#5A6157;
+  --metin-silik:#868D82;
+  --vurgu:#B8791F;
+  --vurgu-koyu:#8E5C13;
+  --vurgu-zemin:#F7EBD8;
+  --dogru:#2C7A4B;
+  --dogru-zemin:#DFF0E5;
+  --yanlis:#B23B2E;
+  --yanlis-zemin:#F8E3E0;
+  --bilgi:#2D5F8A;
+  --bilgi-zemin:#E1ECF6;
+  --golge:0 1px 2px rgba(28,33,27,.06), 0 8px 24px -12px rgba(28,33,27,.18);
+  --r:10px;
+  --f-baslik:"Bahnschrift","DIN Condensed","Avenir Next Condensed","Haettenschweiler","Franklin Gothic Medium",system-ui,sans-serif;
+  --f-metin:Cambria,Charter,Georgia,"Times New Roman",serif;
+  --f-ui:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",sans-serif;
+  --f-sayi:Consolas,"SF Mono",ui-monospace,"Courier New",monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --zemin:#151814;
+    --kart:#1E221D;
+    --kart-2:#262B24;
+    --cizgi:#333A31;
+    --cizgi-güç:#4A5346;
+    --metin:#E9ECE6;
+    --metin-yumusak:#AAB2A5;
+    --metin-silik:#7C857A;
+    --vurgu:#E0A345;
+    --vurgu-koyu:#F0BC69;
+    --vurgu-zemin:#3A2E17;
+    --dogru:#6BC08C;
+    --dogru-zemin:#1D3527;
+    --yanlis:#E88A7C;
+    --yanlis-zemin:#3A211D;
+    --bilgi:#8FBADF;
+    --bilgi-zemin:#1B2A38;
+    --golge:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -14px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --zemin:#151814;
+  --kart:#1E221D;
+  --kart-2:#262B24;
+  --cizgi:#333A31;
+  --cizgi-güç:#4A5346;
+  --metin:#E9ECE6;
+  --metin-yumusak:#AAB2A5;
+  --metin-silik:#7C857A;
+  --vurgu:#E0A345;
+  --vurgu-koyu:#F0BC69;
+  --vurgu-zemin:#3A2E17;
+  --dogru:#6BC08C;
+  --dogru-zemin:#1D3527;
+  --yanlis:#E88A7C;
+  --yanlis-zemin:#3A211D;
+  --bilgi:#8FBADF;
+  --bilgi-zemin:#1B2A38;
+  --golge:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -14px rgba(0,0,0,.7);
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+/* Sayfa üç şeride bölünür: başlık, kaydırılabilir gövde, alt gezinme.
+   Kaydırma pencerede değil <main> içinde olur — böylece kaydırma düğmeleri
+   hem dosyadan açıldığında hem gömülü sayfada aynı biçimde çalışır. */
+html,body{height:100%}
+body{
+  height:100dvh;
+  margin:0; background:var(--zemin); color:var(--metin);
+  font-family:var(--f-ui); font-size:16px; line-height:1.55;
+  display:flex; flex-direction:column; overflow:hidden;
+}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2.5px solid var(--vurgu); outline-offset:2px; border-radius:4px}
+@media (prefers-reduced-motion: reduce){ *{animation:none!important; transition:none!important} }
+
+/* ---------- Üst şerit ---------- */
+.ust{
+  flex:none; z-index:30; background:var(--zemin);
+  border-bottom:1px solid var(--cizgi);
+}
+.ust-ic{max-width:780px; margin:0 auto; padding:10px 16px 8px; display:flex; align-items:center; gap:12px}
+.marka{display:flex; flex-direction:column; gap:1px; min-width:0}
+.marka b{
+  font-family:var(--f-baslik); font-weight:600; font-size:19px; letter-spacing:.02em;
+  text-transform:uppercase; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.marka span{font-size:11.5px; color:var(--metin-silik); letter-spacing:.06em; text-transform:uppercase}
+.ust-sag{margin-left:auto; display:flex; align-items:center; gap:8px}
+.tema-dugme{
+  background:none; border:1px solid var(--cizgi); border-radius:8px; width:34px; height:34px;
+  cursor:pointer; display:grid; place-items:center; font-size:15px; flex:none;
+}
+.tema-dugme:hover{background:var(--kart-2)}
+
+/* 14 ünite = 14 çentik. Doluluk gerçek ilerlemeyi gösterir. */
+.centikler{max-width:780px; margin:0 auto; padding:0 16px 9px; display:flex; gap:3px}
+.centik{height:4px; flex:1; background:var(--cizgi); border-radius:2px; overflow:hidden}
+.centik i{display:block; height:100%; background:var(--vurgu); width:0}
+.centik.tam i{background:var(--dogru)}
+
+/* ---------- Alt gezinme ---------- */
+.alt{
+  flex:none; z-index:30;
+  background:var(--kart); border-top:1px solid var(--cizgi);
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.alt-ic{max-width:780px; margin:0 auto; display:grid; grid-template-columns:repeat(5,1fr)}
+.alt button{
+  background:none; border:0; padding:9px 2px 10px; cursor:pointer;
+  display:flex; flex-direction:column; align-items:center; gap:3px;
+  font-size:10.5px; letter-spacing:.03em; color:var(--metin-silik);
+  border-top:2.5px solid transparent; text-transform:uppercase;
+}
+.alt button svg{width:21px; height:21px; stroke:currentColor; fill:none; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round}
+.alt button[aria-current="page"]{color:var(--vurgu); border-top-color:var(--vurgu)}
+.rozet{
+  position:absolute; transform:translate(14px,-6px); background:var(--yanlis); color:#fff;
+  font-size:9.5px; font-family:var(--f-sayi); min-width:16px; height:16px; border-radius:8px;
+  display:grid; place-items:center; padding:0 4px;
+}
+
+/* ---------- Yerleşim ---------- */
+main{
+  flex:1 1 auto; min-height:0; overflow-y:auto; overflow-x:hidden;
+  scroll-behavior:smooth; -webkit-overflow-scrolling:touch;
+}
+.govde{max-width:780px; margin:0 auto; padding:18px 16px 30px}
+
+/* Fare tekerleği ya da PageUp/PageDown olmadan da gezinme */
+.kaydir{
+  position:fixed; right:14px; bottom:88px; z-index:40;
+  display:flex; flex-direction:column; gap:7px;
+}
+.kaydir button{
+  width:46px; height:46px; border-radius:12px; cursor:pointer;
+  background:var(--kart); border:1px solid var(--cizgi-güç); box-shadow:var(--golge);
+  display:grid; place-items:center; color:var(--metin-yumusak);
+  transition:background .12s, color .12s, opacity .15s;
+  -webkit-user-select:none; user-select:none; touch-action:manipulation;
+}
+.kaydir button:hover:not(:disabled){background:var(--vurgu); border-color:var(--vurgu); color:#1C1608}
+.kaydir button:disabled{opacity:.3; cursor:default}
+.kaydir button svg{width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round}
+@media (max-width:520px){ .kaydir{right:8px; bottom:80px} .kaydir button{width:42px; height:42px} }
+.sayfa{display:none}
+.sayfa.acik{display:block; animation:gir .18s ease-out}
+@keyframes gir{from{opacity:0; transform:translateY(4px)}to{opacity:1; transform:none}}
+
+h1{font-family:var(--f-baslik); font-size:27px; font-weight:600; letter-spacing:.01em; margin:0 0 4px; text-wrap:balance}
+h2{font-family:var(--f-baslik); font-size:21px; font-weight:600; margin:26px 0 8px; letter-spacing:.01em; text-wrap:balance}
+h3{font-family:var(--f-ui); font-size:14px; font-weight:700; margin:20px 0 6px; letter-spacing:.01em}
+.giris{color:var(--metin-yumusak); font-size:14.5px; margin:0 0 20px; max-width:60ch}
+.etiket{font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--metin-silik); font-weight:600}
+
+.kart{background:var(--kart); border:1px solid var(--cizgi); border-radius:var(--r); box-shadow:var(--golge)}
+.dizi{display:flex; flex-direction:column; gap:10px}
+
+/* Ünite listesi */
+.unite{
+  display:flex; align-items:center; gap:13px; width:100%; text-align:left;
+  padding:12px 14px; background:var(--kart); border:1px solid var(--cizgi);
+  border-radius:var(--r); cursor:pointer; transition:border-color .15s, transform .1s;
+}
+.unite:hover{border-color:var(--cizgi-güç)}
+.unite:active{transform:scale(.995)}
+.unite-no{
+  font-family:var(--f-sayi); font-size:13px; width:30px; height:30px; flex:none; border-radius:7px;
+  display:grid; place-items:center; background:var(--kart-2); color:var(--metin-yumusak);
+}
+.unite.tamam .unite-no{background:var(--dogru-zemin); color:var(--dogru)}
+.unite-ad{flex:1; min-width:0}
+.unite-ad b{display:block; font-size:15px; font-weight:600; line-height:1.3}
+.unite-ad span{font-size:12px; color:var(--metin-silik); font-variant-numeric:tabular-nums}
+.halka{width:34px; height:34px; flex:none}
+.halka circle{fill:none; stroke-width:3.5}
+.halka .iz{stroke:var(--cizgi)}
+.halka .dolu{stroke:var(--vurgu); stroke-linecap:round; transform:rotate(-90deg); transform-origin:50% 50%}
+.halka text{font-family:var(--f-sayi); font-size:11px; fill:var(--metin-yumusak); text-anchor:middle}
+
+/* Ünite metni */
+.metin{font-family:var(--f-metin); font-size:17.5px; line-height:1.65; max-width:62ch}
+.metin p{margin:0 0 13px}
+.metin ul{margin:0 0 14px; padding-left:20px}
+.metin li{margin-bottom:6px}
+.metin b{color:var(--metin)}
+.metin em{font-style:italic; color:var(--metin-yumusak)}
+.kutu{
+  border-left:3px solid var(--vurgu); background:var(--vurgu-zemin);
+  padding:11px 14px; border-radius:0 8px 8px 0; margin:0 0 15px;
+  font-family:var(--f-ui); font-size:14.5px; line-height:1.5; max-width:62ch;
+}
+.kutu .etiket{display:block; margin-bottom:4px; color:var(--vurgu-koyu)}
+.karistirma{
+  border-left:3px solid var(--bilgi); background:var(--bilgi-zemin);
+  padding:11px 14px; border-radius:0 8px 8px 0; margin:0 0 15px;
+  font-family:var(--f-ui); font-size:14.5px; max-width:62ch;
+}
+.karistirma .etiket{display:block; margin-bottom:4px; color:var(--bilgi)}
+.tablo-sar{overflow-x:auto; margin:0 0 16px; border:1px solid var(--cizgi); border-radius:8px}
+table{border-collapse:collapse; width:100%; font-family:var(--f-ui); font-size:14px}
+th,td{padding:8px 11px; text-align:left; border-bottom:1px solid var(--cizgi); vertical-align:top}
+th{background:var(--kart-2); font-size:11.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--metin-yumusak); font-weight:600}
+tr:last-child td{border-bottom:0}
+
+/* Düğmeler */
+.dg{
+  display:inline-flex; align-items:center; justify-content:center; gap:7px;
+  padding:11px 17px; border-radius:9px; border:1px solid var(--cizgi);
+  background:var(--kart); cursor:pointer; font-size:14.5px; font-weight:600;
+  transition:background .15s, border-color .15s;
+}
+.dg:hover{background:var(--kart-2)}
+.dg.ana{background:var(--vurgu); border-color:var(--vurgu); color:#1C1608}
+.dg.ana:hover{background:var(--vurgu-koyu); border-color:var(--vurgu-koyu); color:#fff}
+.dg.genis{width:100%}
+.dg:disabled{opacity:.45; cursor:default}
+.dg-sira{display:flex; gap:9px; flex-wrap:wrap; margin-top:16px}
+
+/* ---------- Soru ---------- */
+.soru-ust{
+  display:flex; align-items:center; gap:10px; margin-bottom:14px;
+  font-size:12.5px; color:var(--metin-silik); font-family:var(--f-sayi);
+}
+.ilerle-cubuk{flex:1; height:5px; background:var(--cizgi); border-radius:3px; overflow:hidden}
+.ilerle-cubuk i{display:block; height:100%; background:var(--vurgu); transition:width .25s}
+
+.soru-kart{background:var(--kart); border:1px solid var(--cizgi); border-radius:var(--r); padding:18px; box-shadow:var(--golge)}
+.soru-unite{font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--metin-silik); margin-bottom:7px}
+.soru-metin{font-family:var(--f-metin); font-size:18.5px; line-height:1.5; margin:0 0 16px; text-wrap:pretty}
+.siklar{display:flex; flex-direction:column; gap:8px}
+.sik{
+  display:flex; gap:11px; align-items:flex-start; text-align:left; width:100%;
+  padding:11px 13px; border:1.5px solid var(--cizgi); border-radius:9px;
+  background:var(--kart); cursor:pointer; font-size:15.5px; line-height:1.45;
+  transition:border-color .12s, background .12s;
+}
+.sik:hover:not(:disabled){border-color:var(--cizgi-güç); background:var(--kart-2)}
+.sik:disabled{cursor:default}
+.sik-harf{
+  font-family:var(--f-sayi); font-size:12.5px; width:23px; height:23px; flex:none; border-radius:6px;
+  display:grid; place-items:center; background:var(--kart-2); color:var(--metin-yumusak); margin-top:1px;
+}
+.sik.dogru{border-color:var(--dogru); background:var(--dogru-zemin)}
+.sik.dogru .sik-harf{background:var(--dogru); color:#fff}
+.sik.yanlis{border-color:var(--yanlis); background:var(--yanlis-zemin)}
+.sik.yanlis .sik-harf{background:var(--yanlis); color:#fff}
+.sik.solgun{opacity:.55}
+
+.aciklama{margin-top:15px; padding:13px 15px; border-radius:9px; background:var(--kart-2); border:1px solid var(--cizgi); font-size:14.5px; line-height:1.55}
+.aciklama .basi{display:flex; align-items:center; gap:7px; font-weight:700; margin-bottom:6px; font-size:13px; letter-spacing:.04em; text-transform:uppercase}
+.aciklama.iyi .basi{color:var(--dogru)}
+.aciklama.kotu .basi{color:var(--yanlis)}
+
+/* Sonuç */
+.sonuc{text-align:center; padding:30px 20px}
+.sonuc .puan{font-family:var(--f-baslik); font-size:64px; line-height:1; font-variant-numeric:tabular-nums}
+.sonuc .puan.gecti{color:var(--dogru)}
+.sonuc .puan.kaldi{color:var(--yanlis)}
+.sonuc .karar{font-family:var(--f-baslik); font-size:22px; letter-spacing:.04em; text-transform:uppercase; margin-top:6px}
+.sonuc p{color:var(--metin-yumusak); font-size:14.5px; max-width:44ch; margin:10px auto 0}
+
+
+/* İstatistik */
+.ist{display:grid; grid-template-columns:repeat(3,1fr); gap:9px; margin-bottom:18px}
+.ist div{background:var(--kart); border:1px solid var(--cizgi); border-radius:var(--r); padding:12px}
+.ist b{display:block; font-family:var(--f-sayi); font-size:24px; line-height:1.15; font-variant-numeric:tabular-nums}
+.ist span{font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--metin-silik)}
+
+.bos{text-align:center; padding:44px 20px; color:var(--metin-silik); font-size:15px}
+.bos svg{width:40px; height:40px; stroke:currentColor; fill:none; stroke-width:1.4; margin-bottom:10px; opacity:.6}
+.dip{margin:30px 0 10px; font-size:12.5px; color:var(--metin-silik); line-height:1.55; border-top:1px solid var(--cizgi); padding-top:14px}
+@media (max-width:420px){
+  .soru-metin{font-size:17px}
+  h1{font-size:23px}
+  .sonuc .puan{font-size:52px}
+}
+</style>
+
+<header class="ust">
+  <div class="ust-ic">
+    <div class="marka">
+      <b>Sporda Öğrenme ve Öğretme</b>
+      <span>Temel Antrenörlük Eğitimi · 1. Kademe</span>
+    </div>
+    <div class="ust-sag">
+      <button class="tema-dugme" id="temaDugme" title="Açık / koyu tema" aria-label="Temayı değiştir">◐</button>
+    </div>
+  </div>
+  <div class="centikler" id="centikler" title="Ünite ilerlemesi"></div>
+</header>
+
+<main id="govde"><div class="govde">
+  <!-- KONULAR -->
+  <section class="sayfa acik" id="sayfa-konular">
+    <div id="unite-liste-gorunum">
+      <h1>Konular</h1>
+      <p class="giris">14 ünite. Her ünitenin özeti bir oturumda okunacak uzunlukta; altındaki sorular doğrudan o üniteden geliyor. Halkalar o üniteden verdiğin doğru cevap oranını gösterir.</p>
+      <div class="ist" id="genel-ist"></div>
+      <div class="dizi" id="unite-listesi"></div>
+      <p class="dip" id="dipnot"></p>
+    </div>
+    <div id="unite-detay" style="display:none"></div>
+  </section>
+
+  <!-- ÇALIŞ -->
+  <section class="sayfa" id="sayfa-calis"></section>
+
+  <!-- YANLIŞLARIM -->
+  <section class="sayfa" id="sayfa-yanlis"></section>
+
+  <!-- DENEME -->
+  <section class="sayfa" id="sayfa-deneme"></section>
+</div></main>
+
+<div class="kaydir" id="kaydir">
+  <button id="k-yukari" aria-label="Yukarı kaydır" title="Yukarı"><svg viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6"/></svg></button>
+  <button id="k-asagi" aria-label="Aşağı kaydır" title="Aşağı"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
+</div>
+
+<nav class="alt">
+  <div class="alt-ic" id="alt-nav"></div>
+</nav>
+
+<script>
+"use strict";
+
+/* ============================================================
+   VERİ
+   ============================================================ */
+const UNITELER = [];
+
+UNITELER.push(
+{ ad:"Öğrenme ve Öğretme Kavramları", ozet:`
+<p><b>Öğrenme</b>, yaşantı ürünü olarak meydana gelen, nispeten kalıcı izli davranış değişikliğidir. Bu tanım sınavın en çok sorduğu cümledir ve içinde üç ölçüt saklıdır.</p>
+<div class="kutu"><span class="etiket">Öğrenmenin üç ölçütü</span>
+<b>1. Davranışta değişme olacak.</b> Sadece bilme değil, davranışa yansıma.<br>
+<b>2. Değişme yaşantı ürünü olacak.</b> Yani birey çevreyle etkileşime girmiş olacak.<br>
+<b>3. Değişme nispeten kalıcı olacak.</b> Geçici değişmeler öğrenme sayılmaz.</div>
+<p>Bu ölçütlerden biri eksikse ortada öğrenme yoktur. <b>Refleksler, içgüdüler, olgunlaşmayla ortaya çıkan davranışlar</b> ve yorgunluk, hastalık, ilaç, alkol gibi etkenlerle oluşan <b>geçici</b> değişmeler öğrenme değildir. Bebeğin emmesi refleks, yürümeye başlaması büyük ölçüde olgunlaşmadır; ama yüzmeyi sökmesi öğrenmedir.</p>
+<p><b>Öğrenme doğrudan gözlenemez.</b> Gözlenen şey performanstır; öğrenmenin olup olmadığını performanstan çıkarsarız. Sporcunun antrenmanda tutturduğu servis performanstır; iki hafta sonra da tutturabiliyorsa öğrenme gerçekleşmiştir.</p>
+<div class="karistirma"><span class="etiket">Kolay karışanlar</span>
+<b>Öğrenme</b>: kalıcı, gözlenemez, süreçtir. &nbsp;•&nbsp; <b>Performans</b>: anlık, gözlenebilir, üründür. Yorgunluk ve heyecan performansı düşürür ama öğrenmeyi silmez.</div>
+<p><b>Öğretme</b>, öğrenmenin gerçekleşmesi için ortam düzenleme ve kılavuzluk etme işidir. <b>Öğretim</b> ise öğretmenin planlı, programlı ve amaçlı biçimde yapılmasıdır. <b>Eğitim</b>, bireyde kendi yaşantısı yoluyla kasıtlı olarak istendik davranış değişikliği meydana getirme sürecidir — üçünün en geniş kavramıdır.</p>
+<div class="tablo-sar"><table>
+<thead><tr><th>Kavram</th><th>Ne demek</th><th>Örnek</th></tr></thead>
+<tbody>
+<tr><td>Eğitim</td><td>Kasıtlı, istendik davranış değiştirme süreci (en geniş)</td><td>Sporcunun kulüpteki tüm gelişimi</td></tr>
+<tr><td>Öğretim</td><td>Planlı ve programlı eğitim</td><td>Haftalık antrenman programı</td></tr>
+<tr><td>Öğretme</td><td>Öğrenmeyi sağlama, kılavuzluk</td><td>Antrenörün beceriyi göstermesi</td></tr>
+<tr><td>Öğrenme</td><td>Bireyde oluşan kalıcı değişme</td><td>Sporcunun beceriyi kazanması</td></tr>
+</tbody></table></div>
+<p>Antrenör bu zincirde <b>öğretici</b> konumundadır: yalnız <em>ne</em> öğreteceğini değil, <em>nasıl</em> öğreteceğini de bilmek zorundadır. Bu dersin varlık sebebi budur.</p>
+`},
+
+{ ad:"Öğrenme Kuramları", ozet:`
+<p>Öğrenmenin nasıl gerçekleştiğini açıklayan kuramlar üç ana grupta toplanır: <b>davranışçı</b>, <b>bilişsel</b> ve <b>sosyal öğrenme</b>. Sınavda "hangi kuramcı neyi söyledi" biçiminde sorulur.</p>
+<h3>Davranışçı kuramlar</h3>
+<p>Öğrenmeyi <b>uyarıcı–tepki bağı</b> olarak görürler. Zihinde olan biteni kutu içi kabul edip yalnız gözlenebilir davranışa bakarlar.</p>
+<ul>
+<li><b>Pavlov — Klasik koşullanma:</b> Koşulsuz uyarıcı (yiyecek) ile nötr uyarıcı (zil) eşleştirilir; sonunda zil tek başına tepki doğurur. Sporda ısınma müziğiyle uyarılma hâline geçmek buna örnektir.</li>
+<li><b>Thorndike — Bağlaşımcılık:</b> Deneme–yanılma yoluyla öğrenme. Üç temel yasası vardır: <b>Etki yasası</b> (haz veren sonuç davranışı güçlendirir), <b>Tekrar/Alıştırma yasası</b> (yinelenen bağ güçlenir), <b>Hazırbulunuşluk yasası</b> (organizma hazır değilse öğrenme olmaz).</li>
+<li><b>Skinner — Edimsel (operant) koşullanma:</b> Davranışın sonucu davranışı belirler. <b>Olumlu pekiştireç</b> ortama hoş bir uyarıcı ekler (övgü), <b>olumsuz pekiştireç</b> rahatsız edici uyarıcıyı ortamdan kaldırır — ikisi de davranışı <em>artırır</em>. <b>Ceza</b> davranışı azaltır. Pekiştirilmeyen davranış zamanla <b>söner</b>.</li>
+</ul>
+<div class="karistirma"><span class="etiket">Kolay karışanlar</span>
+<b>Olumsuz pekiştireç ≠ ceza.</b> Olumsuz pekiştireç davranışı artırır (istenmeyen bir şeyi kaldırarak), ceza davranışı azaltır. Sınavın klasik tuzağıdır.</div>
+<h3>Bilişsel kuramlar</h3>
+<p>Öğrenme, zihinde bilginin işlenmesi ve yapılandırılmasıdır; birey pasif alıcı değil <b>etkin</b> bir işleyicidir.</p>
+<ul>
+<li><b>Gestalt:</b> Bütün, parçaların toplamından farklıdır. Öğrenme ani <b>kavrama (içgörü / insight)</b> ile olur. Algı yasaları: şekil–zemin, yakınlık, benzerlik, tamamlama.</li>
+<li><b>Bruner — Buluş yoluyla öğrenme:</b> Öğrenen bilgiyi kendi keşfeder; öğretmen ortam ve ipucu sağlar.</li>
+<li><b>Ausubel — Sunuş yoluyla anlamlı öğrenme:</b> Bilgi düzenli biçimde sunulur, yeni bilgi eskisiyle ilişkilendirilir.</li>
+<li><b>Bilgi işleme kuramı:</b> Duyusal kayıt → kısa süreli (işleyen) bellek → uzun süreli bellek. Dikkat ve tekrar bilgiyi bir sonraki basamağa taşır.</li>
+</ul>
+<h3>Sosyal öğrenme (sosyal bilişsel) kuramı</h3>
+<p><b>Bandura</b>: İnsan yalnız kendi yaşadıklarından değil, <b>başkalarını gözleyerek</b> de öğrenir — model alma. Antrenörün beceriyi göstermesi (demonstrasyon) doğrudan bu kurama dayanır.</p>
+<div class="kutu"><span class="etiket">Gözlem yoluyla öğrenmenin dört aşaması</span>
+<b>1. Dikkat</b> — modele dikkat edilmeli. <b>2. Hatırda tutma</b> — görülen zihinde kodlanmalı. <b>3. Davranışa dönüştürme (üretme)</b> — motor olarak yapılabilmeli. <b>4. Güdülenme</b> — yapmak için nedeni olmalı.</div>
+`},
+
+{ ad:"Öğrenmeyi Etkileyen Faktörler", ozet:`
+<p>Öğrenmeyi etkileyen etkenler üç başlıkta toplanır. Sınav bu üçlüyü ve altındaki maddeleri doğrudan sorar; hangi maddenin hangi başlığa ait olduğunu bilmek gerekir.</p>
+<div class="tablo-sar"><table>
+<thead><tr><th>Öğrenenle ilgili</th><th>Öğrenme malzemesiyle ilgili</th><th>Öğrenme yöntemiyle ilgili</th></tr></thead>
+<tbody><tr>
+<td>Türe özgü hazıroluş<br>Olgunlaşma<br>Genel uyarılmışlık hâli ve kaygı<br>Yaş<br>Zekâ ve yetenek<br>Güdülenme (motivasyon)<br>Dikkat<br>Ön öğrenmeler ve transfer</td>
+<td>Algısal ayırt edilebilirlik<br>Anlamsal çağrışım (anlamlılık)<br>Kavramsal gruplandırma<br>Telaffuz edilebilirlik<br>Malzemenin uzunluğu<br>Benzerlik ve karışma</td>
+<td>Konuya etkin katılım<br>Öğrenmeye ayrılan zaman<br>Aralıklı çalışma<br>Geri bildirim<br>Tekrar<br>Araya giren etkinlikler<br>Rehberlik</td>
+</tr></tbody></table></div>
+<h3>Öğrenenle ilgili faktörler</h3>
+<p><b>Türe özgü hazıroluş</b>, organizmanın türü gereği o davranışı yapabilecek donanımda olmasıdır — insana uçmayı öğretemezsiniz. <b>Olgunlaşma</b> ise bireyin o beceriyi yapabilecek biyolojik düzeye gelmesidir; olgunlaşmamış çocuğa beceri öğretilemez.</p>
+<p><b>Genel uyarılmışlık hâli</b> ile öğrenme arasında <b>ters U</b> ilişkisi vardır: çok düşük uyarılmışlık (uyuşukluk) da çok yüksek uyarılmışlık (aşırı kaygı) da öğrenmeyi düşürür; en iyi öğrenme <b>orta düzeyde</b> gerçekleşir.</p>
+<h3>Malzemeyle ilgili faktörler</h3>
+<p>Malzeme <b>algısal olarak ayırt edilebilir</b>, <b>anlamlı</b>, <b>kavramsal olarak gruplanabilir</b> ve <b>kolay telaffuz edilebilir</b> olduğunda daha çabuk öğrenilir. Telaffuz edilebilirlik önemlidir çünkü söylenebilen malzeme zihinde tekrar edilebilir; tekrar edilebilen malzeme belleğe daha kolay yerleşir.</p>
+<h3>Yöntemle ilgili faktörler</h3>
+<p><b>Etkin katılım</b> öğrenmenin en güçlü belirleyicilerindendir: izleyen değil yapan öğrenir. <b>Aralıklı çalışma</b> toplu (kütlesel) çalışmadan üstündür — aynı toplam sürede araya dinlenme koyan sporcu daha kalıcı öğrenir. <b>Geri bildirim</b> olmadan tekrar, hatayı pekiştirmekten başka işe yaramaz.</p>
+<div class="kutu"><span class="etiket">Transfer (öğrenmenin aktarılması)</span>
+<b>Olumlu transfer:</b> Önceki öğrenme yenisini kolaylaştırır (hentbol atışı bilen voleybol smacını çabuk öğrenir).<br>
+<b>Olumsuz transfer:</b> Önceki öğrenme yenisini zorlaştırır (tenis forehandı badminton vuruşunu bozar).<br>
+<b>Sıfır transfer:</b> İkisi arasında ilişki yoktur.</div>
+`},
+
+{ ad:"Büyüme, Gelişme ve Olgunlaşma", ozet:`
+<p>Bu ünitenin tamamı kavram ayrımına dayanır ve sınavda neredeyse kesin soru gelir. Dördü de birbirine benzer görünür, hiçbiri diğerinin yerine kullanılamaz.</p>
+<div class="tablo-sar"><table>
+<thead><tr><th>Kavram</th><th>Tanım</th><th>Ayırt edici</th></tr></thead>
+<tbody>
+<tr><td><b>Büyüme</b></td><td>Bedende meydana gelen <b>nicel</b> (sayısal) artış</td><td>Ölçülebilir: boy, kilo, uzuv uzunluğu</td></tr>
+<tr><td><b>Olgunlaşma</b></td><td>Organizmanın <b>kalıtımın</b> etkisiyle kendisinden beklenen işlevi yerine getirebilecek düzeye gelmesi</td><td>Öğrenmeden bağımsızdır, zamanla kendiliğinden olur</td></tr>
+<tr><td><b>Gelişme</b></td><td>Büyüme, olgunlaşma ve öğrenmenin etkileşimiyle oluşan <b>sürekli ilerleyen</b> değişim</td><td>En kapsayıcı kavram</td></tr>
+<tr><td><b>Hazırbulunuşluk</b></td><td>Olgunlaşma + öğrenme + ilgi, tutum ve güdülenmenin toplamı</td><td>Olgunlaşmadan <b>daha geniştir</b></td></tr>
+</tbody></table></div>
+<div class="karistirma"><span class="etiket">Kolay karışanlar</span>
+<b>Olgunlaşma</b> yalnız biyolojik hazır oluştur. <b>Hazırbulunuşluk</b> ise ona istekliliği ve ön öğrenmeleri de ekler. Çocuk kayak yapacak olgunluğa gelmiş olabilir ama kardan korkuyorsa hazırbulunuşluğu yoktur.</div>
+<h3>Kalıtım ve çevre</h3>
+<p><b>Genotip</b>, bireyin anne ve babasından aldığı <b>kalıtsal yapının tümüdür</b> — dışarıdan görünmez. <b>Fenotip</b>, genotipin çevreyle etkileşimi sonucunda ortaya çıkan, <b>gözlenebilen</b> özelliklerdir. Boy potansiyeli genotiptir; beslenme ve antrenmanla ulaşılan gerçek boy fenotiptir.</p>
+<h3>Gelişim ilkeleri</h3>
+<ul>
+<li><b>Baştan ayağa (sefalokaudal):</b> Gelişim baştan başlar, ayaklara doğru ilerler. Bebek önce başını tutar, sonra oturur, en son yürür.</li>
+<li><b>İçten dışa (proksimodistal):</b> Vücudun merkezinden uzuvlara doğru. Önce omuz ve kol, sonra el ve parmak kontrolü.</li>
+<li><b>Genelden özele:</b> Kaba (büyük kas) hareketlerden ince (küçük kas) hareketlere.</li>
+<li><b>Gelişim bir bütündür:</b> Bedensel, bilişsel, duygusal ve sosyal alanlar birbirini etkiler.</li>
+<li><b>Gelişim süreklidir ama hızı sabit değildir:</b> Hızlı ve yavaş dönemler birbirini izler (nöbetleşe gelişim).</li>
+<li><b>Kritik dönemler vardır:</b> Belirli bir davranışın en kolay kazanıldığı dönem kaçırılırsa sonradan öğrenmek güçleşir.</li>
+<li><b>Bireysel farklılıklar vardır:</b> Sıra aynıdır, hız kişiden kişiye değişir.</li>
+</ul>
+<div class="kutu"><span class="etiket">Antrenöre düşen</span>
+Aynı yaştaki iki çocuğun biyolojik yaşı farklı olabilir. Takvim yaşına göre değil, <b>gelişim düzeyine</b> göre çalıştırmak gerekir; erken olgunlaşan çocuğu "yetenekli" sanmak antrenörlüğün en sık hatasıdır.</div>
+`},
+
+{ ad:"Gelişim Dönemleri ve Kuramları", ozet:`
+<p>Üç kuramcı sorulur: <b>Piaget</b> bilişsel gelişimi, <b>Erikson</b> psikososyal gelişimi, <b>Kohlberg</b> ahlaki gelişimi açıklar. En çok soru Piaget'ten gelir.</p>
+<h3>Piaget — Bilişsel gelişim dönemleri</h3>
+<div class="tablo-sar"><table>
+<thead><tr><th>Dönem</th><th>Yaş</th><th>Belirleyici kazanım</th></tr></thead>
+<tbody>
+<tr><td><b>Duyusal–motor</b></td><td>0–2</td><td><b>Nesne sürekliliği</b> (devamlılığı): görülmeyen nesnenin var olmaya devam ettiğini kavrama. Taklit ve döngüsel tepkiler.</td></tr>
+<tr><td><b>İşlem öncesi</b></td><td>2–7</td><td>Sembolik düşünme ve dil patlaması. <b>Benmerkezcilik</b>, animizm (cansızı canlı sayma), tek yönlü düşünme. <b>Korunum yoktur.</b></td></tr>
+<tr><td><b>Somut işlemler</b></td><td>7–11/12</td><td><b>Korunum kazanılır</b> (biçim değişse de miktar değişmez). Tersine çevirebilme, sınıflama, sıralama — ama somut nesneler üzerinden.</td></tr>
+<tr><td><b>Soyut (formel) işlemler</b></td><td>12 ve üzeri</td><td>Soyut kavramlarla, varsayımlarla ve olasılıklarla düşünme; tümdengelim.</td></tr>
+</tbody></table></div>
+<div class="karistirma"><span class="etiket">Sınavın klasik tuzağı</span>
+<b>Nesne sürekliliği</b> duyusal–motor dönemde (0–2) kazanılır. <b>Korunum</b> ise somut işlemler döneminde (7–11) kazanılır. İkisi farklı kavramdır, isim benzerliğine aldanma.</div>
+<p>Piaget'in dört temel kavramı: <b>Şema</b> (zihindeki bilgi çerçevesi), <b>özümleme/asimilasyon</b> (yeni bilgiyi var olan şemaya sığdırma), <b>uyumsama/akomodasyon</b> (şemayı yeni bilgiye göre değiştirme), <b>dengeleme</b> (ikisi arasında denge kurma).</p>
+<h3>Erikson — Psikososyal gelişim</h3>
+<p>Her dönemde bir <b>çatışma</b> vardır; olumlu çözülürse kişilik güçlenir. Sporla ilgili dönemler:</p>
+<ul>
+<li><b>0–1 Temel güven / güvensizlik</b></li>
+<li><b>1–3 Özerklik / utanç ve kuşku</b></li>
+<li><b>3–6 Girişimcilik / suçluluk</b> — çocuk denemeye cesaretlendirilmeli</li>
+<li><b>6–12 Başarı (çalışkanlık) / aşağılık duygusu</b> — sporda ilk ciddi dönem; sürekli eleştirilen çocukta yetersizlik duygusu yerleşir</li>
+<li><b>12–18 Kimlik kazanma / rol karmaşası</b> — sporcu kimliği bu dönemde kurulur</li>
+</ul>
+<h3>Kohlberg — Ahlaki gelişim</h3>
+<div class="tablo-sar"><table>
+<thead><tr><th>Düzey</th><th>Evre</th><th>Davranışın ölçütü</th></tr></thead>
+<tbody>
+<tr><td rowspan="2"><b>Gelenek öncesi</b></td><td>Ceza ve itaat</td><td>Cezalandırılmamak</td></tr>
+<tr><td>Araçsal ilişkiler (çıkar)</td><td>Karşılığında ne alacağım</td></tr>
+<tr><td rowspan="2"><b>Geleneksel</b></td><td>İyi çocuk eğilimi</td><td>Başkalarının onayını almak</td></tr>
+<tr><td>Kanun ve düzen</td><td>Kurala uymak, görevi yapmak</td></tr>
+<tr><td rowspan="2"><b>Gelenek sonrası</b></td><td>Sosyal sözleşme</td><td>Toplumsal yarar, kural değişebilir</td></tr>
+<tr><td>Evrensel ahlak ilkeleri</td><td>Vicdan ve evrensel adalet</td></tr>
+</tbody></table></div>
+<p>Çocuk sporunda "hakem görmezse faul değildir" tutumu gelenek öncesi düzeydir; sporcuyu <b>kurala kendi için uyar</b> hâle getirmek antrenörün ahlaki gelişim görevidir. Çocuklar doğruyu yanlıştan ayırt etmeye <b>gelenek öncesi düzeyde, ceza–itaat evresinde</b> başlar.</p>
+`}
+);
+
+UNITELER.push(
+{ ad:"Motor Gelişim ve Evreleri", ozet:`
+<p><b>Motor gelişim</b>, yaşam boyu süren hareket davranışındaki değişimi inceler. <b>Psikomotor gelişim</b> ise zihin ile kas gücünün birlikte çalışmasını gerektiren beceri gelişimidir — yani hareketin içinde <em>düşünme</em> de vardır. Motor gelişim yalnız çocukluğu değil, doğumdan ölüme kadar tüm yaşamı kapsar.</p>
+<h3>Motor gelişim evreleri (Gallahue)</h3>
+<div class="tablo-sar"><table>
+<thead><tr><th>Evre</th><th>Yaş</th><th>Ne olur</th></tr></thead>
+<tbody>
+<tr><td><b>Refleks hareketler</b></td><td>Doğum–1</td><td>İstemsiz refleksler. Bebek çevreden bilgi toplar ve çözer.</td></tr>
+<tr><td><b>İlkel hareketler</b></td><td>0–2</td><td>Refleksler baskılanır, istemli hareketler başlar: tutma, oturma, yürüme.</td></tr>
+<tr><td><b>Temel hareketler</b></td><td>2–7</td><td>Koşma, atlama, atma, yakalama gibi <b>temel beceriler</b> kazanılır. Başlangıç → geçiş → olgun evrelerden geçer.</td></tr>
+<tr><td><b>Sporel (spora özgü) hareketler</b></td><td>7 ve sonrası</td><td>Temel beceriler birleşip spor tekniklerine dönüşür. Genel → özel → uzmanlaşma.</td></tr>
+</tbody></table></div>
+<div class="kutu"><span class="etiket">Antrenörlükteki karşılığı</span>
+Temel hareketler evresi <b>olgunlaşmadan</b> spora özgü teknik öğretilmeye kalkılırsa beceri hatalı yerleşir. 2–7 yaş dönemi teknik dönemi değil, <b>hareket dağarcığı</b> dönemidir.</div>
+<h3>Temel hareket becerileri</h3>
+<div class="tablo-sar"><table>
+<thead><tr><th>Yer değiştirme (lokomotor)</th><th>Dengeleme</th><th>Nesne kontrolü (manipülatif)</th></tr></thead>
+<tbody><tr>
+<td>Yürüme, koşma, sıçrama, sekme, atlama, galop, kayma, tırmanma</td>
+<td>Dönme, eğilme, uzanma, yuvarlanma, durma, esneme, tek ayak üzerinde durma</td>
+<td>Atma, yakalama, vurma, tekme atma, sektirme, yuvarlama, topa ayakla hâkim olma</td>
+</tr></tbody></table></div>
+<p>Bu üç grup ayrımı sınavda doğrudan sorulur: <b>yuvarlanma</b> dengeleme, <b>sekme</b> yer değiştirme, <b>sektirme</b> nesne kontrolü becerisidir.</p>
+<div class="karistirma"><span class="etiket">Kolay karışanlar</span>
+<b>Büyüme</b> nicel artıştır, <b>motor gelişim</b> hareket becerisindeki niteliksel ilerlemedir. Boyu uzayan çocuk otomatik olarak daha becerikli olmaz; hatta hızlı büyüme döneminde koordinasyon geçici olarak bozulabilir.</div>
+`},
+
+{ ad:"Motor Öğrenme ve Beceri", ozet:`
+<p><b>Beceri</b>, önceden belirlenmiş bir amaca en az enerji ve zaman harcayarak, isabetli biçimde ulaşabilme yeteneğidir. <b>Motor öğrenme</b> ise alıştırma ve yaşantı sonucu becerideki nispeten kalıcı gelişmedir.</p>
+<h3>Becerilerin sınıflandırılması</h3>
+<div class="tablo-sar"><table>
+<thead><tr><th>Ölçüt</th><th>Türler</th><th>Örnek</th></tr></thead>
+<tbody>
+<tr><td>Çevre koşulları</td><td><b>Açık beceri</b>: çevre değişken, kestirilemez<br><b>Kapalı beceri</b>: çevre durağan, kestirilebilir</td><td>Açık: futbol, tenis, güreş<br>Kapalı: okçuluk, halter, artistik jimnastik, pilates hareketi</td></tr>
+<tr><td>Başlangıç–bitişin belirginliği</td><td><b>Ayrık</b>: başı sonu belli, kısa<br><b>Seri</b>: ayrık becerilerin dizisi<br><b>Sürekli</b>: başı sonu keyfî, tekrarlı</td><td>Ayrık: serbest atış<br>Seri: jimnastik serisi<br>Sürekli: yüzme, koşu, bisiklet</td></tr>
+<tr><td>Kullanılan kas grubu</td><td><b>Kaba motor</b>: büyük kaslar<br><b>İnce motor</b>: küçük kaslar</td><td>Kaba: koşma, atlama<br>İnce: dart atma, yazı yazma</td></tr>
+</tbody></table></div>
+<h3>Motor öğrenmenin evreleri (Fitts ve Posner)</h3>
+<div class="kutu"><span class="etiket">Üç evre — sırasıyla</span>
+<b>1. Bilişsel evre:</b> Sporcu "ne yapacağım" sorusuyla uğraşır. Hata çok ve düzensizdir, dikkatinin tamamı harekete ayrılmıştır. Antrenör <b>az sayıda, net</b> ipucu vermelidir.<br>
+<b>2. Bağlantısal (çağrışımsal) evre:</b> "Nasıl daha iyi yaparım" evresi. Hata azalır, tutarlılık artar, ince ayar yapılır. Geri bildirim en verimli burada kullanılır.<br>
+<b>3. Otonom (otomatik) evre:</b> Hareket otomatikleşmiştir, dikkat artık çevreye ayrılabilir. Sporcu koşarken rakibi de okuyabilir. Değişim yavaştır ama kalıcıdır.</div>
+<h3>Öğrenmenin gerçekleştiğini nereden anlarız?</h3>
+<ul>
+<li><b>Gelişme:</b> Performans zaman içinde iyileşir.</li>
+<li><b>Tutarlılık:</b> Aynı hareket her seferinde benzer biçimde yapılır.</li>
+<li><b>Kalıcılık:</b> Aradan zaman geçse de beceri korunur.</li>
+<li><b>Uyarlanabilirlik:</b> Beceri değişen koşullarda da uygulanabilir.</li>
+</ul>
+<p><b>Öğrenme eğrisi</b> genellikle başta hızlı yükselir, sonra yavaşlar. Bir süre ilerlemenin durduğu düzlüğe <b>plato</b> denir; plato öğrenmenin bittiği anlamına gelmez, sporcunun içsel olarak yeniden yapılandığı dönemdir.</p>
+<div class="karistirma"><span class="etiket">Kolay karışanlar</span>
+<b>Performans</b> antrenmanda gözlenen anlık düzeydir; <b>öğrenme</b> aradan zaman geçtikten sonra da korunan kalıcı değişimdir. Antrenmanda mükemmel yapıp bir hafta sonra unutuluyorsa öğrenme değil geçici performans artışı olmuştur.</div>
+`},
+
+{ ad:"Hareket Eğitimi", ozet:`
+<p><b>Hareket eğitimi</b>, çocuğun hareket yoluyla eğitilmesini amaçlayan, <b>çocuk merkezli</b> bir yaklaşımdır. Amaç belirli bir spor dalının tekniğini öğretmek değil, çocuğun hareket dağarcığını, beden farkındalığını ve kendine güvenini geliştirmektir.</p>
+<div class="kutu"><span class="etiket">Yaklaşımın özü</span>
+Hareket eğitiminde <b>tek doğru yoktur</b>. Çocuğa hareket <em>gösterilip taklit ettirilmez</em>; problem verilir, çocuk kendi çözümünü keşfeder. "Topu üç farklı biçimde durdurabilir misin?" hareket eğitimidir; "topu şöyle durdur" değildir.</div>
+<h3>Hareketin dört boyutu (Laban)</h3>
+<div class="tablo-sar"><table>
+<thead><tr><th>Boyut</th><th>Sorusu</th><th>İçeriği</th></tr></thead>
+<tbody>
+<tr><td><b>Beden farkındalığı</b></td><td>Ne hareket ediyor?</td><td>Vücut bölümleri, bunların ne yapabildiği, vücut şekilleri</td></tr>
+<tr><td><b>Mekân (alan) farkındalığı</b></td><td>Nerede hareket ediyor?</td><td>Kişisel ve genel alan, yön, düzey (alçak–orta–yüksek), yol</td></tr>
+<tr><td><b>Çaba (efor) farkındalığı</b></td><td>Nasıl hareket ediyor?</td><td>Zaman (hızlı–yavaş), kuvvet (sert–yumuşak), akış (bağlı–serbest)</td></tr>
+<tr><td><b>İlişki farkındalığı</b></td><td>Kiminle / neyle?</td><td>Eşle, grupla, araçla, engelle kurulan ilişki</td></tr>
+</tbody></table></div>
+<h3>Hareket eğitiminin amaçları</h3>
+<ul>
+<li>Temel hareket becerilerini çeşitlendirmek ve olgunlaştırmak</li>
+<li>Beden farkındalığı ve mekân algısı kazandırmak</li>
+<li>Yaratıcılığı ve problem çözmeyi geliştirmek</li>
+<li>Her çocuğun <b>kendi düzeyinde</b> başarı yaşamasını sağlamak — eleme ve kıyas yoktur</li>
+<li>Harekete karşı olumlu tutum ve kalıcı spor alışkanlığı oluşturmak</li>
+</ul>
+<div class="karistirma"><span class="etiket">Sınavda "yanlış olan" sorusu buradan gelir</span>
+Hareket eğitimi <b>yarışma odaklı değildir</b>, <b>tek tip doğru hareket dayatmaz</b>, <b>belirli bir spor dalına hazırlık amacı gütmez</b> ve <b>yetenek seçimi aracı değildir</b>. Bu dört ifadeden biri "hareket eğitimiyle ilgili doğrudur" diye önüne konursa yanlıştır.</div>
+`},
+
+{ ad:"Oyun ve Eğitsel Oyunlar", ozet:`
+<p><b>Oyun</b>, gönüllü katılımla yapılan, kendi kuralları olan, haz veren ve sonucu önceden belli olmayan etkinliktir. Çocuk için oyun eğlence değil, <b>öğrenmenin doğal yoludur</b>.</p>
+<div class="kutu"><span class="etiket">Oyunun çekiciliği nereden gelir?</span>
+<b>Belirsizlikten.</b> Sonucun önceden bilinmemesi oyunu çekici kılar. Sonucu baştan belli olan oyun ilgi çekmez; bu yüzden denk takımlar kurmak, oyunu canlı tutmanın en basit yoludur.</div>
+<h3>Oyun kuramları</h3>
+<div class="tablo-sar"><table>
+<thead><tr><th>Kuram</th><th>Kuramcı</th><th>Oyunun sebebi</th></tr></thead>
+<tbody>
+<tr><td>Fazla enerji</td><td>Spencer</td><td>Çocuk artan enerjisini oyunla boşaltır</td></tr>
+<tr><td>Dinlenme / rahatlama</td><td>Lazarus</td><td>Oyun yorgunluğu ve gerilimi giderir</td></tr>
+<tr><td>Hazırlık (alıştırma)</td><td>Groos</td><td>Oyun yetişkin yaşamına hazırlıktır</td></tr>
+<tr><td>Yineleme (tekrarlama)</td><td>Hall</td><td>Oyunda insan türünün geçmişi yinelenir</td></tr>
+<tr><td>Psikanalitik</td><td>Freud</td><td>Oyun bastırılmış duyguların boşaltımıdır</td></tr>
+<tr><td>Bilişsel gelişim</td><td>Piaget</td><td>Oyun zihinsel gelişimin göstergesi ve aracıdır</td></tr>
+</tbody></table></div>
+<h3>Oyun türleri</h3>
+<p><b>Piaget'in bilişsel sınıflaması:</b></p>
+<ul>
+<li><b>Alıştırmalı (işlevsel) oyun:</b> Hareketin kendisi için tekrarlanması. Bebeğin topu sürekli yere atması.</li>
+<li><b>Sembolik (–mış gibi / rol) oyun:</b> Çocuğun bir rolü üstlendiği oyun. Doktorculuk, evcilik. <b>Rol üstlenme içeren oyun türü budur.</b></li>
+<li><b>Kurallı oyun:</b> Ortak kabul edilmiş kurallarla oynanan oyun. Sportif oyunların temeli; somut işlemler döneminde belirginleşir.</li>
+</ul>
+<p><b>Sosyal katılıma göre (Parten):</b> tek başına oyun → izleyici davranışı → <b>paralel oyun</b> (yan yana ama birbirine karışmadan) → birlikte oyun → <b>işbirlikli oyun</b> (ortak amaç ve rol paylaşımı).</p>
+<h3>Eğitsel oyunlar</h3>
+<p><b>Eğitsel oyun</b>, belirli bir eğitim amacına ulaşmak için planlanmış, kuralları önceden belirlenmiş oyundur. Sınıflandırılırken şu ölçütler kullanılır: <b>katılımcı sayısı</b> (bireysel, eşli, grup), <b>amaç</b> (ısınma, beceri, kuvvet, dikkat), <b>yapı</b> (kurallı–kuralsız), <b>hareket içeriği</b> (koşulu, toplu, dengeli) ve <b>yaş düzeyi</b>.</p>
+<div class="kutu"><span class="etiket">Oyunun gelişime katkısı</span>
+<b>Bedensel:</b> temel hareket becerileri, koordinasyon, dayanıklılık. <b>Bilişsel:</b> dikkat, strateji, problem çözme, kavram öğrenme. <b>Sosyal:</b> kurala uyma, sıra bekleme, işbirliği, liderlik. <b>Duygusal:</b> kazanmayı ve kaybetmeyi öğrenme, öz denetim. <b>Dil:</b> sözcük dağarcığı ve iletişim.</div>
+`},
+
+{ ad:"Öğretim İlkeleri ve Stratejileri", ozet:`
+<p>Öğretim ilkeleri, hangi konu öğretilirse öğretilsin uyulması gereken genel kurallardır. Sınavda bir örnek verilip "bu hangi ilkedir" diye sorulur.</p>
+<div class="tablo-sar"><table>
+<thead><tr><th>İlke</th><th>Anlamı</th><th>Sporda karşılığı</th></tr></thead>
+<tbody>
+<tr><td><b>Öğrenciye görelik</b></td><td>Öğretim bireyin yaşına, düzeyine, ilgisine uygun olmalı</td><td>Aynı alıştırmayı 8 ve 18 yaşa aynı biçimde vermemek</td></tr>
+<tr><td><b>Etkin katılım</b></td><td>Öğrenen <b>yaparak</b> öğrenir; izleyici değil katılımcı olmalı</td><td>Sıra bekleyen kuyruklar yerine herkesin topla çalıştığı düzen</td></tr>
+<tr><td><b>Somuttan soyuta</b></td><td>Önce elle tutulur olan, sonra kavram</td><td>Önce hareketi göstermek, sonra taktiği anlatmak</td></tr>
+<tr><td><b>Basitten karmaşığa</b></td><td>Kolaydan zora doğru sıralama</td><td>Duran topla pas, sonra hareket hâlinde pas</td></tr>
+<tr><td><b>Bilinenden bilinmeyene</b></td><td>Yeni bilgi eskisine bağlanmalı</td><td>Bildiği bir hareketle yeni hareketi ilişkilendirmek</td></tr>
+<tr><td><b>Yakından uzağa</b></td><td>Yakın çevreden uzağa doğru</td><td>Kendi kulübünden başlayıp uluslararası örneklere geçmek</td></tr>
+<tr><td><b>Açıklık (ayanilik)</b></td><td>Mümkün olduğunca çok duyuya hitap etmek</td><td>Anlat + göster + yaptır</td></tr>
+<tr><td><b>Ekonomiklik</b></td><td>En az emek ve zamanla en çok verim</td><td>Tek alıştırmayla hem ısınma hem beceri çalışmak</td></tr>
+<tr><td><b>Yaşama yakınlık</b></td><td>Öğretilen, gerçek yaşamda kullanılabilir olmalı</td><td>Maç koşullarına benzeyen alıştırmalar</td></tr>
+<tr><td><b>Bütünlük</b></td><td>Bireyin bedensel, zihinsel, duygusal yönü birlikte ele alınmalı</td><td>Yalnız tekniği değil, sporcunun kaygısını da yönetmek</td></tr>
+<tr><td><b>Hedefe görelik</b></td><td>Tüm etkinlikler belirlenen hedefe hizmet etmeli</td><td>Antrenmanın her bölümünün bir amacı olması</td></tr>
+</tbody></table></div>
+<div class="kutu"><span class="etiket">Sık sorulan bağ</span>
+"Öğrencinin derse aktif katılması, yaparak yaşayarak öğrenmesi" ifadesi <b>etkin katılım</b> ilkesidir. Bu ilke, öğrenmeyi en çok artıran ilke olarak kabul edilir.</div>
+<h3>Öğretim stratejileri</h3>
+<div class="tablo-sar"><table>
+<thead><tr><th>Strateji</th><th>Kuramcı</th><th>İşleyiş</th><th>Ne zaman uygun</th></tr></thead>
+<tbody>
+<tr><td><b>Sunuş yoluyla</b></td><td>Ausubel</td><td>Öğretmen kavram ve ilkeleri düzenli biçimde sunar; genelden özele</td><td>Yeni ve tamamen bilinmeyen konularda, kısa sürede çok bilgi verilecekse</td></tr>
+<tr><td><b>Buluş yoluyla</b></td><td>Bruner</td><td>Örnekler verilir, öğrenen kuralı kendisi bulur; özelden genele</td><td>Kavram ve ilke öğretiminde, güdülenmeyi artırmak için</td></tr>
+<tr><td><b>Araştırma–inceleme yoluyla</b></td><td>Dewey</td><td>Problem ortaya konur, öğrenen bilimsel yöntemle çözer</td><td>Problem çözme ve üst düzey düşünme hedefleniyorsa</td></tr>
+</tbody></table></div>
+<p><b>Araştırma–inceleme stratejisinin yararları:</b> problem çözme becerisi kazandırır, bilimsel düşünmeyi öğretir, öğrenmeyi kalıcı kılar, üst düzey zihinsel becerileri geliştirir ve öğreneni bağımsız hâle getirir. Zayıf yönü <b>zaman almasıdır</b>.</p>
+`}
+);
+
+UNITELER.push(
+{ ad:"Öğretim Yöntem, Teknik ve Stilleri", ozet:`
+<p>Strateji <em>yolu</em>, yöntem <em>yöntemi</em>, teknik ise <em>uygulama biçimini</em> belirler. Sporda beceri öğretiminin kendine özgü yöntemleri vardır.</p>
+<h3>Genel öğretim yöntemleri</h3>
+<p><b>Anlatım</b> (kısa ve az kullanılmalı), <b>soru–cevap</b>, <b>tartışma</b>, <b>gösterip yaptırma</b>, <b>problem çözme</b>, <b>işbirlikli öğrenme</b>, <b>bireysel çalışma</b>, <b>beyin fırtınası</b>, <b>drama</b>. Beden eğitimi ve antrenörlükte en çok kullanılan yöntem <b>gösterip yaptırmadır</b> (demonstrasyon).</p>
+<div class="kutu"><span class="etiket">Etkili gösterimin kuralları</span>
+Model <b>doğru</b> olmalı; herkesin görebileceği yerde, <b>farklı açılardan</b> ve <b>birkaç kez</b> yapılmalı; önce <b>gerçek hızda</b>, sonra gerekiyorsa yavaşlatılarak gösterilmeli; gösterime eşlik eden açıklama <b>kısa ve tek bir noktaya</b> odaklı olmalı. Gösterim sonrası sporcu <b>hemen</b> denemelidir.</div>
+<h3>Bütün ve parça yöntemi</h3>
+<div class="tablo-sar"><table>
+<thead><tr><th>Yöntem</th><th>Nasıl</th><th>Ne zaman tercih edilir</th></tr></thead>
+<tbody>
+<tr><td><b>Bütün yöntemi</b></td><td>Beceri baştan sona bir bütün olarak çalışılır</td><td>Beceri <b>basit</b>, <b>hızlı</b> ve parçalara ayrıldığında anlamını yitiriyorsa (sıçrama, atış)</td></tr>
+<tr><td><b>Parça yöntemi</b></td><td>Beceri anlamlı parçalara ayrılır, ayrı ayrı öğretilir, sonra birleştirilir</td><td>Beceri <b>karmaşık</b>, <b>yavaş</b> ve doğal parçaları varsa (yüzmede kol–ayak–nefes, jimnastik serisi)</td></tr>
+<tr><td><b>Bütün–parça–bütün</b></td><td>Önce bütün gösterilir, zorlanılan parça ayrı çalışılır, sonra yine bütünleştirilir</td><td>Uygulamada en yaygın kullanılan karma yol</td></tr>
+</tbody></table></div>
+<h3>Alıştırma düzenlemesi</h3>
+<div class="karistirma"><span class="etiket">Sınavın en ters gelen konusu</span>
+<b>Blok (sabit) alıştırma</b> — aynı beceri arka arkaya tekrarlanır. Antrenmanda performansı <b>hızla yükseltir</b> ama kalıcılığı ve transferi <b>düşüktür</b>.<br>
+<b>Rastgele (karışık) alıştırma</b> — farklı beceriler karışık sırada çalışılır. Antrenmanda performans <b>daha kötü görünür</b>, ancak öğrenme <b>daha kalıcı</b> olur ve maça daha iyi aktarılır.<br>
+Yani antrenmanda iyi görünen düzen, öğrenme için her zaman en iyisi değildir.</div>
+<p><b>Kütlesel (toplu) çalışma</b> dinlenmesiz veya çok kısa aralıklı; <b>aralıklı çalışma</b> ise dinlenme aralıkları geniş çalışmadır. Yeni öğrenme aşamasında ve yorgunluk riski yüksek becerilerde <b>aralıklı çalışma</b> üstündür. <b>Değişken alıştırma</b> (aynı becerinin farklı mesafe, açı ve hızlarda çalışılması) uyarlanabilirliği artırır.</p>
+<p><b>Zihinsel çalışma (imgeleme)</b>, hareketin fiilen yapılmadan zihinde canlandırılmasıdır. Fiziksel çalışmanın yerini tutmaz ama fiziksel çalışmayla <b>birlikte</b> kullanıldığında öğrenmeyi artırır; sakatlık döneminde de becerinin korunmasına yardım eder.</p>
+<h3>Mosston'un öğretim stilleri</h3>
+<p>Kararların kimde olduğuna göre öğretmen merkezliden öğrenci merkezliye doğru sıralanır:</p>
+<ul>
+<li><b>Komut stili:</b> Tüm kararlar antrenörde. Sporcu tek komutla aynı anda aynı hareketi yapar. Güvenlik ve disiplin gereken durumlarda uygun.</li>
+<li><b>Alıştırma stili:</b> Sporcu kendi hızında çalışır, antrenör bireysel dönüt verir.</li>
+<li><b>Karşılıklı (eşli) stil:</b> Sporcular ikişerli çalışır; biri yapar, diğeri ölçüt listesine göre geri bildirim verir.</li>
+<li><b>Kendini denetleme stili:</b> Sporcu kendi performansını ölçüte göre değerlendirir.</li>
+<li><b>Kapsama (katılım) stili:</b> Aynı görev farklı zorluk düzeylerinde sunulur, herkes kendi düzeyini seçer.</li>
+<li><b>Yönlendirilmiş buluş:</b> Antrenör soru dizisiyle sporcuyu tek bir doğru çözüme ulaştırır.</li>
+<li><b>Problem çözme (ıraksayan):</b> Aynı probleme birden çok doğru çözüm aranır. Yaratıcılığı en çok geliştiren stildir.</li>
+</ul>
+`},
+
+{ ad:"Geri Bildirim (Dönüt)", ozet:`
+<p><b>Geri bildirim</b>, sporcunun yaptığı hareket ve onun sonucu hakkında aldığı bilgidir. Motor öğrenmede alıştırmadan sonraki <b>en güçlü değişkendir</b>; geri bildirimsiz tekrar, hatayı pekiştirmekten başka işe yaramaz.</p>
+<h3>Kaynağına göre</h3>
+<div class="tablo-sar"><table>
+<thead><tr><th>Tür</th><th>Kaynağı</th><th>Örnek</th></tr></thead>
+<tbody>
+<tr><td><b>İçsel (doğal, duyusal)</b></td><td>Sporcunun kendi duyu organları: görme, işitme, kinestetik duyu</td><td>Atışın elden nasıl çıktığını hissetmek, topun sepete girdiğini görmek</td></tr>
+<tr><td><b>Dışsal (eklenmiş, artırılmış)</b></td><td>Dışarıdan bir kaynak: antrenör, video, kronometre</td><td>"Dirseğin düşüktü", "12,4 saniye"</td></tr>
+</tbody></table></div>
+<h3>Dışsal geri bildirimin iki türü</h3>
+<div class="kutu"><span class="etiket">Mutlaka ayırt et</span>
+<b>Sonuç bilgisi (KR):</b> Hareketin <b>sonucu</b> hakkında bilgi. "Top dışarı gitti", "9,8 saniye koştun".<br>
+<b>Performans bilgisi (KP):</b> Hareketin <b>yapılış biçimi</b> hakkında bilgi. "Bileğini son anda kırmadın", "ağırlığını arkada bıraktın".<br>
+Sonucu sporcu zaten çoğu zaman kendisi görür; antrenörün asıl katma değeri <b>performans bilgisidir</b>.</div>
+<h3>Zamanlama ve sıklık</h3>
+<ul>
+<li><b>Eş zamanlı geri bildirim</b> hareket sürerken, <b>sonlandırıcı geri bildirim</b> hareket bittikten sonra verilir.</li>
+<li><b>Gecikmeli geri bildirim</b> her zaman kötü değildir: hareketin hemen ardından birkaç saniye beklemek, sporcunun <b>kendi içsel geri bildirimini işlemesine</b> fırsat verir ve öğrenmeyi güçlendirir.</li>
+<li><b>Her denemede geri bildirim vermek</b> antrenmandaki performansı yükseltir ama <b>bağımlılık</b> yaratır: antrenör susunca performans düşer. Bu yüzden geri bildirim zamanla <b>azaltılmalıdır</b>.</li>
+<li><b>Özet geri bildirim</b> (birkaç denemenin toplu değerlendirmesi) ve <b>bant genişliği geri bildirimi</b> (yalnız hata belirli sınırı aşınca dönüt verme) kalıcı öğrenme için daha etkilidir.</li>
+</ul>
+<h3>Geri bildirimin işlevleri</h3>
+<p><b>Bilgi verme</b> (hatanın ne olduğunu ve nasıl düzeltileceğini gösterir), <b>güdüleme</b> (çabayı sürdürtür), <b>pekiştirme</b> (doğru davranışı sağlamlaştırır).</p>
+<div class="kutu"><span class="etiket">İyi geri bildirimin kuralları</span>
+Tek seferde <b>bir</b> noktaya odaklan — çoklu düzeltme hiçbirini düzeltmez. <b>Somut ve gözlenebilir</b> ol ("daha iyi yap" değil, "dizini öne al"). Önce <b>doğru olanı</b> söyle, sonra düzeltmeyi ver. Sporcunun <b>düzeyine</b> uygun dil kullan; bilişsel evredeki sporcuya ayrıntı verme. Geri bildirimi <b>kişiye</b> değil <b>harekete</b> yönelt.</div>
+`},
+
+{ ad:"Ders Planlama, Ölçme ve Değerlendirme", ozet:`
+<p>Planlama, "ne öğretilecek, nasıl öğretilecek, öğrenildiği nasıl anlaşılacak" sorularının önceden yanıtlanmasıdır. Plansız antrenman, hedefi olmayan tekrardır.</p>
+<h3>Planın dört öğesi</h3>
+<ul>
+<li><b>Hedef:</b> Öğrenenin kazanması beklenen nitelik. Hedefin gözlenebilir hâline <b>davranış</b> (kazanım) denir.</li>
+<li><b>İçerik:</b> Hedefe ulaştıracak konu ve alıştırmalar.</li>
+<li><b>Öğretme–öğrenme süreci:</b> Hangi strateji, yöntem, araç ve düzenle işleneceği.</li>
+<li><b>Ölçme ve değerlendirme:</b> Hedefe ulaşılıp ulaşılmadığının belirlenmesi.</li>
+</ul>
+<h3>Antrenman/ders bölümleri</h3>
+<div class="tablo-sar"><table>
+<thead><tr><th>Bölüm</th><th>Amaç</th><th>İçerik</th></tr></thead>
+<tbody>
+<tr><td><b>Hazırlık (ısınma)</b></td><td>Organizmayı yüklenmeye hazırlamak, sakatlığı önlemek, dikkati toplamak</td><td>Genel ısınma, germe, özel ısınma</td></tr>
+<tr><td><b>Ana bölüm</b></td><td>Günün hedefine ulaşmak</td><td>Beceri öğretimi, kondisyon, oyun/uygulama</td></tr>
+<tr><td><b>Bitiş (soğuma)</b></td><td>Toparlanmayı hızlandırmak, dersi değerlendirmek</td><td>Hafif koşu, germe, geri bildirim ve kısa değerlendirme</td></tr>
+</tbody></table></div>
+<h3>Ölçme ve değerlendirme</h3>
+<div class="kutu"><span class="etiket">Tanım farkı — kesin soru</span>
+<b>Ölçme:</b> Bir niteliğin gözlenip sayı ya da sembolle ifade edilmesi. <em>Yargı içermez.</em> "Dikey sıçraması 42 cm."<br>
+<b>Değerlendirme:</b> Ölçme sonucunun bir <b>ölçütle</b> karşılaştırılıp <b>yargıya</b> varılması. "42 cm, yaş grubunun üzerinde — başarılı."<br>
+Değerlendirmenin üç öğesi: <b>ölçme sonucu + ölçüt + karar</b>.</div>
+<p><b>Doğrudan ölçme</b>: nitelik doğrudan ölçülür (boy, süre). <b>Dolaylı ölçme</b>: nitelik başka bir göstergeyle ölçülür (bilgi düzeyinin testle ölçülmesi). Ölçüt <b>mutlak</b> (önceden belirlenmiş sabit değer) ya da <b>bağıl</b> (grubun ortalamasına göre) olabilir.</p>
+<h3>Değerlendirme türleri</h3>
+<div class="tablo-sar"><table>
+<thead><tr><th>Tür</th><th>Ne zaman</th><th>Amaç</th></tr></thead>
+<tbody>
+<tr><td><b>Tanıma–yerleştirme</b></td><td>Öğretimden <b>önce</b></td><td>Hazırbulunuşluğu belirlemek, gruplamak</td></tr>
+<tr><td><b>Biçimlendirme–izleme</b></td><td>Öğretim <b>sürerken</b></td><td>Eksikleri anında görüp süreci düzeltmek</td></tr>
+<tr><td><b>Düzey belirleme</b></td><td>Öğretimin <b>sonunda</b></td><td>Ulaşılan düzeye karar vermek, belgelemek</td></tr>
+</tbody></table></div>
+<p>Bir ölçme aracında bulunması gereken nitelikler: <b>geçerlik</b> (ölçmek istediğini ölçmesi), <b>güvenirlik</b> (tutarlı ve kararlı sonuç vermesi) ve <b>kullanışlılık</b> (uygulanabilir, ekonomik olması). Geçerli olmayan bir araç güvenilir olsa bile işe yaramaz.</p>
+<div class="kutu"><span class="etiket">Hedef alanları (Bloom)</span>
+<b>Bilişsel:</b> bilgi ve zihinsel beceriler — kuralı bilmek. <b>Duyuşsal:</b> ilgi, tutum, değer — spora karşı olumlu tutum. <b>Psikomotor (devinişsel):</b> beceri ve hareket — hareketi yapabilmek. Antrenörlük üçünü birden hedefler.</div>
+`},
+
+{ ad:"Antrenörlük Mesleği ve Spora Katılım", ozet:`
+<p>Antrenör yalnız teknik öğreten kişi değildir. Aynı anda <b>öğretici, eğitici, model, lider, yönetici, güdüleyici ve iletişimcidir</b>. Sporcunun yaşamındaki en etkili yetişkinlerden biri olması, bu rollerin toplamından gelir.</p>
+<h3>Antrenörlük yaklaşımları</h3>
+<div class="tablo-sar"><table>
+<thead><tr><th>Yaklaşım</th><th>Nasıl işler</th><th>Sonucu</th></tr></thead>
+<tbody>
+<tr><td><b>Otoriter (komut veren)</b></td><td>Tüm kararlar antrenörde, sporcu uygular</td><td>Hızlı düzen sağlar; sorumluluk ve özgüven gelişmez</td></tr>
+<tr><td><b>Demokratik (işbirlikçi)</b></td><td>Sporcu karar süreçlerine katılır</td><td>İçsel güdülenme ve bağlılık artar; zaman ister</td></tr>
+<tr><td><b>Serbest bırakan</b></td><td>Antrenör yönlendirmez, sporcu kendi başına</td><td>Yapı ve gelişim kaybolur; en verimsiz yaklaşım</td></tr>
+</tbody></table></div>
+<div class="kutu"><span class="etiket">Sporcu merkezli antrenörlük</span>
+Çağdaş antrenörlük anlayışı <b>kazanma merkezli</b> değil <b>sporcu merkezlidir</b>: öncelik sporcunun bütünsel gelişimi, sağlığı ve sporda kalmasıdır. Kazanmak bu gelişimin sonucudur, amacı değil. Çocuk sporunda başarı ölçütü <b>derece değil katılımın sürmesidir</b>.</div>
+<h3>Spora katılım ve sosyalleşme</h3>
+<p>Bireyin spora nasıl başladığını, neden sürdürdüğünü ve neden bıraktığını inceleyen alan <b>sporda sosyalleşme</b>dir. Üç boyutu vardır:</p>
+<ul>
+<li><b>Spora sosyalleşme (spora katılım):</b> Birey spora nasıl ve kimin etkisiyle başlar.</li>
+<li><b>Spor yoluyla sosyalleşme:</b> Sporun bireye kazandırdıkları — kurala uyma, işbirliği, öz denetim, kimlik.</li>
+<li><b>Spordan ayrılma (bırakma):</b> Bireyin spordan kopması ve nedenleri.</li>
+</ul>
+<p>Spora katılımı belirleyen üç etken kümesi: <b>bireyin kendi özellikleri</b> (yetenek, ilgi, sağlık), <b>önemli diğerleri</b> (aile, arkadaşlar, öğretmen, antrenör, medya) ve <b>olanaklar</b> (tesis, ekonomik durum, ulaşım, kültürel kabul). Çocukta ilk ve en güçlü etken <b>ailedir</b>.</p>
+<div class="kutu"><span class="etiket">Spordan kopmanın başlıca nedenleri</span>
+Eğlencenin bitmesi, aşırı baskı ve kazanma zorlaması, <b>erken uzmanlaşma</b>, tekrarlayan sakatlıklar, tükenmişlik, antrenörle ilişki sorunları, oynama süresi bulamama ve başarısızlık duygusu. Bunların çoğu antrenörün kontrolündedir.</div>
+<h3>Antrenörlük mesleğinin gelişimi</h3>
+<p>Antrenörlük deneyime dayalı bir uğraş olmaktan çıkıp bilimsel temelli, eğitim ve belge gerektiren bir alana dönüşmüştür. Bu dönüşüm <b>profesyonelleşme</b> olarak adlandırılır. Türkiye'de antrenörlük kademeli bir sistemdir; her kademe hem <b>temel eğitim</b> hem de <b>branş eğitimini</b> içerir ve antrenörün öğrenmesi belge alındığında bitmez — sürekli mesleki gelişim antrenörlüğün parçasıdır.</p>
+`}
+);
+UNITELER.push(
+{ ad:"Uzun Süreli Sporcu Gelişimi (LTAD)", ozet:`
+<p>Balyi'nin geliştirdiği bu model, sporcunun tek bir sezona değil <b>tüm yaşamına</b> yayılan gelişimini aşamalandırır. Temel mantığı şudur: her aşamanın kendi önceliği vardır; bir aşamanın işi ne ertelenebilir ne de öne çekilebilir.</p>
+<div class="tablo-sar"><table>
+<thead><tr><th>#</th><th>Aşama</th><th>Yaklaşık dönem</th><th>Bu aşamanın işi</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><b>Aktif başlangıç</b></td><td>0–6 yaş</td><td>Hareketi sevdirmek, günlük fiziksel etkinlik alışkanlığı. Performans kaygısı yok</td></tr>
+<tr><td>2</td><td><b>Temeller</b><br><em>(eğlenceli temeller)</em></td><td>K 6–8 / E 6–9</td><td>Temel hareket becerileri: koşma, atlama, atma, yakalama. Oyun ağırlıklı, ölçme yok</td></tr>
+<tr><td>3</td><td><b>Öğrenmeyi öğrenme</b><br><em>(antrenman yapmayı öğrenme)</em></td><td>K 8–11 / E 9–12</td><td>Genel spor becerileri, birden çok branş denemesi. <b>Beceri öğrenmenin altın çağı</b></td></tr>
+<tr><td>4</td><td><b>Antrenman için antrenman</b></td><td>K 11–15 / E 12–16</td><td><b>Fizyolojik adaptasyon:</b> aerobik kapasite, kuvvet ve dayanıklılığın sistemli yüklenmeyle geliştirilmesi. Sporcunun motoru burada kurulur</td></tr>
+<tr><td>5</td><td><b>Yarışmak için antrenman</b></td><td>K 15–19 / E 16–20</td><td>Branşa özelleşme, yarışma deneyimi, bireysel güçlü yönlerin geliştirilmesi</td></tr>
+<tr><td>6</td><td><b>Kazanmak için antrenman</b></td><td>Erken yetişkinlik</td><td>Elit performans: teknik detayların mükemmelleştirilmesi, taktik incelik, yarışma yönetimi</td></tr>
+<tr><td>7</td><td><b>Aktif yaşam</b></td><td>Her yaş</td><td>Yarışmayı bıraktıktan sonra da spora bağlı kalmak. Modelin nihai hedefi</td></tr>
+</tbody></table></div>
+<p>4., 5. ve 6. aşamalar birlikte <b>performans geliştirme</b> bloğunu oluşturur; ilk üç aşama ise <b>fiziksel okuryazarlık</b> bloğudur.</p>
+<div class="karistirma"><span class="etiket">Aşamaları ayırt etmenin anahtarı</span>
+Soru "hangi aşama" diye sorduğunda <b>o aşamaya özgü</b> olanı ara. <b>Motivasyon</b> ve <b>yaralanma önleme</b> her aşamada geçerlidir, bu yüzden hiçbir aşamayı ayırt etmez — klasik çeldiricidir. <b>Fizyolojik adaptasyon</b> performans geliştirmenin, <b>teknik mükemmelleştirme</b> ve <b>oyun stratejisi</b> ise elit aşamanın işaretidir.</div>
+<h3>Modelin dayandığı kavramlar</h3>
+<div class="tablo-sar"><table>
+<thead><tr><th>Kavram</th><th>Ne demek</th></tr></thead>
+<tbody>
+<tr><td><b>Fiziksel okuryazarlık</b></td><td>Temel hareket ve temel spor becerilerinin birlikte kazanılmış olması. Nasıl okuma yazma bilmeden kitap okunamazsa, fiziksel okuryazarlık olmadan da spor yapılamaz. İlk üç aşamanın hedefi budur</td></tr>
+<tr><td><b>Kronolojik yaş</b></td><td>Doğum tarihine göre yaş. Gelişim düzeyini göstermez</td></tr>
+<tr><td><b>Biyolojik yaş</b></td><td>Bedenin gerçek olgunlaşma düzeyi. Aynı sınıftaki iki çocuk arasında 4–5 yıl fark olabilir. <b>Antrenman biyolojik yaşa göre planlanır</b></td></tr>
+<tr><td><b>Antrenman yaşı</b></td><td>Sporcunun kaç yıldır sistemli antrenman yaptığı. 25 yaşında ama 1 yıllık antrenman yaşı olan sporcu başlangıç düzeyindedir</td></tr>
+<tr><td><b>PHV</b> (en hızlı boy uzama dönemi)</td><td>Ergenlikteki en hızlı boy uzama anı; kızlarda yaklaşık 12, erkeklerde 14 yaş civarı. Modelde antrenman pencerelerinin zamanlaması bu ana göre ayarlanır</td></tr>
+<tr><td><b>Duyarlı (kritik) pencereler</b></td><td>Bir motorik özelliğin antrenmana en çok yanıt verdiği dönemler. Kaçırıldığında o özellik yine gelişir ama aynı düzeye ulaşmaz</td></tr>
+</tbody></table></div>
+<div class="kutu"><span class="etiket">Pencerelerin sırası</span>
+<b>Beceri</b> penceresi çocuklukta, PHV'den <b>önce</b> açılır — bu yüzden teknik öğretimin altın çağı 8–12 yaştır.<br>
+<b>Dayanıklılık (aerobik)</b> penceresi PHV'nin <b>başladığı</b> dönemde açılır.<br>
+<b>Kuvvet</b> penceresi PHV'den <b>sonra</b> açılır; kızlarda adet döngüsünün başlamasıyla, erkeklerde PHV'den 12–18 ay sonra.<br>
+Sıra şu: önce beceri, sonra dayanıklılık, en son kuvvet.</div>
+<h3>Erken ve geç özelleşen sporlar</h3>
+<div class="tablo-sar"><table>
+<thead><tr><th></th><th>Erken özelleşen</th><th>Geç özelleşen</th></tr></thead>
+<tbody>
+<tr><td>Örnek</td><td>Artistik jimnastik, artistik buz pateni, dalış, masa tenisi, ritmik jimnastik</td><td>Takım sporları, atletizm, kürek, güreş, yüzme — <b>sporların büyük çoğunluğu</b></td></tr>
+<tr><td>Model</td><td>Aşama sayısı azalır, özelleşme erken başlar</td><td>Yedi aşamanın tamamı uygulanır; özelleşme ergenlik sonrasına bırakılır</td></tr>
+<tr><td>Gerekçe</td><td>Karmaşık beceriler olgunlaşma öncesi kazanılmalı</td><td>Erken özelleşme sakatlık, tükenmişlik ve erken kopma doğurur</td></tr>
+</tbody></table></div>
+<div class="kutu"><span class="etiket">İki sayısal ölçüt</span>
+<b>10 yıl / 10.000 saat kuralı:</b> Elit düzeye ulaşmak için ortalama 10 yıl ve 10.000 saatlik nitelikli antrenman gerekir. Kısa yoldan elit sporcu üretilemez.<br>
+<b>Antrenman–yarışma oranı:</b> Erken aşamalarda ağırlık antrenmandadır (yaklaşık %70–80 antrenman, %20–30 yarışma). Aşama ilerledikçe yarışmanın payı artar. Çocuk sporunda çok yarışma, az antrenman modelin en sık ihlalidir.</div>
+`}
+);
+/*UNITE_SON*/
+
+const SORULAR = [];
+
+SORULAR.push(
+/* ---------- ÜNİTE 1 ---------- */
+{u:1, s:"Yaşantı ürünü olarak meydana gelen, nispeten kalıcı izli davranış değişikliğine ne ad verilir?", c:["Büyüme","Olgunlaşma","Öğrenme","Hazırbulunuşluk","Gelişme"], d:2, a:"Bu, öğrenmenin ders kitabındaki standart tanımıdır. İçinde üç ölçüt vardır: davranışta değişme olması, bu değişmenin yaşantı ürünü olması ve nispeten kalıcı olması."},
+{u:1, s:"Aşağıdakilerden hangisi öğrenmenin ölçütlerinden biri DEĞİLDİR?", c:["Davranışta bir değişme olması","Değişmenin yaşantı sonucu oluşması","Değişmenin nispeten kalıcı olması","Değişmenin doğuştan getirilmiş olması","Değişmenin çevreyle etkileşimden kaynaklanması"], d:3, a:"Doğuştan gelen davranışlar refleks ve içgüdüdür; bunlar yaşantı ürünü olmadığı için öğrenme sayılmaz. Öğrenme her zaman çevreyle etkileşim gerektirir."},
+{u:1, s:"Aşağıdaki durumlardan hangisi öğrenme olarak kabul EDİLEMEZ?", c:["Sporcunun yeni bir servis tekniğini kazanması","Çocuğun yüzmeyi sökmesi","Sporcunun ağrı kesici etkisiyle hareketlerinin yavaşlaması","Oyuncunun rakip savunmayı okumayı öğrenmesi","Antrenörün yeni bir planlama yöntemini uygulayabilmesi"], d:2, a:"İlaç, yorgunluk, hastalık ve alkol gibi etkenlerin yarattığı değişmeler geçicidir; kalıcılık ölçütünü karşılamadığı için öğrenme değildir."},
+{u:1, s:"Öğrenme ile performans arasındaki ilişki için aşağıdakilerden hangisi doğrudur?", c:["Öğrenme doğrudan gözlenir, performans gözlenemez","Öğrenme gözlenemez, performanstan çıkarsanır","İkisi de doğrudan gözlenebilir","Performans kalıcı, öğrenme geçicidir","Performans yükseldiğinde öğrenme kesinlikle gerçekleşmiştir"], d:1, a:"Öğrenme zihinsel bir süreçtir ve doğrudan görülemez. Gözlediğimiz şey performanstır; öğrenmenin gerçekleşip gerçekleşmediğine performanstaki kalıcı değişimden yola çıkarak karar veririz."},
+{u:1, s:"Bir sporcu antrenmanda hareketi kusursuz yapmakta, ancak iki hafta ara verdikten sonra aynı hareketi yapamamaktadır. Bu durum için ne söylenebilir?", c:["Öğrenme gerçekleşmiş, performans düşmüştür","Kalıcılık sağlanmadığı için öğrenme gerçekleşmemiştir","Olgunlaşma tamamlanmamıştır","Olumsuz transfer oluşmuştur","Beceri kapalı beceriye dönüşmüştür"], d:1, a:"Öğrenmenin göstergelerinden biri kalıcılıktır. Ara verildiğinde kaybolan bir değişim, öğrenme değil geçici performans artışıdır."},
+{u:1, s:"Eğitim, öğretim, öğretme ve öğrenme kavramları kapsam bakımından en genişten en dara doğru nasıl sıralanır?", c:["Öğrenme > Öğretme > Öğretim > Eğitim","Eğitim > Öğretim > Öğretme > Öğrenme","Öğretim > Eğitim > Öğrenme > Öğretme","Öğretme > Öğrenme > Eğitim > Öğretim","Eğitim > Öğrenme > Öğretme > Öğretim"], d:1, a:"Eğitim en geniş kavramdır; öğretim eğitimin planlı ve programlı biçimidir; öğretme öğrenmeyi sağlama işidir; öğrenme ise bireyde gerçekleşen sonuçtur."},
+{u:1, s:"Öğretim kavramını öğretmeden ayıran temel özellik nedir?", c:["Okulda yapılıyor olması","Planlı, programlı ve amaçlı olması","Yalnızca yetişkinlere uygulanması","Ölçme içermemesi","Kısa sürede tamamlanması"], d:1, a:"Öğretme, öğrenmeye kılavuzluk etmenin genel adıdır. Bu iş planlı, programlı ve belirli hedeflere yönelik biçimde yapılıyorsa öğretim adını alır."},
+{u:1, s:"Aşağıdakilerden hangisi öğrenme yoluyla kazanılmış bir davranıştır?", c:["Bebeğin emme refleksi","Göz bebeğinin ışıkta küçülmesi","Sporcunun serbest atış tekniğini kazanması","Diz kapağına vurulduğunda bacağın hareket etmesi","Ani sesle irkilme"], d:2, a:"Diğer seçenekler doğuştan gelen reflekslerdir. Serbest atış tekniği ise yaşantı ve alıştırma yoluyla kazanılır, dolayısıyla öğrenmedir."},
+{u:1, s:"Öğrenme tanımındaki 'nispeten kalıcı' ifadesi ne anlama gelir?", c:["Öğrenilenlerin asla unutulmayacağı","Öğrenmenin bir süre sonra mutlaka silineceği","Değişimin geçici etkenlerle değil, süreklilik gösterecek biçimde oluştuğu","Öğrenmenin yalnızca çocuklukta gerçekleştiği","Öğrenmenin ölçülemeyeceği"], d:2, a:"'Nispeten kalıcı' ifadesi, değişimin yorgunluk veya ilaç gibi geçici etkenlerden kaynaklanmadığını belirtir. Unutma olabilir, ama değişim anlık değildir."},
+{u:1, s:"'Bireyde kendi yaşantısı yoluyla, kasıtlı olarak istendik davranış değişikliği meydana getirme süreci' hangi kavramın tanımıdır?", c:["Öğretim","Eğitim","Öğrenme","Olgunlaşma","Değerlendirme"], d:1, a:"Bu, eğitimin klasik tanımıdır. Tanımdaki 'kasıtlı' ve 'istendik' sözcükleri eğitimi rastgele öğrenmelerden ayırır."},
+{u:1, s:"Antrenörün bu derste kazanması beklenen temel yeterlik aşağıdakilerden hangisidir?", c:["Yalnızca branşın tekniğini bilmek","Sporcuya ne öğreteceğinin yanında nasıl öğreteceğini de bilmek","Müsabaka kurallarını ezberlemek","Sporcunun beslenmesini düzenlemek","Tesis yönetimini öğrenmek"], d:1, a:"Sporda Öğrenme ve Öğretme dersinin varlık nedeni budur: alan bilgisi tek başına yetmez, öğretme sürecini bilimsel temelde yürütmek gerekir."},
+{u:1, s:"Bir sporcunun sakatlık sonrası dönüşünde performansının düşmesi öğrenmenin kaybolduğu anlamına gelmez. Bunun nedeni aşağıdakilerden hangisidir?", c:["Öğrenme performanstan bağımsız biçimde kalıcıdır","Performans her zaman öğrenmeyi tam yansıtır","Öğrenme yalnızca çocuklukta gerçekleşir","Sakatlık öğrenmeyi de yok eder","Beceri kapalı beceri hâline gelmiştir"], d:0, a:"Performans anlık koşullardan (yorgunluk, kaygı, sakatlık) etkilenir; öğrenme ise kalıcı bir değişimdir ve bu koşullar düzeldiğinde yeniden görünür hâle gelir."},
+{u:1, s:"Aşağıdakilerden hangisi öğrenmenin bir özelliği DEĞİLDİR?", c:["Yaşam boyu sürmesi","Yalnızca bilişsel alanda gerçekleşmesi","Bireyin etkin katılımını gerektirmesi","Davranışta gözlenebilir bir değişim doğurması","Yaşantı ürünü olması"], d:1, a:"Öğrenme bilişsel, duyuşsal ve psikomotor alanların üçünde de gerçekleşir. Bir hareket becerisinin kazanılması psikomotor öğrenmedir."},
+{u:1, s:"Antrenmanda hiç açıklama yapmadan sporcuların kendi başına top oynamasına izin veren bir antrenör için aşağıdakilerden hangisi söylenebilir?", c:["Öğretim yapmıştır, çünkü ortam sağlamıştır","Öğretim yapmamıştır, çünkü planlılık ve amaçlılık yoktur","Eğitim yapmıştır, çünkü çocuklar spor yapmıştır","Değerlendirme yapmıştır","Öğrenme kesinlikle gerçekleşmemiştir"], d:1, a:"Öğrenme kendiliğinden de olabilir, ancak öğretimden söz edebilmek için sürecin planlı, programlı ve hedefe yönelik olması gerekir."},
+
+/* ---------- ÜNİTE 2 ---------- */
+{u:2, s:"Öğrenmeyi uyarıcı–tepki bağı olarak açıklayan ve yalnızca gözlenebilir davranışı inceleyen kuram grubu hangisidir?", c:["Bilişsel kuramlar","Davranışçı kuramlar","Sosyal öğrenme kuramı","Hümanist kuramlar","Yapılandırmacı kuramlar"], d:1, a:"Davranışçılar zihinde olup bitenle ilgilenmez; öğrenmeyi uyarıcı ile tepki arasında kurulan bağ olarak görürler."},
+{u:2, s:"Klasik koşullanma kuramının kurucusu kimdir?", c:["Skinner","Thorndike","Pavlov","Bandura","Bruner"], d:2, a:"Pavlov, köpekler üzerinde yaptığı deneylerde nötr uyarıcının (zil) koşulsuz uyarıcıyla (yiyecek) eşleştirilmesiyle koşullu tepki oluştuğunu göstermiştir."},
+{u:2, s:"Thorndike'ın öğrenme yasalarından 'etki yasası' neyi ifade eder?", c:["Tekrarlanan bağ güçlenir","Organizma hazır değilse öğrenme olmaz","Haz veren sonuçla biten davranışın tekrarlanma olasılığı artar","Öğrenme ani kavramayla olur","Model alınan davranış öğrenilir"], d:2, a:"Etki yasasına göre davranışın sonucu belirleyicidir: olumlu sonuç davranışı güçlendirir, olumsuz sonuç zayıflatır."},
+{u:2, s:"Thorndike'ın 'hazırbulunuşluk yasası' antrenörlükte hangi uygulamayı gerektirir?", c:["Her sporcuya aynı programı vermek","Sporcu fiziksel ve zihinsel olarak hazır olmadan yeni beceriye geçmemek","Beceriyi mutlaka parçalara ayırmak","Sürekli ödül vermek","Yalnızca yarışma ortamında çalışmak"], d:1, a:"Hazırbulunuşluk yasasına göre organizma o davranışı yapmaya hazır değilse zorlamak öğrenme doğurmaz, yalnızca yıpratır."},
+{u:2, s:"Skinner'ın edimsel koşullanma kuramında 'olumsuz pekiştireç' ne yapar?", c:["Davranışı azaltır","Rahatsız edici bir uyarıcıyı ortamdan kaldırarak davranışı artırır","Ortama hoş bir uyarıcı ekleyerek davranışı artırır","Davranışı tamamen söndürür","Davranışın kalıcılığını etkilemez"], d:1, a:"Olumsuz pekiştireç istenmeyen bir uyarıcının kaldırılmasıdır ve davranışı ARTIRIR. Davranışı azaltan şey cezadır; sınavın en klasik tuzağı budur."},
+{u:2, s:"Antrenör, hedefi tutturan sporcuyu ek koşudan muaf tutmaktadır. Bu uygulama nedir?", c:["Ceza","Olumlu pekiştireç","Olumsuz pekiştireç","Sönme","Genelleme"], d:2, a:"Sporcunun hoşlanmadığı bir uyarıcı (ek koşu) ortamdan kaldırılarak istenen davranış artırılmaktadır; bu olumsuz pekiştireçtir."},
+{u:2, s:"Pekiştirilmeyen bir davranışın zamanla ortadan kalkmasına ne ad verilir?", c:["Genelleme","Ayırt etme","Sönme","Transfer","Kendiliğinden geri gelme"], d:2, a:"Sönme, daha önce pekiştirilen bir davranışın pekiştirilmemesi sonucu yavaş yavaş ortadan kalkmasıdır."},
+{u:2, s:"Bilişsel öğrenme kuramlarına göre öğrenme nasıl gerçekleşir?", c:["Uyarıcı ile tepki arasında mekanik bağ kurularak","Bireyin bilgiyi zihninde etkin biçimde işlemesi ve yapılandırmasıyla","Yalnızca ödül ve ceza yoluyla","Model alma ve taklit yoluyla","Refleks zincirlerinin birleşmesiyle"], d:1, a:"Bilişsel kuramlar bireyi pasif alıcı değil, bilgiyi seçen, düzenleyen ve anlamlandıran etkin bir işleyici olarak görür."},
+{u:2, s:"Gestalt kuramına göre öğrenme aşağıdakilerden hangisiyle gerçekleşir?", c:["Deneme–yanılma","Ani kavrama (içgörü)","Sürekli pekiştirme","Koşullanma","Model alma"], d:1, a:"Gestalt kuramında birey durumu bir bütün olarak algılar ve çözüm ansızın belirir; buna içgörü (insight) denir."},
+{u:2, s:"'Bütün, kendisini oluşturan parçaların toplamından farklıdır' görüşü hangi kurama aittir?", c:["Davranışçılık","Gestalt","Edimsel koşullanma","Bağlaşımcılık","Psikanaliz"], d:1, a:"Bu, Gestalt kuramının temel önermesidir ve sporda hareketin bütün olarak algılanması gerektiği düşüncesinin dayanağıdır."},
+{u:2, s:"Buluş yoluyla öğrenme yaklaşımının kuramcısı kimdir?", c:["Ausubel","Bruner","Skinner","Pavlov","Bandura"], d:1, a:"Bruner buluş yoluyla öğrenmeyi savunur: öğrenene örnekler sunulur, o da genel kuralı kendisi keşfeder."},
+{u:2, s:"Sunuş yoluyla anlamlı öğrenme yaklaşımı kime aittir?", c:["Bruner","Dewey","Ausubel","Piaget","Thorndike"], d:2, a:"Ausubel'e göre bilgi öğretmen tarafından düzenli biçimde sunulmalı ve yeni bilgi öğrenenin var olan bilgileriyle ilişkilendirilmelidir."},
+{u:2, s:"Bilgi işleme kuramına göre bilginin izlediği sıra hangisidir?", c:["Uzun süreli bellek → kısa süreli bellek → duyusal kayıt","Duyusal kayıt → kısa süreli bellek → uzun süreli bellek","Kısa süreli bellek → duyusal kayıt → uzun süreli bellek","Duyusal kayıt → uzun süreli bellek → kısa süreli bellek","Uzun süreli bellek → duyusal kayıt → kısa süreli bellek"], d:1, a:"Bilgi önce duyu organlarıyla alınır (duyusal kayıt), dikkat edilirse kısa süreli belleğe, tekrar ve anlamlandırma ile uzun süreli belleğe geçer."},
+{u:2, s:"Sosyal öğrenme kuramının kurucusu ve temel kavramı hangisidir?", c:["Skinner – pekiştirme","Bandura – model alma","Pavlov – koşullanma","Bruner – buluş","Piaget – özümleme"], d:1, a:"Bandura'ya göre birey yalnız kendi yaşantısıyla değil, başkalarını gözleyerek de öğrenir. Antrenörün beceriyi göstermesi bu kurama dayanır."},
+{u:2, s:"Bandura'nın gözlem yoluyla öğrenme aşamalarının doğru sırası hangisidir?", c:["Güdülenme – Dikkat – Hatırda tutma – Üretme","Dikkat – Hatırda tutma – Davranışa dönüştürme (üretme) – Güdülenme","Hatırda tutma – Dikkat – Güdülenme – Üretme","Üretme – Dikkat – Güdülenme – Hatırda tutma","Dikkat – Güdülenme – Üretme – Hatırda tutma"], d:1, a:"Önce modele dikkat edilir, görülen zihinde kodlanarak saklanır, sonra motor olarak üretilir; davranışın sürmesi için güdülenme gerekir."},
+{u:2, s:"Antrenörün beceriyi kusursuz biçimde göstermesi, sosyal öğrenme kuramının hangi aşamasını doğrudan destekler?", c:["Güdülenme","Dikkat ve hatırda tutma","Sönme","Ayırt etme","Pekiştirme tarifesi"], d:1, a:"Doğru ve net bir model, sporcunun dikkatini toplamasını ve hareketi zihninde doğru kodlamasını sağlar. Hatalı model, hatalı kodlamaya yol açar."},
+{u:2, s:"Aşağıdakilerden hangisi davranışçı kuramcılardan biri DEĞİLDİR?", c:["Pavlov","Thorndike","Skinner","Watson","Bruner"], d:4, a:"Bruner bilişsel kuramcıdır ve buluş yoluyla öğrenmeyi savunur. Diğerleri davranışçı geleneğin temsilcileridir."},
+{u:2, s:"Bir sporcunun takım kaptanının çalışma disiplinini örnek alarak kendi çalışma alışkanlığını değiştirmesi hangi öğrenme biçimidir?", c:["Klasik koşullanma","Edimsel koşullanma","Gözlem yoluyla (model alarak) öğrenme","İçgörüsel öğrenme","Deneme–yanılma"], d:2, a:"Başkasının davranışını gözleyip kendi davranışına aktarma, Bandura'nın model alma yoluyla öğrenmesidir."}
+);
+
+SORULAR.push(
+/* ---------- ÜNİTE 3 ---------- */
+{u:3, s:"Öğrenmeyi etkileyen faktörler kaç ana başlıkta toplanır ve bunlar hangileridir?", c:["İkiye: öğrenen ve öğretmen","Üçe: öğrenen, öğrenme malzemesi, öğrenme yöntemi","Dörde: öğrenen, öğretmen, okul, aile","Üçe: kalıtım, çevre, olgunlaşma","İkiye: içsel ve dışsal"], d:1, a:"Standart sınıflama üçlüdür: öğrenenle ilgili, öğrenme malzemesiyle ilgili ve öğrenme yöntemiyle ilgili faktörler."},
+{u:3, s:"Aşağıdakilerden hangisi 'öğrenenle ilgili faktörler' arasında yer ALMAZ?", c:["Güdülenme","Olgunlaşma","Dikkat","Kavramsal gruplandırma","Genel uyarılmışlık hâli"], d:3, a:"Kavramsal gruplandırma öğrenme malzemesiyle ilgili bir faktördür; malzemenin nasıl düzenlendiğine ilişkindir, öğrenenin kendi özelliği değildir."},
+{u:3, s:"Aşağıdakilerden hangisi öğrenme malzemesiyle ilgili bir faktördür?", c:["Zekâ","Telaffuz edilebilirlik","Kaygı düzeyi","Etkin katılım","Öğrenmeye ayrılan zaman"], d:1, a:"Telaffuz edilebilirlik malzemenin bir özelliğidir. Zekâ ve kaygı öğrenene, etkin katılım ve zaman ise yönteme ilişkindir."},
+{u:3, s:"Öğrenme malzemesinin telaffuz edilebilir olması öğrenmeyi neden kolaylaştırır?", c:["Malzemeyi görsel hâle getirdiği için","Söylenebilen malzemenin zihinde tekrar edilmesi kolay olduğu için","Malzemeyi kısalttığı için","Dikkati dağıttığı için","Ölçmeyi kolaylaştırdığı için"], d:1, a:"Kolay söylenen malzeme zihinde de kolay tekrarlanır; tekrar edilebilen malzeme kısa süreli bellekten uzun süreli belleğe daha rahat geçer."},
+{u:3, s:"Genel uyarılmışlık düzeyi ile öğrenme arasındaki ilişki nasıldır?", c:["Uyarılmışlık arttıkça öğrenme sürekli artar","Uyarılmışlık azaldıkça öğrenme sürekli artar","Orta düzeyde uyarılmışlıkta öğrenme en yüksektir","Uyarılmışlığın öğrenmeyle ilişkisi yoktur","Yalnızca yüksek uyarılmışlıkta öğrenme olur"], d:2, a:"İlişki ters U biçimindedir: çok düşük uyarılmışlık ilgisizlik, çok yüksek uyarılmışlık kaygı doğurur; en verimli öğrenme orta düzeyde gerçekleşir."},
+{u:3, s:"Aşırı kaygılı bir sporcunun yeni bir tekniği öğrenmekte zorlanmasının nedeni aşağıdakilerden hangisiyle açıklanır?", c:["Türe özgü hazıroluş","Genel uyarılmışlık hâlinin çok yüksek olması","Olumsuz transfer","Kavramsal gruplandırma","Sönme"], d:1, a:"Aşırı uyarılmışlık dikkati daraltır ve bilgi işlemeyi bozar; ters U ilişkisinin sağ ucunda öğrenme düşer."},
+{u:3, s:"Daha önce hentbol oynayan bir sporcunun voleybol smacını çabuk öğrenmesi hangi kavramla açıklanır?", c:["Olumsuz transfer","Olumlu transfer","Sıfır transfer","Sönme","Genelleme yokluğu"], d:1, a:"Önceki öğrenmenin yeni öğrenmeyi kolaylaştırmasına olumlu transfer denir. İki beceri ne kadar benzerse olumlu transfer o kadar güçlüdür."},
+{u:3, s:"Uzun süre tenis oynamış bir sporcunun badmintonda bilek kullanımını yanlış yapması hangi kavramın örneğidir?", c:["Olumlu transfer","Olumsuz transfer","Sıfır transfer","Olgunlaşma eksikliği","Sönme"], d:1, a:"Önceki öğrenmenin yeni öğrenmeyi güçleştirmesi olumsuz transferdir. Benzer görünen ama farklı yapılan hareketlerde sık görülür."},
+{u:3, s:"Aşağıdakilerden hangisi 'öğrenme yöntemiyle ilgili' faktörlerdendir?", c:["Yaş","Anlamsal çağrışım","Aralıklı çalışma","Zekâ","Türe özgü hazıroluş"], d:2, a:"Aralıklı çalışma, öğrenmenin nasıl düzenlendiğine ilişkin bir yöntem faktörüdür."},
+{u:3, s:"Aynı toplam süre kullanıldığında öğrenmenin kalıcılığı açısından hangisi genellikle daha üstündür?", c:["Kesintisiz toplu (kütlesel) çalışma","Aralıklı çalışma","Yalnızca zihinsel çalışma","Yalnızca gözlem","Rastgele izleme"], d:1, a:"Araya dinlenme ve zaman aralıkları koyan çalışma, bilginin pekişmesine olanak tanır ve kalıcılığı artırır."},
+{u:3, s:"'Konuya etkin katılım' ilkesi öğrenme açısından neden önemlidir?", c:["Antrenörün iş yükünü azalttığı için","Öğrenen yaparak yaşayarak öğrendiğinde kalıcılık arttığı için","Zamanı kısalttığı için","Ölçmeyi kolaylaştırdığı için","Yarışma sonucunu iyileştirdiği için"], d:1, a:"Pasif izleyen değil, süreçte etkin rol alan öğrenir. Etkin katılım öğrenmeyi en çok artıran faktörlerden biridir."},
+{u:3, s:"Öğrenmede geri bildirimin bulunmaması durumunda ne olur?", c:["Öğrenme hızlanır","Tekrarlar hatayı pekiştirebilir","Kalıcılık artar","Transfer güçlenir","Uyarılmışlık düzeyi düşer"], d:1, a:"Doğru ile yanlışın ayırt edilmediği bir tekrar dizisi, yanlış hareket kalıbını da sağlamlaştırır. Geri bildirimsiz tekrar güvenilir değildir."},
+{u:3, s:"Türe özgü hazıroluş kavramı neyi ifade eder?", c:["Bireyin o gün kendini iyi hissetmesini","Organizmanın türü gereği o davranışı yapabilecek donanımda olmasını","Bireyin konuya ilgi duymasını","Ön öğrenmelerin tamamlanmasını","Malzemenin uygun düzenlenmesini"], d:1, a:"Türe özgü hazıroluş biyolojik sınırı belirtir: insana kanat çırparak uçmayı öğretemezsiniz, çünkü tür olarak buna uygun değildir."},
+{u:3, s:"Bir çocuğa henüz sinir–kas gelişimi tamamlanmadan karmaşık bir teknik öğretilmeye çalışılmaktadır. Buradaki temel engel nedir?", c:["Güdülenme eksikliği","Olgunlaşmanın tamamlanmamış olması","Malzemenin anlamsız olması","Olumsuz transfer","Ceza kullanımı"], d:1, a:"Olgunlaşma tamamlanmadan öğretim yapılamaz; bu Thorndike'ın hazırbulunuşluk yasasının da temelidir."},
+{u:3, s:"Öğrenilecek malzemenin anlamlı ve birbiriyle ilişkili gruplar hâlinde düzenlenmesi hangi faktörle ilgilidir?", c:["Kavramsal gruplandırma","Etkin katılım","Genel uyarılmışlık","Türe özgü hazıroluş","Sönme"], d:0, a:"Kavramsal gruplandırma, malzemenin anlamlı kümeler hâlinde sunulmasıdır ve bellekte tutulmasını kolaylaştırır."},
+{u:3, s:"İki farklı beceri arasında hiçbir etkileşim bulunmaması durumuna ne ad verilir?", c:["Olumlu transfer","Olumsuz transfer","Sıfır transfer","Sönme","Genelleme"], d:2, a:"Sıfır transferde önceki öğrenme yeni öğrenmeyi ne kolaylaştırır ne de zorlaştırır."},
+
+/* ---------- ÜNİTE 4 ---------- */
+{u:4, s:"Bedende meydana gelen nicel (sayısal) artışa ne ad verilir?", c:["Gelişme","Olgunlaşma","Büyüme","Hazırbulunuşluk","Öğrenme"], d:2, a:"Büyüme boy, kilo, uzuv uzunluğu gibi ölçülebilir niceliklerdeki artıştır. Nitelik değişimi değil, sayısal artıştır."},
+{u:4, s:"Organizmanın kalıtımın etkisiyle, kendisinden beklenen işlevi yerine getirebilecek düzeye gelmesine ne denir?", c:["Büyüme","Olgunlaşma","Öğrenme","Hazırbulunuşluk","Gelişme"], d:1, a:"Olgunlaşma öğrenmeden bağımsızdır ve zamanla kendiliğinden gerçekleşir. Olgunlaşmamış bir çocuğa o beceri öğretilemez."},
+{u:4, s:"Büyüme, olgunlaşma ve öğrenmenin etkileşimi sonucu ortaya çıkan sürekli değişime ne ad verilir?", c:["Büyüme","Gelişme","Hazırbulunuşluk","Uyum","Transfer"], d:1, a:"Gelişme (gelişim) bu üçünü kapsayan en geniş kavramdır ve yaşam boyu sürer."},
+{u:4, s:"Hazırbulunuşluk kavramı olgunlaşmadan hangi yönüyle ayrılır?", c:["Yalnızca biyolojik hazır oluşu içermesiyle","Olgunlaşmanın yanına öğrenme, ilgi ve güdülenmeyi de eklemesiyle","Yalnızca yaşla belirlenmesiyle","Öğrenmeyi dışlamasıyla","Ölçülemez olmasıyla"], d:1, a:"Hazırbulunuşluk daha geniştir: biyolojik olgunluğun yanında ön öğrenmeleri, isteği ve tutumu da kapsar."},
+{u:4, s:"Bireyin anne ve babasından aldığı kalıtsal özelliklerin tümüne ne ad verilir?", c:["Fenotip","Genotip","Kromozom","Hazırbulunuşluk","Olgunlaşma"], d:1, a:"Genotip bireyin genetik yapısıdır ve doğrudan gözlenemez. Gözlenen özellikler fenotiptir."},
+{u:4, s:"Genotipin çevreyle etkileşimi sonucu ortaya çıkan, gözlenebilen özelliklere ne denir?", c:["Genotip","Fenotip","Şema","Uyumsama","Kritik dönem"], d:1, a:"Fenotip görünen sonuçtur. Boy potansiyeli genotip, beslenme ve antrenmanla ulaşılan gerçek boy fenotiptir."},
+{u:4, s:"Gelişimin baştan ayağa doğru ilerlemesi ilkesine ne ad verilir?", c:["Proksimodistal (içten dışa)","Sefalokaudal (baştan ayağa)","Genelden özele","Nöbetleşe gelişim","Bütünlük"], d:1, a:"Bebek önce baş kontrolünü kazanır, sonra gövde, en son bacak kontrolünü. Bu sefalokaudal ilkedir."},
+{u:4, s:"Gelişimin vücudun merkezinden uzuvlara doğru ilerlemesi hangi ilkedir?", c:["Sefalokaudal","Proksimodistal","Bireysel farklılık","Süreklilik","Kritik dönem"], d:1, a:"Proksimodistal ilkeye göre önce omuz ve kol kontrolü, sonra el ve parmak kontrolü gelişir. Bu yüzden küçük çocuklarda ince motor beceriler geç olgunlaşır."},
+{u:4, s:"Çocuğun önce kaba (büyük kas) hareketleri, sonra ince (küçük kas) hareketleri kazanması hangi gelişim ilkesiyle açıklanır?", c:["Genelden özele","Bilinenden bilinmeyene","Bütünlük","Nöbetleşe gelişim","Yakından uzağa"], d:0, a:"Gelişim genel ve kaba hareketlerden özel ve ince hareketlere doğru ilerler."},
+{u:4, s:"Belirli bir davranışın en kolay ve en hızlı kazanıldığı, kaçırıldığında sonradan öğrenilmesi güçleşen döneme ne ad verilir?", c:["Ergenlik","Kritik dönem","Plato","Olgunlaşma dönemi","Duraklama dönemi"], d:1, a:"Kritik dönem, gelişimin belirli bir davranışa en açık olduğu zaman aralığıdır. Temel hareket becerileri için çocukluk dönemi kritiktir."},
+{u:4, s:"Aşağıdakilerden hangisi gelişim ilkelerinden biri DEĞİLDİR?", c:["Gelişim bir bütündür","Gelişimde bireysel farklılıklar vardır","Gelişim süreklidir ancak hızı sabit değildir","Gelişim tüm bireylerde aynı hızda ilerler","Gelişimde kalıtım ve çevre birlikte etkilidir"], d:3, a:"Gelişimin sırası herkeste benzerdir ama hızı bireyden bireye değişir. Aynı hızda ilerlediğini söylemek bireysel farklılıklar ilkesine aykırıdır."},
+{u:4, s:"Gelişimde hızlı ve yavaş dönemlerin birbirini izlemesine ne ad verilir?", c:["Nöbetleşe gelişim","Bütünsel gelişim","Sefalokaudal gelişim","Kritik dönem","Plato"], d:0, a:"Nöbetleşe gelişim, farklı gelişim alanlarının ve hızlarının dönüşümlü olarak öne çıkmasıdır; bu yüzden gelişim düz bir çizgi izlemez."},
+{u:4, s:"Aynı yaştaki iki sporcunun fiziksel olarak birbirinden çok farklı düzeyde olması antrenöre ne söyler?", c:["Takvim yaşı yerine gelişim düzeyi esas alınmalıdır","Geride kalan sporcu elenmelidir","İkisine de aynı yüklenme verilmelidir","Yaş grubu değiştirilmelidir","Olgunlaşma önemsizdir"], d:0, a:"Biyolojik yaş takvim yaşından farklı olabilir. Erken olgunlaşan çocuğu yetenekli sanmak, geç olgunlaşanı elemek antrenörlüğün en sık hatasıdır."},
+{u:4, s:"Aşağıdakilerden hangisi büyümenin göstergesidir?", c:["Beceri düzeyinin artması","Boy uzunluğunun artması","Kurallara uymayı öğrenme","Dikkat süresinin uzaması","Takım içi rolünü kavrama"], d:1, a:"Büyüme yalnızca nicel artıştır. Diğer seçenekler gelişim ya da öğrenme kapsamındadır."},
+{u:4, s:"'Gelişim bir bütündür' ilkesi ne anlama gelir?", c:["Tüm çocuklar aynı anda gelişir","Bedensel, bilişsel, duygusal ve sosyal alanlar birbirini etkiler","Gelişim yalnızca bedensel alanda olur","Gelişim ergenlikte tamamlanır","Gelişim ölçülemez"], d:1, a:"Bir alandaki gelişim diğerlerini de etkiler; bedensel olarak zorlanan çocuğun duygusal ve sosyal gelişimi de bundan etkilenir."},
+{u:4, s:"Kalıtım ve çevrenin gelişim üzerindeki etkisi için hangisi doğrudur?", c:["Yalnızca kalıtım belirleyicidir","Yalnızca çevre belirleyicidir","İkisi etkileşim hâlindedir; kalıtım sınırı, çevre bu sınır içindeki düzeyi belirler","Çevre kalıtımı tamamen değiştirir","İkisinin de gelişimle ilgisi yoktur"], d:2, a:"Kalıtım potansiyeli çizer, çevre bu potansiyelin ne kadarına ulaşılacağını belirler. Bu yüzden yetenek tek başına yeterli değildir."}
+);
+
+SORULAR.push(
+/* ---------- ÜNİTE 5 ---------- */
+{u:5, s:"Piaget'in bilişsel gelişim dönemlerinin doğru sırası hangisidir?", c:["İşlem öncesi – Duyusal motor – Somut işlemler – Soyut işlemler","Duyusal motor – İşlem öncesi – Somut işlemler – Soyut işlemler","Duyusal motor – Somut işlemler – İşlem öncesi – Soyut işlemler","Somut işlemler – Duyusal motor – İşlem öncesi – Soyut işlemler","İşlem öncesi – Somut işlemler – Duyusal motor – Soyut işlemler"], d:1, a:"Sıra: duyusal motor (0–2), işlem öncesi (2–7), somut işlemler (7–11/12), soyut işlemler (12 ve üzeri)."},
+{u:5, s:"Piaget'e göre 'nesne sürekliliği' hangi dönemde kazanılır?", c:["Duyusal motor dönem","İşlem öncesi dönem","Somut işlemler dönemi","Soyut işlemler dönemi","Ergenlik dönemi"], d:0, a:"Nesne sürekliliği, görülmeyen nesnenin var olmaya devam ettiğinin kavranmasıdır ve 0–2 yaş duyusal motor dönemde kazanılır."},
+{u:5, s:"Piaget'e göre 'korunum' kavramı hangi dönemde kazanılır?", c:["Duyusal motor dönem","İşlem öncesi dönem","Somut işlemler dönemi","Soyut işlemler dönemi","Doğum öncesi dönem"], d:2, a:"Korunum, biçim değişse de miktarın değişmediğinin anlaşılmasıdır ve somut işlemler döneminde (7–11) kazanılır. Nesne sürekliliğiyle karıştırılmamalıdır."},
+{u:5, s:"İşlem öncesi dönemdeki (2–7 yaş) bir çocuğun temel özelliği aşağıdakilerden hangisidir?", c:["Soyut kavramlarla düşünebilmesi","Benmerkezci olması ve korunumu kavrayamaması","Tersine çevirebilme becerisine sahip olması","Hipotez kurabilmesi","Nesne sürekliliğini henüz kazanmamış olması"], d:1, a:"İşlem öncesi dönemde çocuk olaylara yalnızca kendi bakış açısından bakar ve korunum kavramını henüz kazanmamıştır."},
+{u:5, s:"Cansız nesnelere canlılık özelliği yükleme (topu ile konuşma) hangi dönemin özelliğidir?", c:["Duyusal motor","İşlem öncesi","Somut işlemler","Soyut işlemler","Ergenlik"], d:1, a:"Animizm işlem öncesi dönemin tipik özelliğidir; çocuk cansız varlıklara duygu ve niyet atfeder."},
+{u:5, s:"Soyut kavramlarla, varsayımlarla ve olasılıklarla düşünebilme hangi dönemde ortaya çıkar?", c:["Duyusal motor","İşlem öncesi","Somut işlemler","Soyut (formel) işlemler","Hiçbiri"], d:3, a:"Soyut işlemler dönemi 12 yaş civarında başlar; sporda taktik senaryoları ve 'eğer şu olursa şunu yaparım' düşüncesi bu dönemde gerçek anlamda mümkün olur."},
+{u:5, s:"Piaget'in kuramında yeni bilginin var olan zihinsel şemaya uydurulmasına ne ad verilir?", c:["Uyumsama (akomodasyon)","Özümleme (asimilasyon)","Dengeleme","Korunum","Şema"], d:1, a:"Özümleme, yeni bilgiyi mevcut şemanın içine yerleştirmektir. Şemanın yeni bilgiye göre değiştirilmesi ise uyumsamadır."},
+{u:5, s:"Var olan zihinsel şemanın yeni bilgiye göre değiştirilmesine ne denir?", c:["Özümleme","Uyumsama (akomodasyon)","Dengeleme","Genelleme","Sönme"], d:1, a:"Uyumsama, mevcut şemanın yeni duruma uymadığı durumlarda şemanın yeniden yapılandırılmasıdır."},
+{u:5, s:"Erikson'un kuramına göre 6–12 yaş dönemindeki temel çatışma hangisidir?", c:["Temel güven / güvensizlik","Özerklik / utanç","Girişimcilik / suçluluk","Başarı (çalışkanlık) / aşağılık duygusu","Kimlik / rol karmaşası"], d:3, a:"Bu dönemde çocuk yaptığı işlerle değerlendirilmeye başlar. Sürekli eleştirilen ve başarı yaşayamayan çocukta aşağılık duygusu yerleşir; sporda kritik dönemdir."},
+{u:5, s:"Erikson'a göre 12–18 yaş döneminin temel gelişim görevi nedir?", c:["Temel güven kazanma","Özerklik geliştirme","Kimlik kazanma","Üretkenlik","Yakınlık kurma"], d:2, a:"Ergenlikte birey 'ben kimim' sorusunun yanıtını arar; sporcu kimliği de bu dönemde biçimlenir."},
+{u:5, s:"Kohlberg'in ahlaki gelişim kuramında en alt düzey hangisidir?", c:["Geleneksel düzey","Gelenek öncesi düzey","Gelenek sonrası düzey","Evrensel ilkeler düzeyi","Sosyal sözleşme düzeyi"], d:1, a:"Gelenek öncesi düzeyde davranışın ölçütü cezadan kaçınmak ve çıkar sağlamaktır; ahlaki gelişimin ilk basamağıdır."},
+{u:5, s:"Bir çocuğun doğruyu yanlıştan ilk kez ayırt etmeye başladığı ahlaki evre hangisidir?", c:["Ceza ve itaat eğilimi","Sosyal sözleşme","Kanun ve düzen","Evrensel ahlak ilkeleri","İyi çocuk eğilimi"], d:0, a:"Kohlberg'e göre ilk evre ceza ve itaat evresidir: çocuk cezalandırılan davranışı yanlış, cezalandırılmayanı doğru sayar."},
+{u:5, s:"'Hakem görmezse faul sayılmaz' diyen bir sporcu Kohlberg'e göre hangi düzeydedir?", c:["Gelenek öncesi düzey","Geleneksel düzey","Gelenek sonrası düzey","Evrensel ilkeler düzeyi","Hiçbiri"], d:0, a:"Davranışın ölçütü yakalanmamak olduğunda birey gelenek öncesi düzeydedir. Antrenörün görevi sporcuyu kurala kendi vicdanı için uyan düzeye taşımaktır."},
+{u:5, s:"Kohlberg'in 'kanun ve düzen' evresi hangi düzeyde yer alır?", c:["Gelenek öncesi","Geleneksel","Gelenek sonrası","Duyusal motor","Formel"], d:1, a:"Geleneksel düzey iki evreden oluşur: iyi çocuk eğilimi ve kanun–düzen eğilimi. Burada birey toplumsal kurallara uymayı doğru sayar."},
+{u:5, s:"İşlem öncesi dönemdeki bir çocuğa antrenman anlatırken en uygun yaklaşım hangisidir?", c:["Ayrıntılı sözel taktik açıklaması yapmak","Somut gösterim ve basit, kısa yönergeler kullanmak","Yazılı program vermek","Uzun kural açıklamaları yapmak","Video analizi izletmek"], d:1, a:"Bu dönemde soyut düşünme gelişmemiştir. Çocuk gördüğünü anlar; gösterim ve kısa, somut yönerge en etkili yoldur."},
+{u:5, s:"Kurallı oyunların çocuk tarafından gerçek anlamda kavranıp sürdürülebilmesi hangi dönemde belirginleşir?", c:["Duyusal motor","İşlem öncesi","Somut işlemler","Doğum öncesi","Hiçbiri"], d:2, a:"Kurala uyma, başkasının bakış açısını alma ve tersine çevirebilme becerisi gerektirir; bunlar somut işlemler döneminde kazanılır."},
+{u:5, s:"Piaget'in kuramında özümleme ve uyumsama arasında kurulan denge hangi kavramla adlandırılır?", c:["Şema","Dengeleme","Korunum","Benmerkezcilik","Animizm"], d:1, a:"Dengeleme, bireyin zihinsel yapılarını çevreyle uyumlu tutma çabasıdır ve bilişsel gelişimin itici gücüdür."},
+{u:5, s:"Zihinde bilginin örgütlendiği çerçevelere Piaget ne ad verir?", c:["Şema","Dengeleme","Fenotip","Refleks","İçgörü"], d:0, a:"Şema, bireyin dünyayı anlamlandırmak için kullandığı zihinsel yapıdır; yeni yaşantılarla sürekli genişler ve değişir."},
+
+/* ---------- ÜNİTE 6 ---------- */
+{u:6, s:"Motor gelişim kavramı neyi inceler?", c:["Yalnızca çocukluk dönemindeki boy artışını","Yaşam boyu süren hareket davranışındaki değişimi","Yalnızca sporcuların performansını","Kas kütlesindeki artışı","Zihinsel becerilerin gelişimini"], d:1, a:"Motor gelişim doğumdan ölüme kadar hareket davranışındaki sürekli değişimi inceler; yalnızca çocukluğa özgü değildir."},
+{u:6, s:"Psikomotor gelişim aşağıdakilerden hangisini kapsar?", c:["Yalnızca kas gücündeki artışı","Zihin ve kas koordinasyonunu gerektiren hareket becerilerindeki gelişimi","Yalnızca duygusal gelişimi","Yalnızca boy ve kilo değişimini","Yalnızca sosyal becerileri"], d:1, a:"Psikomotor kavramı 'psiko' (zihin) ve 'motor' (hareket) sözcüklerinin birleşimidir; hareketin zihinsel yönü de işin içindedir."},
+{u:6, s:"Gallahue'nun motor gelişim evrelerinin doğru sırası hangisidir?", c:["İlkel – Refleks – Temel – Sporel","Refleks – İlkel – Temel – Sporel","Temel – Refleks – İlkel – Sporel","Refleks – Temel – İlkel – Sporel","Sporel – Temel – İlkel – Refleks"], d:1, a:"Sıra: refleks hareketler (0–1), ilkel hareketler (0–2), temel hareketler (2–7), spora özgü (sporel) hareketler (7 ve sonrası)."},
+{u:6, s:"Temel hareketler evresi hangi yaş aralığını kapsar?", c:["0–1 yaş","0–2 yaş","2–7 yaş","7–12 yaş","12 yaş ve üzeri"], d:2, a:"2–7 yaş temel hareketler evresidir; koşma, atlama, atma, yakalama gibi beceriler bu dönemde kazanılır ve olgunlaşır."},
+{u:6, s:"Aşağıdakilerden hangisi yer değiştirme (lokomotor) becerisidir?", c:["Yakalama","Sekme","Yuvarlanma","Topa vurma","Sektirme"], d:1, a:"Sekme, vücudun bir yerden başka bir yere taşınmasını sağlayan yer değiştirme becerisidir. Yuvarlanma dengeleme, diğerleri nesne kontrolü becerisidir."},
+{u:6, s:"Aşağıdakilerden hangisi nesne kontrolü (manipülatif) becerisidir?", c:["Koşma","Sıçrama","Atma","Dönme","Eğilme"], d:2, a:"Nesne kontrolü becerileri bir araç ya da nesne üzerinde denetim gerektirir: atma, yakalama, vurma, tekme atma, sektirme."},
+{u:6, s:"Aşağıdakilerden hangisi dengeleme becerileri arasında yer alır?", c:["Galop","Yuvarlanma","Sektirme","Yakalama","Tekme atma"], d:1, a:"Yuvarlanma, dönme, eğilme, uzanma ve tek ayak üzerinde durma dengeleme becerileridir."},
+{u:6, s:"Temel hareket becerileri olgunlaşmadan spora özgü teknik öğretilmeye çalışılırsa ne olur?", c:["Öğrenme hızlanır","Beceri hatalı biçimde yerleşir ve düzeltilmesi güçleşir","Transfer artar","Kalıcılık artar","Hiçbir etkisi olmaz"], d:1, a:"Temel hareket altyapısı olmadan yüklenen teknik, üzerine kurulduğu zeminin bozukluğunu taşır; sonradan düzeltmek yeniden öğretmekten zordur."},
+{u:6, s:"Temel hareketler evresinin alt evreleri hangileridir?", c:["Refleks – İlkel – Olgun","Başlangıç – Geçiş – Olgun","Genel – Özel – Uzmanlaşma","Bilişsel – Bağlantısal – Otonom","Alıştırma – Sembolik – Kurallı"], d:1, a:"Temel hareketler evresi başlangıç, geçiş (ilk evre) ve olgun evre olmak üzere üçe ayrılır. Bilişsel–bağlantısal–otonom ise motor öğrenme evreleridir."},
+{u:6, s:"Sporel (spora özgü) hareketler evresinin alt evreleri hangileridir?", c:["Başlangıç – Geçiş – Olgun","Genel (geçiş) – Özel – Uzmanlaşma","Refleks – İlkel – Temel","Duyusal – Bilişsel – Otonom","Kaba – İnce – Karma"], d:1, a:"Bu evrede önce genel spor becerileri edinilir, sonra belirli dallara özelleşilir, en sonunda uzmanlaşma gerçekleşir."},
+{u:6, s:"Hızlı büyüme döneminde çocuğun koordinasyonunun geçici olarak bozulması neyi gösterir?", c:["Öğrenmenin geri döndüğünü","Büyümenin motor performansı geçici olarak etkileyebileceğini","Yeteneğin olmadığını","Olgunlaşmanın durduğunu","Sporun bırakılması gerektiğini"], d:1, a:"Uzuv oranları hızla değişince mevcut hareket kalıpları geçici olarak uymaz hâle gelir. Bu normaldir ve yetenek eksikliği anlamına gelmez."},
+{u:6, s:"Refleks hareketler evresinin temel işlevi nedir?", c:["Spor tekniği kazandırmak","Bebeğin çevreden bilgi toplaması ve yaşamını sürdürmesi","Kurallı oyun oynamak","Denge becerisi geliştirmek","Uzmanlaşmayı sağlamak"], d:1, a:"Refleksler hem yaşamı sürdürmeye yarar hem de bebeğin çevre hakkında bilgi toplamasını sağlar; istemli hareketlerin temelini oluştururlar."},
+{u:6, s:"İlkel hareketler evresinde aşağıdakilerden hangisi gerçekleşir?", c:["Refleksler baskılanır, istemli hareketler ortaya çıkar","Spor tekniği öğrenilir","Kurallı oyun kavranır","Uzmanlaşma başlar","Soyut düşünme gelişir"], d:0, a:"0–2 yaş arasında refleksler yerini istemli hareketlere bırakır: tutma, oturma, emekleme ve yürüme bu evrenin kazanımlarıdır."},
+{u:6, s:"Motor gelişim ile büyüme arasındaki fark için hangisi doğrudur?", c:["İkisi aynı kavramdır","Büyüme nicel artış, motor gelişim hareket becerisindeki niteliksel ilerlemedir","Motor gelişim yalnızca boy artışıdır","Büyüme yalnızca beceriyle ilgilidir","Motor gelişim ölçülemez"], d:1, a:"Boyu uzayan çocuk otomatik olarak becerikli olmaz. Büyüme sayısal artış, motor gelişim ise hareket kalitesindeki ilerlemedir."}
+);
+
+SORULAR.push(
+/* ---------- ÜNİTE 7 ---------- */
+{u:7, s:"Önceden belirlenmiş bir amaca en az enerji ve zaman harcayarak isabetli biçimde ulaşabilme yeteneğine ne ad verilir?", c:["Kuvvet","Beceri","Dayanıklılık","Esneklik","Koordinasyon"], d:1, a:"Beceri tanımının üç anahtar öğesi vardır: belirlenmiş amaç, en az enerji ve zaman, isabetlilik."},
+{u:7, s:"Çevre koşullarının sürekli değiştiği ve önceden kestirilemediği becerilere ne ad verilir?", c:["Kapalı beceri","Açık beceri","Ayrık beceri","İnce motor beceri","Sürekli beceri"], d:1, a:"Açık becerilerde sporcu değişen çevreye uyum sağlamak zorundadır: futbol, güreş, tenis. Kapalı becerilerde çevre durağandır."},
+{u:7, s:"Aşağıdakilerden hangisi kapalı beceriye örnektir?", c:["Futbolda pas vermek","Güreşte rakibi devirmek","Okçulukta ok atmak","Basketbolda savunma yapmak","Tenis maçında dönüş vuruşu"], d:2, a:"Okçulukta çevre koşulları durağan ve kestirilebilirdir; sporcu hareketi kendi zamanlamasıyla başlatır. Bu kapalı beceridir."},
+{u:7, s:"Başlangıcı ve bitişi belirgin, kısa süreli becerilere ne ad verilir?", c:["Sürekli beceri","Seri beceri","Ayrık (diskret) beceri","Açık beceri","Kaba motor beceri"], d:2, a:"Basketbolda serbest atış ayrık beceridir: nerede başlayıp nerede bittiği bellidir."},
+{u:7, s:"Yüzme, koşu ve bisiklet gibi başlangıç ve bitişi keyfî olan, tekrarlı becerilere ne ad verilir?", c:["Ayrık beceri","Seri beceri","Sürekli beceri","Kapalı beceri","İnce motor beceri"], d:2, a:"Sürekli becerilerde hareket döngüsel biçimde yinelenir; nerede biteceğine sporcu karar verir."},
+{u:7, s:"Bir jimnastik serisinin ayrık becerilerin art arda dizilmesiyle oluşması onu hangi beceri türüne sokar?", c:["Ayrık beceri","Seri beceri","Sürekli beceri","Açık beceri","Kaba motor beceri"], d:1, a:"Seri beceri, ayrık becerilerin belirli bir sırayla birleştirilmesiyle oluşur; sıralama da becerinin parçasıdır."},
+{u:7, s:"Fitts ve Posner'a göre motor öğrenmenin evreleri sırasıyla hangileridir?", c:["Otonom – Bilişsel – Bağlantısal","Bilişsel – Bağlantısal – Otonom","Bağlantısal – Otonom – Bilişsel","Bilişsel – Otonom – Bağlantısal","Temel – Geçiş – Olgun"], d:1, a:"Önce ne yapılacağı anlaşılır (bilişsel), sonra hareket incelenir ve tutarlılık kazanır (bağlantısal), en sonunda otomatikleşir (otonom)."},
+{u:7, s:"Motor öğrenmenin bilişsel evresindeki bir sporcunun temel özelliği nedir?", c:["Hareketi düşünmeden yapması","Hatalarının çok ve düzensiz olması, dikkatinin tamamen harekette olması","Çevreyi rahatça izleyebilmesi","İnce ayar yapabilmesi","Performansının tutarlı olması"], d:1, a:"Bilişsel evrede sporcu 'ne yapacağım' sorusuyla uğraşır; hatalar çok ve tutarsızdır. Antrenör bu evrede az sayıda ve net ipucu vermelidir."},
+{u:7, s:"Bir sporcunun hareketi otomatik biçimde yaparken aynı anda rakibi ve boş alanı da izleyebilmesi hangi evrenin göstergesidir?", c:["Bilişsel evre","Bağlantısal evre","Otonom evre","Başlangıç evresi","Geçiş evresi"], d:2, a:"Otonom evrede hareket dikkat gerektirmez hâle gelir; boşalan dikkat kapasitesi oyunu okumaya ayrılabilir."},
+{u:7, s:"Motor öğrenmenin bağlantısal (çağrışımsal) evresinde antrenörün önceliği ne olmalıdır?", c:["Hareketi ilk kez göstermek","Hataları azaltıp tutarlılığı artıracak ince ayar geri bildirimi vermek","Sporcuyu tamamen serbest bırakmak","Yalnızca yarışma yaptırmak","Beceriyi tamamen değiştirmek"], d:1, a:"Bu evrede sporcu ne yapacağını bilir, 'nasıl daha iyi yaparım' sorusundadır; performans bilgisi türü geri bildirim en verimli burada kullanılır."},
+{u:7, s:"Aşağıdakilerden hangisi öğrenmenin gerçekleştiğinin göstergelerinden biri DEĞİLDİR?", c:["Gelişme","Tutarlılık","Kalıcılık","Uyarlanabilirlik","Tek seferlik yüksek performans"], d:4, a:"Bir kez yüksek performans göstermek öğrenmeyi kanıtlamaz; öğrenme gelişme, tutarlılık, kalıcılık ve uyarlanabilirlikle anlaşılır."},
+{u:7, s:"Öğrenme sürecinde performansın bir süre ilerlemeyip aynı düzeyde kalmasına ne ad verilir?", c:["Sönme","Plato","Transfer","Regresyon","Uyum"], d:1, a:"Plato, öğrenme eğrisindeki düzlüktür. Öğrenmenin durduğu değil, sporcunun içsel olarak yeniden yapılandığı dönem olarak kabul edilir."},
+{u:7, s:"Öğrenilen becerinin farklı koşullarda da kullanılabilmesi hangi göstergedir?", c:["Tutarlılık","Kalıcılık","Uyarlanabilirlik","Gelişme","Hız"], d:2, a:"Uyarlanabilirlik, becerinin antrenman ortamı dışında ve değişen koşullarda da uygulanabilmesidir; gerçek öğrenmenin en güçlü kanıtıdır."},
+{u:7, s:"Kaba motor beceri ile ince motor beceriyi ayıran ölçüt nedir?", c:["Becerinin süresi","Kullanılan kas gruplarının büyüklüğü","Çevrenin değişkenliği","Başlangıç ve bitişin belirginliği","Sporcunun yaşı"], d:1, a:"Kaba motor beceriler büyük kas gruplarını (koşma, atlama), ince motor beceriler küçük kas gruplarını (dart atma, ince ayar) kullanır."},
+{u:7, s:"Pilates ya da halter gibi, hareketin sporcunun kendi zamanlamasıyla ve durağan çevrede yapıldığı beceriler hangi gruptadır?", c:["Açık beceri","Kapalı beceri","Seri beceri","Manipülatif beceri","Lokomotor beceri"], d:1, a:"Çevre koşulları sabit ve kestirilebilir olduğunda beceri kapalıdır; sporcu hareketi kendisi başlatır ve dış etkene uyum zorunluluğu yoktur."},
+{u:7, s:"Motor öğrenmenin tanımı için aşağıdakilerden hangisi doğrudur?", c:["Yorgunluğa bağlı geçici performans değişimidir","Alıştırma ve yaşantı sonucu becerideki nispeten kalıcı gelişmedir","Olgunlaşmayla kendiliğinden oluşan değişimdir","Yalnızca yarışmada gözlenen üstünlüktür","Kalıtımla belirlenen yetenektir"], d:1, a:"Motor öğrenme, alıştırma ve deneyimin ürünüdür ve kalıcıdır; olgunlaşmadan ve geçici performans dalgalanmalarından ayrılır."},
+{u:7, s:"Açık becerilerin öğretiminde antrenmanların hangi özelliği taşıması daha uygundur?", c:["Tamamen sabit ve değişmez koşullarda yapılması","Değişen ve kestirilemeyen koşullar içermesi","Yalnızca zihinsel çalışmayla yürütülmesi","Hiç geri bildirim verilmemesi","Yalnızca tek bir tekrar biçimi kullanılması"], d:1, a:"Açık beceri değişken çevrede kullanılacaksa antrenman da değişkenlik içermelidir; sabit koşullarda öğrenilen beceri maça aktarılmakta zorlanır."},
+{u:7, s:"Bir sporcunun aynı hareketi her denemede benzer biçimde yapabilmesi hangi öğrenme göstergesidir?", c:["Gelişme","Tutarlılık","Uyarlanabilirlik","Kalıcılık","Transfer"], d:1, a:"Tutarlılık, performanstaki değişkenliğin azalmasıdır ve becerinin oturduğunu gösterir."},
+
+/* ---------- ÜNİTE 8 ---------- */
+{u:8, s:"Hareket eğitimi yaklaşımının temel amacı nedir?", c:["Belirli bir spor dalının tekniğini öğretmek","Çocuğun hareket dağarcığını, beden farkındalığını ve özgüvenini geliştirmek","Yetenekli çocukları seçmek","Yarışmaya hazırlamak","Kondisyon geliştirmek"], d:1, a:"Hareket eğitimi çocuk merkezlidir ve amacı belirli bir tekniği öğretmek değil, çocuğun hareket yoluyla bütünsel gelişimini sağlamaktır."},
+{u:8, s:"Hareket eğitimiyle ilgili aşağıdakilerden hangisi YANLIŞTIR?", c:["Çocuk merkezlidir","Keşfetme ve problem çözmeye dayanır","Tek doğru hareket biçimi dayatır","Her çocuğun kendi düzeyinde başarı yaşamasını hedefler","Yaratıcılığı geliştirir"], d:2, a:"Hareket eğitiminde tek doğru yoktur; çocuğa problem verilir, o kendi çözümünü üretir. Tek tip doğru dayatmak yaklaşımın özüne aykırıdır."},
+{u:8, s:"Laban'ın hareket analizinde 'Ne hareket ediyor?' sorusu hangi boyuta karşılık gelir?", c:["Mekân farkındalığı","Beden farkındalığı","Çaba (efor) farkındalığı","İlişki farkındalığı","Zaman farkındalığı"], d:1, a:"Beden farkındalığı, hangi vücut bölümünün ne yaptığını ve hangi şekilleri alabildiğini kapsar."},
+{u:8, s:"'Nerede hareket ediyor?' sorusu hareketin hangi boyutunu tanımlar?", c:["Beden farkındalığı","Mekân (alan) farkındalığı","Çaba farkındalığı","İlişki farkındalığı","Akış"], d:1, a:"Mekân farkındalığı kişisel ve genel alanı, yönü, düzeyi (alçak–orta–yüksek) ve izlenen yolu kapsar."},
+{u:8, s:"Hareketin hızlı–yavaş, sert–yumuşak, bağlı–serbest biçiminde incelenmesi hangi boyuttur?", c:["Beden farkındalığı","Mekân farkındalığı","Çaba (efor) farkındalığı","İlişki farkındalığı","Denge"], d:2, a:"Çaba farkındalığı hareketin nasıl yapıldığıyla ilgilenir: zaman, kuvvet ve akış boyutlarını içerir."},
+{u:8, s:"Çocuğun eşiyle, grupla ya da araçla kurduğu bağlantı hareketin hangi boyutudur?", c:["Beden farkındalığı","İlişki farkındalığı","Mekân farkındalığı","Çaba farkındalığı","Denge farkındalığı"], d:1, a:"İlişki farkındalığı; kiminle, neyle ve nasıl bir bağ kurularak hareket edildiğini kapsar."},
+{u:8, s:"'Topu üç farklı biçimde durdurabilir misin?' yönergesi hangi öğretim anlayışının örneğidir?", c:["Komut stili","Hareket eğitimi / problem çözme yaklaşımı","Blok alıştırma","Sunuş yoluyla öğretim","Ceza uygulaması"], d:1, a:"Tek doğru dayatmadan birden çok çözüm arayan yönergeler hareket eğitiminin ve ıraksayan (problem çözme) stilinin özüdür."},
+{u:8, s:"Hareket eğitiminde değerlendirme nasıl yapılır?", c:["Çocuklar birbiriyle kıyaslanarak","Her çocuğun kendi gelişimi esas alınarak","Yalnızca yarışma derecesine göre","Kronometreyle sıralama yapılarak","Değerlendirme yapılmaz"], d:1, a:"Hareket eğitiminde ölçüt bireyseldir: çocuk başkasıyla değil, kendi önceki düzeyiyle karşılaştırılır."},
+{u:8, s:"Hareket eğitiminin çocuğun duygusal gelişimine katkısı aşağıdakilerden hangisidir?", c:["Yalnızca kas kuvvetini artırması","Başarı yaşayarak özgüven kazanmasını sağlaması","Rekabeti keskinleştirmesi","Kuralları ezberletmesi","Boy uzamasını hızlandırması"], d:1, a:"Herkesin kendi düzeyinde başarabildiği bir ortam, çocukta yeterlik ve özgüven duygusu oluşturur."},
+{u:8, s:"Hareket eğitiminde temel hareket becerilerinin çeşitlendirilmesi neden önemlidir?", c:["Erken uzmanlaşmayı hızlandırdığı için","Geniş hareket dağarcığı ileride her spor dalına olumlu transfer sağladığı için","Yarışma sonuçlarını yükselttiği için","Antrenman süresini kısalttığı için","Ölçmeyi kolaylaştırdığı için"], d:1, a:"Zengin hareket dağarcığı, sonradan öğrenilecek spora özgü becerilere olumlu transfer sağlar; erken uzmanlaşma ise bu zemini daraltır."},
+{u:8, s:"Hareket eğitimi hangi yaş grubu için özellikle uygundur?", c:["Yalnızca ergenler","Erken çocukluk ve temel hareketler evresindeki çocuklar","Yalnızca yetişkinler","Yalnızca elit sporcular","Yalnızca yaşlılar"], d:1, a:"Hareket eğitimi temel hareket becerilerinin kazanıldığı 2–7 yaş ve sonrasındaki çocukluk döneminde en verimlidir."},
+{u:8, s:"Aşağıdakilerden hangisi hareket eğitiminin amaçlarından biri DEĞİLDİR?", c:["Beden farkındalığı kazandırmak","Yaratıcılığı geliştirmek","En yetenekli çocukları seçip diğerlerini elemek","Harekete karşı olumlu tutum oluşturmak","Temel hareket becerilerini çeşitlendirmek"], d:2, a:"Hareket eğitimi bir yetenek seçme aracı değildir; amacı ayıklamak değil, herkesi hareket yoluyla geliştirmektir."}
+);
+
+SORULAR.push(
+/* ---------- ÜNİTE 9 ---------- */
+{u:9, s:"Oyunun çekiciliği en çok hangi etkenden kaynaklanır?", c:["Ödülün büyüklüğünden","Sonucun önceden bilinmemesinden (belirsizlikten)","Kuralların katılığından","Süresinin uzunluğundan","Seyirci sayısından"], d:1, a:"Sonucu baştan belli olan oyun ilgi çekmez. Bu yüzden denk takımlar kurmak, oyunu canlı tutmanın en basit ve en etkili yoludur."},
+{u:9, s:"Oyunu 'fazla enerjinin boşaltılması' olarak açıklayan kuram ve kuramcı hangisidir?", c:["Dinlenme kuramı – Lazarus","Fazla enerji kuramı – Spencer","Hazırlık kuramı – Groos","Yineleme kuramı – Hall","Psikanalitik kuram – Freud"], d:1, a:"Spencer'a göre çocuk günlük yaşamda kullanmadığı fazla enerjisini oyun yoluyla boşaltır."},
+{u:9, s:"Oyunu 'yetişkin yaşamına hazırlık' olarak gören kuramcı kimdir?", c:["Spencer","Lazarus","Groos","Hall","Freud"], d:2, a:"Groos'un hazırlık (alıştırma) kuramına göre çocuk oyunda ileride kullanacağı becerileri prova eder."},
+{u:9, s:"Oyunu bastırılmış duyguların boşaltımı olarak açıklayan yaklaşım hangisidir?", c:["Bilişsel gelişim kuramı","Psikanalitik kuram","Fazla enerji kuramı","Dinlenme kuramı","Yineleme kuramı"], d:1, a:"Freud'un psikanalitik yaklaşımına göre çocuk oyunda kaygılarını ve bastırdığı duygularını dışa vurur."},
+{u:9, s:"Piaget'in sınıflamasına göre çocuğun bir rolü üstlendiği oyun türü hangisidir?", c:["Alıştırmalı (işlevsel) oyun","Sembolik (–mış gibi) oyun","Kurallı oyun","Paralel oyun","Tek başına oyun"], d:1, a:"Sembolik oyunda çocuk doktor, öğretmen ya da anne rolüne bürünür; rol üstlenme içeren oyun türü budur."},
+{u:9, s:"Hareketin kendisi için tekrarlandığı, bebeklikte görülen oyun türü hangisidir?", c:["Kurallı oyun","Sembolik oyun","Alıştırmalı (işlevsel) oyun","İşbirlikli oyun","Eğitsel oyun"], d:2, a:"Alıştırmalı oyunda çocuk topu defalarca yere atmak gibi hareketi hazzı için yineler; oyunun en ilkel biçimidir."},
+{u:9, s:"Çocukların yan yana ama birbirine karışmadan, ortak amaç gütmeden oynamasına ne ad verilir?", c:["İşbirlikli oyun","Paralel oyun","Tek başına oyun","İzleyici davranışı","Kurallı oyun"], d:1, a:"Paralel oyunda çocuklar aynı ortamda ve benzer etkinlikte bulunur ama etkileşim kurmazlar; sosyal oyun gelişiminin ara basamağıdır."},
+{u:9, s:"Ortak bir amaç ve rol paylaşımı içeren, sosyal oyun gelişiminin en üst basamağı hangisidir?", c:["Paralel oyun","Tek başına oyun","İşbirlikli oyun","İzleyici davranışı","Alıştırmalı oyun"], d:2, a:"İşbirlikli oyunda çocuklar ortak hedef için rol dağıtır ve birbirine bağımlı çalışır; takım sporlarının zeminidir."},
+{u:9, s:"Eğitsel oyunun tanımlayıcı özelliği nedir?", c:["Kuralsız ve kendiliğinden olması","Belirli bir eğitim amacına yönelik, planlı ve kurallı olması","Yalnızca yarışma amacı taşıması","Yetişkinlere özgü olması","Yalnızca kapalı alanda oynanması"], d:1, a:"Eğitsel oyun rastgele oyundan ayrılır: önceden belirlenmiş bir hedefi, planı ve kuralı vardır."},
+{u:9, s:"Eğitsel oyunlar sınıflandırılırken aşağıdakilerden hangisi ölçüt olarak kullanılMAZ?", c:["Katılımcı sayısı","Oyunun amacı","Hareket içeriği","Oyuncuların göz rengi","Yaş düzeyi"], d:3, a:"Eğitsel oyunlar katılımcı sayısı, amaç, yapı, hareket içeriği ve yaş düzeyine göre sınıflandırılır."},
+{u:9, s:"Oyunun çocuğun sosyal gelişimine katkısı aşağıdakilerden hangisidir?", c:["Kas kuvvetini artırması","Kurala uyma, sıra bekleme ve işbirliği öğretmesi","Boy uzamasını hızlandırması","Dikkat süresini kısaltması","Refleksleri güçlendirmesi"], d:1, a:"Oyun, kurallara uymayı, sırasını beklemeyi, paylaşmayı ve liderliği doğal ortamda öğretir."},
+{u:9, s:"Oyunun bilişsel gelişime katkısı hangisidir?", c:["Dayanıklılığı artırması","Dikkat, strateji ve problem çözme becerilerini geliştirmesi","Esnekliği artırması","Kemik yoğunluğunu artırması","Kalp atım hızını düşürmesi"], d:1, a:"Oyun kural izleme, strateji kurma ve hızlı karar verme gerektirir; bunlar doğrudan bilişsel becerilerdir."},
+{u:9, s:"Kurallı oyunların çocuk tarafından benimsenmesi hangi gelişimsel kazanımı gerektirir?", c:["Nesne sürekliliği","Başkasının bakış açısını alabilme ve kurala uyabilme","Refleks baskılanması","Soyut düşünme","Dil gelişiminin tamamlanması"], d:1, a:"Kurallı oyun, benmerkezcilikten çıkmayı ve ortak kabul edilen kurala uymayı gerektirir; somut işlemler döneminde belirginleşir."},
+{u:9, s:"Çocuk sporunda oyunun temel işlevi nedir?", c:["Yalnızca eğlendirmek","Öğrenmenin doğal ve en etkili aracı olmak","Yalnızca kondisyon geliştirmek","Sıralama yapmak","Disiplin sağlamak"], d:1, a:"Çocuk için oyun boş zaman etkinliği değil, öğrenmenin doğal yoludur; beceri öğretimi oyun içine yerleştirildiğinde çok daha kalıcı olur."},
+
+/* ---------- ÜNİTE 10 ---------- */
+{u:10, s:"'Etkin katılım' ilkesi hangi anlama gelir?", c:["Antrenörün çok konuşması","Öğrenenin süreçte yaparak yaşayarak yer alması","Sporcunun izleyerek öğrenmesi","Yalnızca yazılı materyal kullanılması","Antrenmanın kısa tutulması"], d:1, a:"Etkin katılım, öğrenenin pasif izleyici değil etkin uygulayıcı olmasıdır ve öğrenmeyi en çok artıran ilkelerden biri kabul edilir."},
+{u:10, s:"Antrenörün önce durağan topla pas çalıştırıp sonra hareket hâlinde pasa geçmesi hangi ilkedir?", c:["Basitten karmaşığa","Yakından uzağa","Somuttan soyuta","Ekonomiklik","Güncellik"], d:0, a:"Alıştırmanın kolaydan zora doğru sıralanması basitten karmaşığa ilkesidir."},
+{u:10, s:"'Öğretim bireyin yaşına, hazırbulunuşluğuna ve ilgisine uygun olmalıdır' ifadesi hangi ilkedir?", c:["Ekonomiklik","Öğrenciye görelik","Açıklık","Bütünlük","Hedefe görelik"], d:1, a:"Öğrenciye görelik (bireysellik) ilkesi, herkese aynı programı vermenin neden yanlış olduğunu açıklar."},
+{u:10, s:"Antrenörün önce hareketi göstermesi, sonra taktiksel gerekçesini anlatması hangi ilkeyle uyumludur?", c:["Somuttan soyuta","Yakından uzağa","Ekonomiklik","Güncellik","Bütünlük"], d:0, a:"Elle tutulur, görülebilir olandan kavramsal olana geçmek somuttan soyuta ilkesidir."},
+{u:10, s:"Öğretimde mümkün olduğunca çok duyu organına hitap etme ilkesi hangisidir?", c:["Açıklık (ayanilik)","Ekonomiklik","Bütünlük","Süreklilik","Hedefe görelik"], d:0, a:"Açıklık ilkesi anlat–göster–yaptır zincirini gerektirir; ne kadar çok duyu devreye girerse öğrenme o kadar güçlü olur."},
+{u:10, s:"'En az emek ve zamanla en çok verimi elde etme' ilkesi hangisidir?", c:["Ekonomiklik","Açıklık","Bütünlük","Yaşama yakınlık","Öğrenciye görelik"], d:0, a:"Ekonomiklik ilkesi, tek bir alıştırmayla birden çok hedefe hizmet etmeyi savunur."},
+{u:10, s:"Antrenmanda maç koşullarına benzer alıştırmalar kullanmak hangi ilkeyle açıklanır?", c:["Yaşama yakınlık","Ekonomiklik","Açıklık","Bilinenden bilinmeyene","Süreklilik"], d:0, a:"Yaşama yakınlık ilkesi, öğretilenin gerçek kullanım ortamına benzemesini gerektirir; böylece transfer güçlenir."},
+{u:10, s:"Yeni öğretilecek beceriyi sporcunun bildiği bir hareketle ilişkilendirmek hangi ilkedir?", c:["Bilinenden bilinmeyene","Yakından uzağa","Ekonomiklik","Açıklık","Bütünlük"], d:0, a:"Yeni bilgi mevcut bilgiye bağlandığında anlamlı öğrenme gerçekleşir; bu Ausubel'in anlamlı öğrenme anlayışıyla da örtüşür."},
+{u:10, s:"Sporcunun yalnız tekniğini değil, kaygısını ve sosyal uyumunu da dikkate alan antrenör hangi ilkeyi uygular?", c:["Bütünlük","Ekonomiklik","Güncellik","Süreklilik","Açıklık"], d:0, a:"Bütünlük ilkesine göre birey bedensel, zihinsel, duygusal ve sosyal yönleriyle bir bütündür ve bir arada ele alınmalıdır."},
+{u:10, s:"Antrenmanın her bölümünün belirlenmiş hedefe hizmet etmesi gerektiğini belirten ilke hangisidir?", c:["Hedefe görelik","Ekonomiklik","Yakından uzağa","Açıklık","Güncellik"], d:0, a:"Hedefe görelik ilkesi, içerik ve etkinliklerin hedefle tutarlı olmasını gerektirir; hedefe hizmet etmeyen etkinlik zaman kaybıdır."},
+{u:10, s:"Sunuş yoluyla öğretme stratejisinin kuramcısı ve işleyişi hangisidir?", c:["Bruner – özelden genele","Ausubel – genelden özele, düzenli sunum","Dewey – problem çözme","Skinner – pekiştirme","Piaget – dengeleme"], d:1, a:"Ausubel'in sunuş yoluyla öğretiminde önce genel kavram verilir, sonra ayrıntıya inilir; kısa sürede çok bilgi aktarmak için uygundur."},
+{u:10, s:"Buluş yoluyla öğretme stratejisinde öğrenenin rolü nedir?", c:["Verilen bilgiyi ezberlemek","Örneklerden yola çıkarak kuralı kendisi keşfetmek","Yalnızca izlemek","Ölçme yapmak","Yalnızca tekrar etmek"], d:1, a:"Bruner'in buluş yoluyla öğretiminde öğretmen örnek ve ipucu sunar, genel kuralı öğrenen kendisi bulur; özelden genele işler."},
+{u:10, s:"Araştırma–inceleme yoluyla öğretme stratejisinin temel yararı nedir?", c:["Kısa sürede çok bilgi aktarması","Problem çözme ve bilimsel düşünme becerisi kazandırması","Ölçmeyi kolaylaştırması","Antrenörün iş yükünü azaltması","Ezberi güçlendirmesi"], d:1, a:"Bu strateji öğreneni bilimsel yöntemle problem çözmeye yöneltir; kalıcılığı ve üst düzey düşünmeyi geliştirir. Zayıf yönü zaman almasıdır."},
+{u:10, s:"Araştırma–inceleme stratejisinin en belirgin sınırlılığı nedir?", c:["Kalıcılığın düşük olması","Çok zaman gerektirmesi","Güdülenmeyi düşürmesi","Yalnızca ezbere dayanması","Ölçülememesi"], d:1, a:"Öğrenenin problemi kendi başına çözmesi zaman alır; sınırlı süreli antrenmanlarda tek başına kullanılması güçtür."},
+{u:10, s:"Tamamen bilinmeyen yeni bir konunun kısa sürede öğretilmesi gerekiyorsa hangi strateji uygundur?", c:["Buluş yoluyla öğretme","Sunuş yoluyla öğretme","Araştırma–inceleme yoluyla öğretme","Problem çözme","Tartışma"], d:1, a:"Ön bilgi yoksa ve süre kısıtlıysa, düzenli biçimde sunulan bilgi (sunuş yolu) en verimli seçenektir."},
+{u:10, s:"Öğretim ilkeleri neden önemlidir?", c:["Yalnızca sınavda sorulduğu için","Konu ne olursa olsun öğretimin uyması gereken genel kuralları belirlediği için","Antrenman süresini uzattığı için","Yarışma sonucunu garanti ettiği için","Ölçme aracı oldukları için"], d:1, a:"İlkeler alandan bağımsızdır; hangi beceri öğretilirse öğretilsin geçerli olan genel kurallardır."},
+{u:10, s:"'Öğretim yakın çevreden başlayıp uzağa doğru genişlemelidir' ifadesi hangi ilkedir?", c:["Yakından uzağa","Basitten karmaşığa","Somuttan soyuta","Ekonomiklik","Bütünlük"], d:0, a:"Yakından uzağa ilkesi hem mekân hem zaman bakımından bilinen yakın örneklerden başlamayı gerektirir."},
+{u:10, s:"Strateji, yöntem ve teknik kavramlarının ilişkisi için hangisi doğrudur?", c:["Üçü aynı anlama gelir","Strateji en genel yoldur; yöntem stratejinin uygulanma biçimi, teknik ise yöntemin uygulama ayrıntısıdır","Teknik en geniş kavramdır","Yöntem stratejiden daha geneldir","Strateji yalnızca ölçmeyle ilgilidir"], d:1, a:"Kapsam sırası stratejiden tekniğe doğru daralır: strateji genel yolu, yöntem izlenen usulü, teknik ise uygulamadaki ayrıntıyı belirtir."}
+);
+
+SORULAR.push(
+/* ---------- ÜNİTE 11 ---------- */
+{u:11, s:"Beden eğitimi ve antrenörlükte en yaygın kullanılan öğretim yöntemi hangisidir?", c:["Anlatım","Gösterip yaptırma (demonstrasyon)","Tartışma","Örnek olay","Beyin fırtınası"], d:1, a:"Hareket öğretiminde beceri önce doğru biçimde gösterilir, sonra sporcuya yaptırılır; gösterip yaptırma bu alanın temel yöntemidir."},
+{u:11, s:"Etkili bir gösterim (demonstrasyon) için aşağıdakilerden hangisi YANLIŞTIR?", c:["Model doğru olmalıdır","Herkesin görebileceği bir konumda yapılmalıdır","Uzun ve ayrıntılı açıklamayla birlikte verilmelidir","Farklı açılardan birkaç kez tekrarlanmalıdır","Gösterimin hemen ardından sporcu denemelidir"], d:2, a:"Gösterime eşlik eden açıklama kısa ve tek bir noktaya odaklı olmalıdır. Uzun açıklama dikkati dağıtır ve görsel bilginin kodlanmasını engeller."},
+{u:11, s:"Beceri bir bütün olarak, parçalara ayrılmadan öğretiliyorsa hangi yöntem kullanılmıştır?", c:["Parça yöntemi","Bütün yöntemi","Karma yöntem","Blok alıştırma","Zihinsel çalışma"], d:1, a:"Bütün yöntemi becerinin baştan sona tek parça çalışılmasıdır; basit, hızlı ve bölündüğünde anlamını yitiren becerilerde tercih edilir."},
+{u:11, s:"Aşağıdaki durumlardan hangisinde parça yöntemi tercih edilmelidir?", c:["Beceri basit ve hızlıysa","Beceri karmaşık, yavaş ve doğal parçalara ayrılabiliyorsa","Beceri bölündüğünde anlamını yitiriyorsa","Sporcu otonom evredeyse","Süre çok kısıtlıysa"], d:1, a:"Yüzmede kol–ayak–nefes ya da bir jimnastik serisi gibi karmaşık ve parçalanabilir becerilerde parça yöntemi uygundur."},
+{u:11, s:"Uygulamada en yaygın kullanılan karma yol hangisidir?", c:["Parça–bütün–parça","Bütün–parça–bütün","Yalnızca bütün","Yalnızca parça","Blok–rastgele–blok"], d:1, a:"Önce bütün gösterilir, zorlanılan parça ayrıca çalışılır, sonra yine bütünleştirilir. Bu, becerinin anlamını kaybetmeden ayrıntının düzeltilmesini sağlar."},
+{u:11, s:"Aynı becerinin arka arkaya tekrarlandığı alıştırma düzeni hangisidir?", c:["Rastgele (karışık) alıştırma","Blok (sabit) alıştırma","Değişken alıştırma","Aralıklı çalışma","Zihinsel çalışma"], d:1, a:"Blok alıştırmada aynı beceri kesintisiz yinelenir; antrenmandaki performansı hızla yükseltir."},
+{u:11, s:"Blok alıştırma ile rastgele alıştırma karşılaştırıldığında hangisi doğrudur?", c:["Blok alıştırma hem performansı hem kalıcılığı artırır","Rastgele alıştırma antrenmanda daha kötü görünse de öğrenmeyi ve transferi artırır","Rastgele alıştırma her açıdan daha zayıftır","İkisi arasında fark yoktur","Blok alıştırma yalnızca ileri düzey sporcuya uygundur"], d:1, a:"Bu, motor öğrenmenin en ters gelen bulgusudur: antrenmanda iyi görünen düzen (blok) kalıcılık ve transfer açısından rastgele düzenden geridedir."},
+{u:11, s:"Aynı becerinin farklı mesafe, açı ve hızlarda çalışılmasına ne ad verilir?", c:["Blok alıştırma","Değişken alıştırma","Kütlesel çalışma","Zihinsel çalışma","Sabit alıştırma"], d:1, a:"Değişken alıştırma, becerinin uyarlanabilirliğini artırır ve özellikle açık becerilerde maça aktarımı güçlendirir."},
+{u:11, s:"Yeni bir beceri öğretilirken ve yorgunluk riski yüksekken hangi çalışma düzeni daha uygundur?", c:["Kütlesel (toplu) çalışma","Aralıklı çalışma","Yalnızca zihinsel çalışma","Yalnızca yarışma","Hiç dinlenme vermemek"], d:1, a:"Dinlenme aralıkları geniş olan aralıklı çalışma, yorgunluğun tekniği bozmasını önler ve öğrenmenin pekişmesine zaman tanır."},
+{u:11, s:"Zihinsel çalışma (imgeleme) için aşağıdakilerden hangisi doğrudur?", c:["Fiziksel çalışmanın yerini tamamen tutar","Fiziksel çalışmayla birlikte kullanıldığında öğrenmeyi artırır","Hiçbir etkisi yoktur","Yalnızca çocuklarda işe yarar","Yalnızca kapalı becerilerde kullanılamaz"], d:1, a:"İmgeleme fiziksel çalışmanın yerini tutmaz ama onu destekler; sakatlık dönemlerinde becerinin korunmasına da yardımcı olur."},
+{u:11, s:"Mosston'un öğretim stillerinden hangisinde tüm kararlar antrenöre aittir ve herkes aynı anda aynı hareketi yapar?", c:["Alıştırma stili","Komut stili","Karşılıklı stil","Kapsama stili","Problem çözme stili"], d:1, a:"Komut stilinde ritmi ve kararı antrenör belirler; güvenliğin ve düzenin öncelikli olduğu durumlarda uygundur."},
+{u:11, s:"Sporcuların ikişerli çalışıp birinin ölçüt listesine göre diğerine geri bildirim verdiği stil hangisidir?", c:["Komut stili","Alıştırma stili","Karşılıklı (eşli) stil","Kendini denetleme stili","Yönlendirilmiş buluş"], d:2, a:"Karşılıklı stilde gözlemci rolündeki sporcu, verilen ölçüt listesine bakarak eşine dönüt verir; hem öğretir hem öğrenir."},
+{u:11, s:"Aynı görevin farklı zorluk düzeylerinde sunulup her sporcunun kendi düzeyini seçtiği stil hangisidir?", c:["Kapsama (katılım) stili","Komut stili","Alıştırma stili","Problem çözme stili","Karşılıklı stil"], d:0, a:"Kapsama stili herkesin başarı yaşayabilmesini hedefler; farklı yükseklikte fileler ya da farklı mesafede hedefler tipik örneğidir."},
+{u:11, s:"Antrenörün soru dizisiyle sporcuyu tek bir doğru çözüme ulaştırdığı stil hangisidir?", c:["Problem çözme (ıraksayan)","Yönlendirilmiş buluş","Komut","Alıştırma","Kendini denetleme"], d:1, a:"Yönlendirilmiş buluşta hedef tek bir doğru çözümdür ve antrenör sporcuyu sorularla oraya taşır."},
+{u:11, s:"Yaratıcılığı en çok geliştiren, aynı probleme birden fazla doğru çözüm arayan stil hangisidir?", c:["Komut stili","Alıştırma stili","Problem çözme (ıraksayan) stili","Kendini denetleme stili","Karşılıklı stil"], d:2, a:"Iraksayan (problem çözme) stilinde tek doğru yoktur; sporcu birden çok geçerli çözüm üretir."},
+{u:11, s:"Mosston'un stiller spektrumunda sıralama hangi ölçüte göre yapılır?", c:["Antrenmanın süresine göre","Kararların antrenörden sporcuya devredilme derecesine göre","Sporcuların yaşına göre","Becerinin zorluğuna göre","Tesis olanaklarına göre"], d:1, a:"Spektrum, karar verme sorumluluğunun antrenörden öğrenene aktarılma derecesine göre öğretmen merkezliden öğrenci merkezliye doğru sıralanır."},
+
+/* ---------- ÜNİTE 12 ---------- */
+{u:12, s:"Sporcunun kendi duyu organlarından (görme, kinestetik duyu) elde ettiği geri bildirim türü hangisidir?", c:["Dışsal geri bildirim","İçsel (doğal) geri bildirim","Sonuç bilgisi","Performans bilgisi","Özet geri bildirim"], d:1, a:"İçsel geri bildirim sporcunun kendi bedeninden gelir; hareketin nasıl hissettirdiği ve sonucun görülmesi buna dahildir."},
+{u:12, s:"Antrenörün 'dirseğin düşüktü' demesi hangi geri bildirim türüdür?", c:["Sonuç bilgisi (KR)","Performans bilgisi (KP)","İçsel geri bildirim","Özet geri bildirim","Pekiştireç"], d:1, a:"Hareketin yapılış biçimine ilişkin bilgi performans bilgisidir (KP). Sonuca ilişkin bilgi ise sonuç bilgisidir (KR)."},
+{u:12, s:"'Atışın 3 santim dışarı kaldı' bilgisi hangi geri bildirim türüne girer?", c:["Performans bilgisi (KP)","Sonuç bilgisi (KR)","İçsel geri bildirim","Bant genişliği geri bildirimi","Ceza"], d:1, a:"Hareketin sonucuna ilişkin bilgi sonuç bilgisidir (KR). Sporcu çoğu zaman bunu kendisi de görebilir."},
+{u:12, s:"Antrenörün asıl katma değeri hangi geri bildirim türünü vermesinden gelir?", c:["Sonuç bilgisi","Performans bilgisi","İçsel geri bildirim","Hiçbiri","Ceza"], d:1, a:"Sonucu sporcu genellikle kendi görür; hareketi nasıl yaptığını ve neyi düzeltmesi gerektiğini ise çoğu zaman göremez. Antrenörün katkısı buradadır."},
+{u:12, s:"Her denemeden sonra sürekli geri bildirim vermenin sakıncası nedir?", c:["Sporcunun güdülenmesini düşürmesi","Sporcuda geri bildirime bağımlılık yaratması","Antrenman süresini uzatması","Kaslarda yorgunluk yaratması","Hiçbir sakıncası yoktur"], d:1, a:"Sürekli dış geri bildirim, sporcunun kendi içsel geri bildirimini kullanmasını engeller; dönüt kesildiğinde performans düşer. Bu yüzden zamanla azaltılmalıdır."},
+{u:12, s:"Hareketin hemen ardından birkaç saniye beklenerek geri bildirim verilmesi neden yararlı olabilir?", c:["Antrenörün düşünmesine zaman tanıdığı için","Sporcunun kendi içsel geri bildirimini işlemesine fırsat verdiği için","Sporcuyu cezalandırdığı için","Hareketi unutturduğu için","Geri bildirimi gereksiz kıldığı için"], d:1, a:"Kısa gecikme sporcunun ne hissettiğini kendi değerlendirmesine olanak tanır; bu da öğrenmeyi derinleştirir."},
+{u:12, s:"Yalnızca hata belirli bir sınırı aştığında geri bildirim verilmesine ne ad verilir?", c:["Özet geri bildirim","Bant genişliği geri bildirimi","Eş zamanlı geri bildirim","Sonuç bilgisi","İçsel geri bildirim"], d:1, a:"Bant genişliği geri bildiriminde kabul edilebilir hata aralığı içindeki denemelere dönüt verilmez; bu hem bağımlılığı azaltır hem sporcuyu rahatlatır."},
+{u:12, s:"Birkaç denemenin toplu olarak değerlendirilip tek seferde verildiği geri bildirim türü hangisidir?", c:["Eş zamanlı geri bildirim","Özet geri bildirim","İçsel geri bildirim","Sonuç bilgisi","Anlık geri bildirim"], d:1, a:"Özet geri bildirim, deneme dizisinin sonunda toplu değerlendirme sunar ve kalıcı öğrenmeyi destekler."},
+{u:12, s:"Aşağıdakilerden hangisi geri bildirimin işlevlerinden biri DEĞİLDİR?", c:["Bilgi verme","Güdüleme","Pekiştirme","Sporcuyu cezalandırma","Hatanın düzeltilmesini sağlama"], d:3, a:"Geri bildirimin işlevleri bilgi verme, güdüleme ve pekiştirmedir. Cezalandırma geri bildirimin amacı değildir."},
+{u:12, s:"Bilişsel evredeki bir sporcuya geri bildirim verirken antrenör nasıl davranmalıdır?", c:["Aynı anda birçok hatayı düzeltmeli","Tek seferde tek bir noktaya odaklanmalı","Hiç geri bildirim vermemeli","Yalnızca olumsuz yönleri söylemeli","Teknik terimlerle ayrıntıya girmeli"], d:1, a:"Çoklu düzeltme hiçbirini düzeltmez. Yeni öğrenen sporcunun dikkat kapasitesi sınırlıdır; tek ve net bir nokta verilmelidir."},
+{u:12, s:"İyi bir geri bildirim için aşağıdakilerden hangisi doğrudur?", c:["Kişiye yönelik olmalıdır","Harekete yönelik, somut ve gözlenebilir olmalıdır","Genel ifadelerle verilmelidir","Sporcunun düzeyinden bağımsız olmalıdır","Mümkün olduğunca uzun olmalıdır"], d:1, a:"'Daha iyi yap' işe yaramaz; 'dizini öne al' işe yarar. Ayrıca geri bildirim sporcunun kişiliğine değil hareketine yönelmelidir."},
+{u:12, s:"Geri bildirim verilmeden yapılan çok sayıda tekrar ne sonuç doğurur?", c:["Öğrenmeyi hızlandırır","Yanlış hareket kalıbının pekişmesine yol açabilir","Kalıcılığı artırır","Transferi güçlendirir","Hiçbir etkisi olmaz"], d:1, a:"Doğru ile yanlışın ayırt edilmediği tekrar, hatalı kalıbı da sağlamlaştırır. Bu yüzden geri bildirimsiz tekrar güvenli değildir."},
+{u:12, s:"Hareket devam ederken verilen geri bildirime ne ad verilir?", c:["Sonlandırıcı geri bildirim","Eş zamanlı geri bildirim","Özet geri bildirim","Gecikmeli geri bildirim","İçsel geri bildirim"], d:1, a:"Eş zamanlı geri bildirim hareket sürerken verilir; sonlandırıcı geri bildirim ise hareket bittikten sonra verilir."},
+{u:12, s:"Motor öğrenmede alıştırmadan sonra öğrenmeyi en çok etkileyen değişken hangisidir?", c:["Tesis kalitesi","Geri bildirim","Sporcunun boyu","Antrenman saati","Seyirci sayısı"], d:1, a:"Alıştırma ve geri bildirim motor öğrenmenin iki temel değişkenidir; geri bildirim olmadan alıştırmanın öğretici gücü ciddi biçimde düşer."}
+);
+
+SORULAR.push(
+/* ---------- ÜNİTE 13 ---------- */
+{u:13, s:"Bir niteliğin gözlenip sayı ya da sembollerle ifade edilmesine ne ad verilir?", c:["Değerlendirme","Ölçme","Ölçüt","Yargılama","Test"], d:1, a:"Ölçme yargı içermez, yalnızca betimler: 'dikey sıçraması 42 cm' bir ölçme sonucudur."},
+{u:13, s:"Ölçme sonucunun bir ölçütle karşılaştırılarak yargıya varılmasına ne denir?", c:["Ölçme","Değerlendirme","Gözlem","Test","Puanlama"], d:1, a:"Değerlendirme üç öğe içerir: ölçme sonucu, ölçüt ve karar. Ölçme olmadan değerlendirme yapılamaz."},
+{u:13, s:"Değerlendirmenin üç öğesi hangisidir?", c:["Hedef – içerik – süreç","Ölçme sonucu – ölçüt – karar","Geçerlik – güvenirlik – kullanışlılık","Bilişsel – duyuşsal – psikomotor","Gözlem – test – anket"], d:1, a:"Bir ölçme sonucunu bir ölçütle karşılaştırıp karara varmadıkça değerlendirme yapılmış olmaz."},
+{u:13, s:"Öğretimden ÖNCE, sporcunun hazırbulunuşluğunu belirlemek için yapılan değerlendirme türü hangisidir?", c:["Biçimlendirme–izleme","Düzey belirleme","Tanıma–yerleştirme","Sonuç değerlendirme","Bağıl değerlendirme"], d:2, a:"Tanıma–yerleştirme değerlendirmesi süreç başlamadan yapılır; sporcunun nereden başlayacağını ve hangi gruba gireceğini belirler."},
+{u:13, s:"Öğretim SÜRERKEN eksikleri görüp süreci düzeltmek amacıyla yapılan değerlendirme hangisidir?", c:["Tanıma–yerleştirme","Biçimlendirme–izleme","Düzey belirleme","Bağıl değerlendirme","Mutlak değerlendirme"], d:1, a:"Biçimlendirme–izleme (formatif) değerlendirme süreç içinde yapılır ve amacı not vermek değil, öğretimi düzeltmektir."},
+{u:13, s:"Öğretimin SONUNDA ulaşılan düzeye karar vermek için yapılan değerlendirme hangisidir?", c:["Tanıma–yerleştirme","Biçimlendirme–izleme","Düzey belirleme","Ön değerlendirme","Süreç değerlendirmesi"], d:2, a:"Düzey belirleme (summatif) değerlendirme sonuç odaklıdır; belgelendirme ve seçme kararlarında kullanılır."},
+{u:13, s:"Bir ölçme aracının 'ölçmek istediği özelliği ölçebilmesi' niteliği hangisidir?", c:["Güvenirlik","Geçerlik","Kullanışlılık","Objektiflik","Duyarlık"], d:1, a:"Geçerlik, aracın doğru şeyi ölçmesidir. Esnekliği ölçmek isterken kuvvet ölçen bir test güvenilir olsa bile geçersizdir."},
+{u:13, s:"Bir ölçme aracının tekrarlanan ölçümlerde tutarlı sonuç vermesi hangi niteliktir?", c:["Geçerlik","Güvenirlik","Kullanışlılık","Ekonomiklik","Nesnellik"], d:1, a:"Güvenirlik tutarlılıktır. Bir araç güvenilir olabilir ama yanlış şeyi ölçüyorsa geçerli değildir."},
+{u:13, s:"Ölçme aracında bulunması gereken üç temel nitelik hangisidir?", c:["Geçerlik – güvenirlik – kullanışlılık","Hedef – içerik – süreç","Ölçme – ölçüt – karar","Bilişsel – duyuşsal – devinişsel","Hız – kuvvet – dayanıklılık"], d:0, a:"Bir ölçme aracı doğru şeyi ölçmeli (geçerlik), tutarlı ölçmeli (güvenirlik) ve uygulanabilir olmalıdır (kullanışlılık)."},
+{u:13, s:"Sporcunun sonucunun grubun ortalamasına göre yorumlanması hangi ölçüt türüdür?", c:["Mutlak ölçüt","Bağıl (göreli) ölçüt","Geçerli ölçüt","Nesnel ölçüt","Duyuşsal ölçüt"], d:1, a:"Bağıl ölçütte birey grupla karşılaştırılır. Mutlak ölçütte ise önceden belirlenmiş sabit bir değere göre karar verilir."},
+{u:13, s:"Bloom'un hedef alanlarından 'devinişsel' alan neyi kapsar?", c:["Bilgi ve zihinsel becerileri","İlgi, tutum ve değerleri","Beceri ve hareketleri","Yalnızca hafızayı","Yalnızca sosyal ilişkileri"], d:2, a:"Devinişsel (psikomotor) alan hareket ve beceriyi kapsar. Bilişsel alan bilgiyi, duyuşsal alan tutum ve değerleri kapsar."},
+{u:13, s:"Sporcunun spora karşı olumlu tutum geliştirmesi hangi hedef alanına girer?", c:["Bilişsel alan","Duyuşsal alan","Devinişsel alan","Sosyal alan","Fiziksel alan"], d:1, a:"İlgi, tutum, değer ve alışkanlıklar duyuşsal alanın konusudur; sporda kalma davranışının temeli budur."},
+{u:13, s:"Bir antrenman planının dört temel öğesi hangileridir?", c:["Isınma – ana bölüm – soğuma – değerlendirme","Hedef – içerik – öğretme-öğrenme süreci – ölçme ve değerlendirme","Geçerlik – güvenirlik – kullanışlılık – ekonomiklik","Bilişsel – duyuşsal – devinişsel – sosyal","Strateji – yöntem – teknik – araç"], d:1, a:"Planın dört öğesi neyi (hedef), ne ile (içerik), nasıl (süreç) ve ne kadar başardığımızı (ölçme–değerlendirme) belirler."},
+{u:13, s:"Bir antrenmanın hazırlık (ısınma) bölümünün amacı nedir?", c:["Günün hedefine ulaşmak","Organizmayı yüklenmeye hazırlamak ve sakatlığı önlemek","Toparlanmayı hızlandırmak","Değerlendirme yapmak","Ölçme yapmak"], d:1, a:"Hazırlık bölümü dolaşımı ve kas ısısını yükselterek organizmayı ana bölümdeki yüklenmeye hazırlar; dikkati de toplar."},
+{u:13, s:"Antrenmanın bitiş (soğuma) bölümünde aşağıdakilerden hangisi yapılır?", c:["En yüksek şiddetli çalışma","Hafif koşu, germe ve günün kısa değerlendirmesi","Yeni beceri öğretimi","Maksimal kuvvet testi","Yarışma"], d:1, a:"Bitiş bölümü toparlanmayı hızlandırır ve gün içinde öğrenilenlerin kısaca değerlendirilmesine fırsat verir."},
+{u:13, s:"Hedefin gözlenebilir ve ölçülebilir biçimde ifade edilmiş hâline ne ad verilir?", c:["İçerik","Davranış (kazanım)","Ölçüt","Strateji","Yöntem"], d:1, a:"Hedef genel niyeti, davranış ise bu niyetin gözlenebilir karşılığını belirtir: 'beş denemeden dördünde doğru teknikle pas verir' bir davranış ifadesidir."},
+
+/* ---------- ÜNİTE 14 ---------- */
+{u:14, s:"Çağdaş antrenörlük anlayışının merkezinde ne vardır?", c:["Kazanma","Sporcunun bütünsel gelişimi","Kulüp geliri","Antrenörün kariyeri","Seyirci beklentisi"], d:1, a:"Sporcu merkezli antrenörlükte öncelik sporcunun gelişimi, sağlığı ve sporda kalmasıdır; kazanmak bunun sonucudur, amacı değil."},
+{u:14, s:"Tüm kararları kendi veren, sporcuya yalnızca uygulama rolü bırakan antrenörlük yaklaşımı hangisidir?", c:["Demokratik","Otoriter (komut veren)","Serbest bırakan","İşbirlikçi","Sporcu merkezli"], d:1, a:"Otoriter yaklaşım hızlı düzen sağlar ama sporcuda sorumluluk ve özgüven gelişimini engeller."},
+{u:14, s:"Antrenörün yönlendirme yapmadığı, sporcuyu tamamen kendi hâline bıraktığı yaklaşım hangisidir?", c:["Otoriter","Demokratik","Serbest bırakan","İşbirlikçi","Bütünsel"], d:2, a:"Serbest bırakan yaklaşımda yapı ve hedef kaybolur; genellikle en verimsiz yaklaşım olarak kabul edilir."},
+{u:14, s:"Sporcunun karar süreçlerine katıldığı antrenörlük yaklaşımının temel kazancı nedir?", c:["Antrenmanın kısalması","İçsel güdülenme ve bağlılığın artması","Disiplinin ortadan kalkması","Ölçmenin kolaylaşması","Yarışma sayısının artması"], d:1, a:"Demokratik yaklaşımda sporcu sürecin öznesi olur; bu içsel güdülenmeyi ve spora bağlılığı artırır. Karşılığında daha çok zaman gerektirir."},
+{u:14, s:"Bireyin spora nasıl başladığını, sürdürdüğünü ve bıraktığını inceleyen alan hangisidir?", c:["Spor yönetimi","Sporda sosyalleşme","Spor fizyolojisi","Biyomekanik","Antrenman bilimi"], d:1, a:"Sporda sosyalleşme; spora katılım, spor yoluyla sosyalleşme ve spordan ayrılma boyutlarını inceler."},
+{u:14, s:"Sporun bireye kurala uyma, işbirliği ve öz denetim kazandırması hangi boyutla açıklanır?", c:["Spora sosyalleşme","Spor yoluyla sosyalleşme","Spordan ayrılma","Yetenek seçimi","Uzmanlaşma"], d:1, a:"Spor yoluyla sosyalleşme, sporun bireye kazandırdığı toplumsal değer ve davranışları ifade eder."},
+{u:14, s:"Çocuğun spora katılımında en güçlü etken genellikle hangisidir?", c:["Medya","Aile","Tesis sayısı","Antrenörün ünvanı","Ekonomik durum"], d:1, a:"Önemli diğerleri arasında çocuk için ilk ve en etkili olan ailedir; ailenin tutumu spora başlamayı da sürdürmeyi de belirler."},
+{u:14, s:"Aşağıdakilerden hangisi spordan kopmanın (bırakmanın) başlıca nedenlerinden biri DEĞİLDİR?", c:["Eğlencenin bitmesi","Aşırı kazanma baskısı","Erken uzmanlaşma ve tükenmişlik","Oynama süresi bulamama","Antrenörün sporcuya söz hakkı vermesi"], d:4, a:"Sporcuya söz hakkı vermek bağlılığı artırır. Diğer maddeler ise spordan kopmanın en sık nedenleridir ve çoğu antrenörün denetimindedir."},
+{u:14, s:"Erken uzmanlaşmanın başlıca riski nedir?", c:["Hareket dağarcığının genişlemesi","Sakatlık, tükenmişlik ve spordan erken kopma","Transferin artması","Kalıcılığın artması","Motivasyonun yükselmesi"], d:1, a:"Tek dala erken yönelme, hareket dağarcığını daraltır; tekrarlayan yüklenme sakatlığı ve tükenmişliği artırarak sporu bırakmaya yol açar."},
+{u:14, s:"Antrenörlüğün deneyime dayalı bir uğraş olmaktan çıkıp bilimsel temelli, eğitim ve belge gerektiren bir alana dönüşmesi hangi kavramla adlandırılır?", c:["Sosyalleşme","Profesyonelleşme","Uzmanlaşma","Kurumsallaşma","Bireyselleşme"], d:1, a:"Profesyonelleşme, mesleğin tanımlı bilgi tabanı, eğitim yolu, belgelendirme ve etik kuralları olan bir alana dönüşmesidir."},
+{u:14, s:"Çocuk sporunda başarının temel ölçütü ne olmalıdır?", c:["Kazanılan kupa sayısı","Katılımın ve spora bağlılığın sürmesi","Rakiplerin elenmesi","Antrenman saatinin çokluğu","Erken uzmanlaşma"], d:1, a:"Çocuk sporunda kısa vadeli derece uzun vadeli gelişimi gölgelememelidir; başarı, çocuğun sporda kalması ve gelişmeye devam etmesidir."},
+{u:14, s:"Aşağıdakilerden hangisi antrenörün rollerinden biri DEĞİLDİR?", c:["Öğretici","Model ve lider","Güdüleyici","Sporcunun sağlık raporunu düzenleyen hekim","Yönetici ve planlayıcı"], d:3, a:"Antrenör öğretici, eğitici, model, lider, yönetici, güdüleyici ve iletişimcidir; ancak tıbbi tanı ve rapor hekimin yetkisindedir."},
+
+/* --- Uzun Süreli Sporcu Gelişim Modeli (LTAD) --- */
+{u:15, s:"Uzun Süreli Sporcu Gelişim Modelinde performans geliştirme aşaması aşağıdakilerden hangisini içerir?", c:["Sporcunun motivasyonunun artırılması","Yaralanma önleme stratejilerinin uygulanması","Teknik detayların mükemmelleştirilmesi","Oyun stratejilerinin geliştirilmesi","Fizyolojik adaptasyonun teşvik edilmesi"], d:4, a:"Performans geliştirme aşaması sporcunun fizyolojik alt yapısının kurulduğu dönemdir: aerobik kapasite, kuvvet ve dayanıklılık sistemli yüklenmeyle geliştirilir. Teknik mükemmelleştirme ve oyun stratejisi elit aşamanın, motivasyon ve yaralanma önleme ise her aşamanın konusudur; bu yüzden aşamayı ayırt etmezler."},
+{u:15, s:"Uzun Süreli Sporcu Gelişim Modelinin temel mantığı nedir?", c:["Sporcuyu en kısa sürede yarışmaya hazırlamak","Her aşamanın kendine özgü önceliği olduğunu ve sıranın bozulmaması gerektiğini kabul etmek","Tüm yaş gruplarına aynı programı uygulamak","Yalnızca elit sporcuları kapsamak","Yetenekli olmayanları erken elemek"], d:1, a:"Model, gelişimi yaşam boyuna yayar; bir aşamanın işi ne ertelenebilir ne de öne çekilebilir. Erken uzmanlaşmanın temel eleştirisi de budur."},
+{u:15, s:"LTAD modelinde temel hareket becerilerinin (koşma, atlama, atma, yakalama) oyun ağırlıklı biçimde kazandırıldığı aşama hangisidir?", c:["Aktif başlangıç","Temeller (eğlenceli temeller)","Performans geliştirme","Elit performans","Aktif yaşam"], d:1, a:"Temeller aşamasında amaç geniş bir hareket dağarcığı kurmaktır; branşa özgü teknik değil, temel beceri çeşitliliği önceliklidir."},
+{u:15, s:"LTAD modelinde teknik detayların mükemmelleştirilmesi ve yarışma yönetimi hangi aşamanın işidir?", c:["Aktif başlangıç","Temeller","Öğrenmeyi öğrenme","Elit performans (kazanmayı öğrenme)","Aktif yaşam"], d:3, a:"Teknik ince ayar ve taktik incelik, fizyolojik alt yapı kurulduktan sonra elit aşamada ele alınır."},
+{u:15, s:"LTAD modelinde sporcunun birden çok branşı denemesi ve genel spor becerileri kazanması hangi aşamada beklenir?", c:["Öğrenmeyi öğrenme","Elit performans","Performans geliştirme","Aktif yaşam","Aktif başlangıç"], d:0, a:"Öğrenmeyi öğrenme aşamasında sporcu genel spor becerilerini edinir ve farklı branşlar dener; bu çeşitlilik ileride olumlu transfer sağlar."},
+{u:15, s:"LTAD modelinin son aşaması olan 'aktif yaşam' neyi ifade eder?", c:["Elit düzeyde yarışmayı sürdürmek","Yarışmayı bıraktıktan sonra da fiziksel etkinliğe bağlı kalmak","Antrenörlüğe geçmek","Uzmanlaşmayı tamamlamak","Yeni bir branşa başlamak"], d:1, a:"Modelin amacı yalnız şampiyon üretmek değil, bireyi yaşam boyu hareketli tutmaktır. Aktif yaşam bu hedefin karşılığıdır."},
+{u:15, s:"Bir soruda 'motivasyonun artırılması' ve 'yaralanma önleme' seçenekleri LTAD aşamalarını ayırt etmek için neden yetersizdir?", c:["Modelde yer almadıkları için","Her aşamada geçerli genel ilkeler oldukları için","Yalnızca elit sporcuyu ilgilendirdikleri için","Ölçülemedikleri için","Yalnızca çocuklar için geçerli oldukları için"], d:1, a:"Tüm aşamalarda geçerli olan bir madde tek bir aşamanın ayırt edici özelliği olamaz. Sınavda bu tür 'her yere uyan' seçenekler tipik çeldiricidir."},
+{u:15, s:"LTAD modeline göre erken uzmanlaşma neden sakıncalıdır?", c:["Sporcunun motivasyonunu artırdığı için","Aşamaların sırasını bozarak temel hareket alt yapısını eksik bıraktığı için","Yarışma sayısını azalttığı için","Antrenör sayısını artırdığı için","Fizyolojik adaptasyonu hızlandırdığı için"], d:1, a:"Erken uzmanlaşma, temel beceri ve genel gelişim aşamalarını atlayarak dar bir alt yapı üzerine performans kurar; sakatlık, tükenmişlik ve erken kopmayla sonuçlanır."},
+{u:15, s:"LTAD modelinde 'aktif başlangıç' aşamasının önceliği nedir?", c:["Branş tekniği öğretmek","Hareketi sevdirmek ve günlük fiziksel etkinlik alışkanlığı kazandırmak","Yarışmaya hazırlamak","Kuvvet antrenmanına başlamak","Yetenek seçimi yapmak"], d:1, a:"0–6 yaş aralığında amaç performans değil, harekete karşı olumlu tutum ve düzenli etkinlik alışkanlığıdır."},
+{u:15, s:"Ergenlik döneminde sistemli yüklenmeyle aerobik kapasite ve kuvvetin geliştirilmesi LTAD'ın hangi aşamasına denk gelir?", c:["Temeller","Öğrenmeyi öğrenme","Performans geliştirme","Aktif yaşam","Aktif başlangıç"], d:2, a:"Performans geliştirme aşamasında sporcunun fizyolojik kapasitesi kurulur; bu aşama atlanırsa üst düzey performansın dayanacağı zemin oluşmaz."},
+
+/* --- LTAD: aşamalar, pencereler, yaş kavramları, özelleşme --- */
+{u:15, s:"Uzun Süreli Sporcu Gelişim Modeli kaç aşamadan oluşur ve son aşaması hangisidir?", c:["Beş aşama; son aşama kazanmak için antrenman","Yedi aşama; son aşama aktif yaşam","Üç aşama; son aşama özelleşme","Dört aşama; son aşama yarışmak için antrenman","Altı aşama; son aşama elit performans"], d:1, a:"Model yedi aşamalıdır ve aktif başlangıçla başlayıp aktif yaşamla biter. Son aşamanın yarışma değil yaşam boyu hareketlilik olması, modelin amacını özetler."},
+{u:15, s:"LTAD modelinde branşa özelleşme, yarışma deneyimi ve bireysel güçlü yönlerin geliştirilmesi hangi aşamanın işidir?", c:["Temeller","Öğrenmeyi öğrenme","Antrenman için antrenman","Yarışmak için antrenman","Aktif başlangıç"], d:3, a:"Yarışmak için antrenman aşamasında sporcu artık bir branşa yönelir ve yarışma ortamına uyum sağlar. Fizyolojik alt yapı bir önceki aşamada kurulmuştur."},
+{u:15, s:"Temel hareket becerileri ile temel spor becerilerinin birlikte kazanılmış olmasına ne ad verilir?", c:["Fiziksel uygunluk","Fiziksel okuryazarlık","Motor kapasite","Antrenman yaşı","Biyolojik olgunluk"], d:1, a:"Fiziksel okuryazarlık, sporun alfabesidir: bu temel olmadan hiçbir branşta ilerlenemez. LTAD'ın ilk üç aşamasının hedefi budur."},
+{u:15, s:"Bir sporcunun bedeninin gerçek olgunlaşma düzeyini gösteren yaş kavramı hangisidir?", c:["Kronolojik yaş","Biyolojik yaş","Antrenman yaşı","Takvim yaşı","Yasal yaş"], d:1, a:"Kronolojik (takvim) yaş doğum tarihine dayanır ve gelişim düzeyini göstermez. Antrenman biyolojik yaşa göre planlanmalıdır; aynı sınıftaki iki çocuk arasında yıllarca fark olabilir."},
+{u:15, s:"Yirmi beş yaşında olup sistemli antrenmana yeni başlamış bir sporcu için aşağıdakilerden hangisi doğrudur?", c:["Kronolojik yaşı düşüktür","Antrenman yaşı düşüktür, başlangıç aşamasına uygun program almalıdır","Biyolojik yaşı düşüktür","Doğrudan elit programa alınmalıdır","Fiziksel okuryazarlığı tamamdır"], d:1, a:"Antrenman yaşı, sporcunun kaç yıldır sistemli çalıştığını gösterir. Kronolojik olarak yetişkin olması, antrenman geçmişi olmadan ileri düzey yüklenmeyi kaldırabileceği anlamına gelmez."},
+{u:15, s:"LTAD modelinde antrenman pencerelerinin zamanlaması hangi döneme göre ayarlanır?", c:["Doğum tarihine","Okula başlama yaşına","En hızlı boy uzama dönemine (PHV)","Yarışma takvimine","Kulübe kayıt tarihine"], d:2, a:"PHV (peak height velocity), ergenlikteki en hızlı boy uzama anıdır; kızlarda yaklaşık 12, erkeklerde 14 yaş civarında görülür ve gelişim pencerelerinin referans noktasıdır."},
+{u:15, s:"Bir motorik özelliğin antrenmana en çok yanıt verdiği döneme ne ad verilir?", c:["Plato","Duyarlı (kritik) pencere","Adaptasyon eşiği","Süperkompanzasyon","Antrenman yaşı"], d:1, a:"Duyarlı pencereler, o özelliğin en verimli geliştiği zaman aralıklarıdır. Pencere kaçırıldığında özellik yine gelişir ama aynı düzeye ulaşmaz."},
+{u:15, s:"LTAD modeline göre beceri (teknik) öğretiminin en verimli olduğu dönem hangisidir?", c:["PHV'den sonra","Çocukluk döneminde, PHV'den önce","Erken yetişkinlikte","Yalnızca elit aşamada","Aktif yaşam aşamasında"], d:1, a:"Beceri penceresi PHV'den önce, yaklaşık 8–12 yaş arasında açılır. Bu dönem teknik öğretimin altın çağıdır; sonraya bırakılan teknik aynı düzeye getirilemez."},
+{u:15, s:"LTAD modeline göre kuvvet penceresi ne zaman açılır?", c:["Doğumdan hemen sonra","Okul öncesi dönemde","PHV'den sonra; kızlarda adet döngüsünün başlamasıyla, erkeklerde PHV'den 12–18 ay sonra","Beceri penceresiyle aynı anda","Elit aşamada"], d:2, a:"Kuvvet gelişimi hormonal olgunlaşmaya bağlıdır ve bu yüzden en son açılan penceredir. Sıra şudur: önce beceri, sonra dayanıklılık, en son kuvvet."},
+{u:15, s:"Aşağıdakilerden hangisi erken özelleşen spor dallarından biridir?", c:["Futbol","Atletizm","Artistik jimnastik","Kürek","Güreş"], d:2, a:"Artistik jimnastik, artistik buz pateni, dalış ve masa tenisi erken özelleşen sporlardır; karmaşık beceriler olgunlaşma öncesinde kazanılmak zorundadır."},
+{u:15, s:"Geç özelleşen spor dallarında özelleşmenin ergenlik sonrasına bırakılmasının temel gerekçesi nedir?", c:["Antrenör sayısının yetersiz olması","Erken özelleşmenin sakatlık, tükenmişlik ve spordan erken kopma doğurması","Yarışma takviminin geç başlaması","Tesislerin yetersiz olması","Yasal zorunluluk"], d:1, a:"Sporların büyük çoğunluğu geç özelleşendir. Erken özelleşme geniş hareket alt yapısını kurmadan performans zorlar; bedeli sakatlık ve kopmadır."},
+{u:15, s:"LTAD modelinde elit düzeye ulaşmak için öngörülen ölçüt aşağıdakilerden hangisidir?", c:["3 yıl / 1.000 saat","5 yıl / 5.000 saat","10 yıl / 10.000 saat nitelikli antrenman","15 yıl / 20.000 saat","Süre önemli değildir, yetenek belirleyicidir"], d:2, a:"On yıl ve on bin saat kuralı, elit performansın kısa yoldan üretilemeyeceğini anlatır. Yetenek tek başına yeterli değildir; sistemli ve uzun süreli antrenman şarttır."},
+{u:15, s:"LTAD modeline göre çocuk ve erken gelişim aşamalarında antrenman–yarışma dengesi nasıl olmalıdır?", c:["Ağırlık yarışmada olmalı (%70–80 yarışma)","Ağırlık antrenmanda olmalı (yaklaşık %70–80 antrenman)","İkisi tam eşit olmalı","Yalnızca yarışma yapılmalı","Yalnızca antrenman yapılmalı, yarışma hiç olmamalı"], d:1, a:"Erken aşamalarda gelişim antrenmanla sağlanır; yarışmanın payı aşama ilerledikçe artar. Çocuk sporunda çok yarışma–az antrenman, modelin en sık ihlal edilen ilkesidir."},
+{u:15, s:"LTAD modelinde ilk üç aşamanın (aktif başlangıç, temeller, öğrenmeyi öğrenme) ortak hedefi nedir?", c:["Yarışma derecesi elde etmek","Fiziksel okuryazarlık kazandırmak","Branşa özelleşmek","Kuvvet geliştirmek","Yetenek seçimi yapmak"], d:1, a:"İlk üç aşama sporun alfabesini öğretir: temel hareket ve temel spor becerileri. Bu blok tamamlanmadan performans aşamalarına geçilmesi doğru değildir."},
+{u:15, s:"Aynı yaş grubundaki iki sporcunun antrenmana verdiği tepkinin çok farklı olmasının LTAD modelindeki açıklaması nedir?", c:["Kronolojik yaşlarının farklı olması","Biyolojik yaşlarının (olgunlaşma düzeylerinin) farklı olması","Yarışma sayılarının farklı olması","Tesis olanaklarının farklı olması","Antrenör sayısının farklı olması"], d:1, a:"Aynı takvim yaşındaki çocukların biyolojik olgunluğu yıllarca farklı olabilir. Bu yüzden yüklenme takvim yaşına değil olgunlaşma düzeyine göre ayarlanır."}
+);
+/*SORU_SON*/
+
+/* ============================================================
+   DURUM
+   ============================================================ */
+const ANAHTAR = "soo_calisma_v1";
+const bos = () => ({ kayit:{}, denemeler:[], tema:"" });
+let D = bos();
+
+function yukle(){
+  try{
+    const h = localStorage.getItem(ANAHTAR);
+    if(h) D = Object.assign(bos(), JSON.parse(h));
+  }catch(e){ D = bos(); }
+}
+function kaydet(){
+  try{ localStorage.setItem(ANAHTAR, JSON.stringify(D)); }catch(e){}
+}
+
+/* Leitner kutusu: 1 = taze yanlış, 5 = ezberlendi. Yanlışta 1'e döner. */
+function kayitAl(id){
+  return D.kayit[id] || (D.kayit[id] = { d:0, y:0, kutu:0, son:0 });
+}
+/* Kutu 4 ve üstü = öğrenildi, tekrar listesinden çıkar.
+   İlk denemede doğru bilinen soru doğrudan 4'e gider; hiç yanlış yapılmadığı için
+   tekrar kutusunda işi yoktur. Yanlış yapılan soru 1'e düşer ve üç doğruyla çıkar. */
+const OGRENILDI = 4;
+function cevapIsle(id, dogruMu){
+  const k = kayitAl(id);
+  if(dogruMu){ k.d++; k.kutu = k.kutu ? Math.min(5, k.kutu + 1) : OGRENILDI; }
+  else { k.y++; k.kutu = 1; }
+  k.son = Date.now();
+  kaydet();
+}
+const yanlisHavuzu = () =>
+  SORULAR.filter(s => { const k = D.kayit[s.id]; return k && k.kutu >= 1 && k.kutu < OGRENILDI; })
+         .sort((a,b) => (D.kayit[a.id].kutu - D.kayit[b.id].kutu) || (D.kayit[a.id].son - D.kayit[b.id].son));
+
+function uniteIst(u){
+  const sorular = SORULAR.filter(s => s.u === u);
+  let cozulen = 0, ogrenilen = 0;
+  sorular.forEach(s => {
+    const k = D.kayit[s.id];
+    if(k && (k.d + k.y) > 0){ cozulen++; if(k.kutu >= OGRENILDI) ogrenilen++; }
+  });
+  const oran = sorular.length ? Math.round(100 * ogrenilen / sorular.length) : 0;
+  return { toplam:sorular.length, cozulen, oran };
+}
+function genelIst(){
+  const cozulen = Object.keys(D.kayit).length;
+  let d = 0, y = 0;
+  Object.values(D.kayit).forEach(k => { d += k.d; y += k.y; });
+  return { cozulen, toplam:SORULAR.length, dogru:d, yanlis:y,
+           basari: (d + y) ? Math.round(100 * d / (d + y)) : 0 };
+}
+
+/* ============================================================
+   YARDIMCI
+   ============================================================ */
+const $ = s => document.querySelector(s);
+const HARF = ["A","B","C","D","E"];
+function kacir(dizi){
+  const a = dizi.slice();
+  for(let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function kacisla(t){
+  return String(t).replace(/[&<>"]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
+}
+function halka(oran){
+  const c = 2 * Math.PI * 14;
+  return `<svg class="halka" viewBox="0 0 36 36" aria-hidden="true">
+    <circle class="iz" cx="18" cy="18" r="14"></circle>
+    <circle class="dolu" cx="18" cy="18" r="14" stroke-dasharray="${c}" stroke-dashoffset="${c * (1 - oran/100)}"></circle>
+    <text x="18" y="21.5">${oran}</text></svg>`;
+}
+
+/* ============================================================
+   GEZİNME
+   ============================================================ */
+const SAYFALAR = [
+  { id:"konular", ad:"Konular", ikon:'<path d="M4 5h16M4 12h16M4 19h10"/>' },
+  { id:"calis",   ad:"Çalış",   ikon:'<path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="9"/>' },
+  { id:"yanlis",  ad:"Yanlışlarım", ikon:'<path d="M12 8v5M12 16.5v.5"/><path d="M10.3 3.9 2.6 17a2 2 0 0 0 1.7 3h15.4a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/>' },
+  { id:"deneme",  ad:"Deneme",  ikon:'<path d="M9 3h6v3H9z"/><path d="M5 6h14v15H5z"/><path d="M9 12h6M9 16h4"/>' }
+];
+let aktifSayfa = "konular";
+
+function navCiz(){
+  const yv = yanlisHavuzu().length;
+  $("#alt-nav").innerHTML = SAYFALAR.map(s => `
+    <button data-git="${s.id}" ${aktifSayfa === s.id ? 'aria-current="page"' : ""}>
+      <svg viewBox="0 0 24 24">${s.ikon}</svg>
+      ${s.id === "yanlis" && yv ? `<span class="rozet">${yv}</span>` : ""}
+      <span>${s.ad}</span>
+    </button>`).join("");
+  $("#alt-nav").querySelectorAll("button").forEach(b =>
+    b.onclick = () => git(b.dataset.git));
+}
+function git(id){
+  aktifSayfa = id;
+  document.querySelectorAll(".sayfa").forEach(s => s.classList.remove("acik"));
+  $("#sayfa-" + id).classList.add("acik");
+  if(id === "konular") konularCiz();
+  if(id === "calis")   calisCiz();
+  if(id === "yanlis")  yanlisCiz();
+  if(id === "deneme")  denemeCiz();
+  navCiz(); centiklerCiz();
+  basaDon();
+}
+
+function centiklerCiz(){
+  $("#centikler").innerHTML = UNITELER.map(u => {
+    const i = uniteIst(u.id);
+    return `<span class="centik ${i.oran >= 80 ? "tam" : ""}" title="${kacisla(u.no + ". " + u.ad)} — %${i.oran}"><i style="width:${i.oran}%"></i></span>`;
+  }).join("");
+}
+
+/* ============================================================
+   KONULAR
+   ============================================================ */
+function konularCiz(){
+  $("#unite-detay").style.display = "none";
+  $("#unite-liste-gorunum").style.display = "";
+  const g = genelIst();
+  $("#genel-ist").innerHTML = `
+    <div><b>${g.cozulen}<span style="font-size:14px;color:var(--metin-silik)">/${g.toplam}</span></b><span>Görülen soru</span></div>
+    <div><b>%${g.basari}</b><span>Doğru oranı</span></div>
+    <div><b>${yanlisHavuzu().length}</b><span>Tekrar bekliyor</span></div>`;
+  $("#unite-listesi").innerHTML = UNITELER.map(u => {
+    const i = uniteIst(u.id);
+    return `<button class="unite ${i.oran >= 80 ? "tamam" : ""}" data-u="${u.id}">
+      <span class="unite-no">${u.no}</span>
+      <span class="unite-ad"><b>${kacisla(u.ad)}</b><span>${i.toplam} soru · ${i.cozulen} görüldü</span></span>
+      ${halka(i.oran)}
+    </button>`;
+  }).join("");
+  $("#unite-listesi").querySelectorAll(".unite").forEach(b =>
+    b.onclick = () => uniteAc(+b.dataset.u));
+  $("#dipnot").innerHTML = `Toplam <b>${SORULAR.length}</b> soru, hepsi 5 şıklı ve açıklamalı. İlerleme bu tarayıcıya kaydedilir; kaldığın yerden devam edebilirsin.`;
+}
+
+function uniteAc(uid){
+  const u = UNITELER.find(x => x.id === uid);
+  if(!u) return;
+  const i = uniteIst(uid);
+  $("#unite-liste-gorunum").style.display = "none";
+  const d = $("#unite-detay");
+  d.style.display = "";
+  d.innerHTML = `
+    <button class="dg" id="geri-dugme" style="margin-bottom:16px">← Konular</button>
+    <p class="etiket">Ünite ${u.no} · ${i.toplam} soru</p>
+    <h1>${kacisla(u.ad)}</h1>
+    <div class="metin">${u.ozet}</div>
+    <div class="dg-sira">
+      <button class="dg ana" id="unite-calis">Bu üniteden ${i.toplam} soru çöz</button>
+      <button class="dg" id="unite-sonraki">Sonraki ünite →</button>
+    </div>
+    <div style="height:20px"></div>`;
+  $("#geri-dugme").onclick = () => konularCiz();
+  $("#unite-calis").onclick = () => { git("calis"); oturumBaslat(SORULAR.filter(s => s.u === uid), "Ünite " + u.no + " — " + u.ad); };
+  const sonraki = UNITELER.find(x => x.no === u.no + 1);
+  const sb = $("#unite-sonraki");
+  if(sonraki) sb.onclick = () => { uniteAc(sonraki.id); basaDon(); };
+  else { sb.textContent = "Son ünite"; sb.disabled = true; }
+  basaDon();
+}
+
+/* ============================================================
+   SORU OTURUMU  (çalış / yanlışlarım / deneme ortak motoru)
+   ============================================================ */
+let oturum = null; // {liste, i, baslik, sinav, cevaplar, kalan, zamanlayici}
+
+function oturumBaslat(liste, baslik, secenek){
+  secenek = secenek || {};
+  if(!liste.length){ calisCiz(); return; }
+  oturum = {
+    liste: secenek.sirali ? liste.slice() : kacir(liste),
+    i: 0, baslik, sinav: !!secenek.sinav,
+    dogru: 0, yanlis: 0, kalan: secenek.sure || 0, zamanlayici: null, bitti: false
+  };
+  soruCiz();
+}
+
+function hedefSayfa(){ return $("#sayfa-" + aktifSayfa); }
+
+/* Şıklar her gösterimde karıştırılır: doğru cevabın yeri ezberlenemesin.
+   'Hiçbiri' / 'Hepsi' gibi kapanış şıkları en sonda sabit tutulur. */
+function sikSirasi(s){
+  const kapanis = /^(hiçbiri|hepsi|yukarıdakilerin)/i;
+  const sabit = [], oynak = [];
+  s.c.forEach((metin, i) => (kapanis.test(metin) ? sabit : oynak).push(i));
+  return kacir(oynak).concat(sabit);
+}
+
+function soruCiz(){
+  if(!oturum) return;
+  const s = oturum.liste[oturum.i];
+  oturum.sira = sikSirasi(s);
+  const el = hedefSayfa();
+  el.innerHTML = `
+    <div class="soru-ust">
+      <button class="dg" id="cik" style="padding:5px 10px; font-size:12.5px">✕ Çık</button>
+      <span class="ilerle-cubuk"><i style="width:${100 * oturum.i / oturum.liste.length}%"></i></span>
+      <span>${oturum.i + 1}/${oturum.liste.length}</span>
+    </div>
+    <div class="soru-kart">
+      <div class="soru-unite">${oturum.sinav ? kacisla(oturum.baslik) : kacisla(uniteAdi(s.u))}</div>
+      <p class="soru-metin">${kacisla(s.s)}</p>
+      <div class="siklar" id="siklar">
+        ${oturum.sira.map((gercek, gosterim) => `<button class="sik" data-ix="${gosterim}"><span class="sik-harf">${HARF[gosterim]}</span><span>${kacisla(s.c[gercek])}</span></button>`).join("")}
+      </div>
+      <div id="aciklama-yeri"></div>
+    </div>`;
+  $("#cik").onclick = () => oturumIptal();
+  el.querySelectorAll(".sik").forEach(b => b.onclick = () => sikSec(+b.dataset.ix));
+}
+const uniteAdi = u => { const x = UNITELER.find(y => y.id === u); return x ? "Ünite " + x.no + " · " + x.ad : ""; };
+
+function sikSec(gosterimIx){
+  const s = oturum.liste[oturum.i];
+  const dogruGosterim = oturum.sira.indexOf(s.d);
+  const dogruMu = gosterimIx === dogruGosterim;
+  cevapIsle(s.id, dogruMu);
+  if(dogruMu) oturum.dogru++; else oturum.yanlis++;
+
+  const btns = hedefSayfa().querySelectorAll(".sik");
+  btns.forEach((b,i) => {
+    b.disabled = true;
+    if(i === dogruGosterim) b.classList.add("dogru");
+    else if(i === gosterimIx) b.classList.add("yanlis");
+    else b.classList.add("solgun");
+  });
+
+  if(oturum.sinav){
+    // Sınavda anında açıklama yok — gerçek koşul. Doğrudan sonrakine.
+    setTimeout(() => sonraki(), 180);
+    return;
+  }
+  $("#aciklama-yeri").innerHTML = `
+    <div class="aciklama ${dogruMu ? "iyi" : "kotu"}">
+      <div class="basi">${dogruMu ? "✓ Doğru" : "✕ Yanlış — doğrusu " + HARF[dogruGosterim]}</div>
+      <div>${kacisla(s.a)}</div>
+    </div>
+    <div class="dg-sira"><button class="dg ana genis" id="ileri">${oturum.i + 1 < oturum.liste.length ? "Sonraki soru →" : "Bitir ve sonucu gör"}</button></div>`;
+  $("#ileri").onclick = () => sonraki();
+  $("#ileri").focus();
+}
+function sonraki(){
+  if(!oturum || oturum.bitti) return;
+  oturum.i++;
+  if(oturum.i >= oturum.liste.length) oturumBitir();
+  else soruCiz();
+}
+function oturumIptal(){
+  if(oturum && oturum.zamanlayici) clearInterval(oturum.zamanlayici);
+  oturum = null;
+  git(aktifSayfa);
+}
+function oturumBitir(){
+  if(!oturum) return;
+  oturum.bitti = true;
+  if(oturum.zamanlayici) clearInterval(oturum.zamanlayici);
+  const toplam = oturum.liste.length;
+  const dogru = oturum.dogru;
+  const puan = Math.round(100 * dogru / toplam);
+  const gecti = puan >= 60;
+  if(oturum.sinav){
+    D.denemeler.push({ t: new Date().toISOString().slice(0,10), dogru, toplam, puan });
+    kaydet();
+  }
+  const kalanYanlis = yanlisHavuzu().length;
+  hedefSayfa().innerHTML = `
+    <div class="kart sonuc">
+      <div class="puan ${gecti ? "gecti" : "kaldi"}">${puan}</div>
+      <div class="karar">${gecti ? "İyi gidiyor" : "Tekrar gerek"}</div>
+      <p>${toplam} soruda <b>${dogru} doğru</b>, ${toplam - dogru} yanlış.
+      ${kalanYanlis ? kalanYanlis + " soru tekrar kutusunda bekliyor." : "Tekrar kutun boş."}</p>
+      <div class="dg-sira" style="justify-content:center">
+        <button class="dg ana" id="son-yanlis">Yanlışları çalış (${kalanYanlis})</button>
+        <button class="dg" id="son-kapat">Kapat</button>
+      </div>
+    </div>`;
+  $("#son-kapat").onclick = () => oturumIptal();
+  $("#son-yanlis").onclick = () => { oturum = null; git("yanlis"); const h = yanlisHavuzu(); if(h.length) oturumBaslat(h, "Tekrar", { sirali:true }); };
+  oturum = null;
+}
+
+/* ============================================================
+   ÇALIŞ
+   ============================================================ */
+function calisCiz(){
+  const g = genelIst();
+  const gorulmemis = SORULAR.filter(s => !D.kayit[s.id]);
+  $("#sayfa-calis").innerHTML = `
+    <h1>Çalış</h1>
+    <p class="giris">Her soruda cevabın hemen açıklanır. Yanlış yaptıkların otomatik olarak tekrar kutusuna düşer.</p>
+    <div class="dizi">
+      <button class="unite" id="c-yeni">
+        <span class="unite-no">›</span>
+        <span class="unite-ad"><b>Hiç görmediklerim</b><span>${gorulmemis.length} soru bekliyor</span></span>
+      </button>
+      <button class="unite" id="c-karisik">
+        <span class="unite-no">⤨</span>
+        <span class="unite-ad"><b>Karışık 20 soru</b><span>Tüm ünitelerden rastgele</span></span>
+      </button>
+      <button class="unite" id="c-zayif">
+        <span class="unite-no">↓</span>
+        <span class="unite-ad"><b>En zayıf ünitem</b><span>${zayifUnite() ? zayifUnite().ad : "henüz veri yok"}</span></span>
+      </button>
+      <button class="unite" id="c-tum">
+        <span class="unite-no">∞</span>
+        <span class="unite-ad"><b>Tüm banka</b><span>${g.toplam} soru, karışık sırada</span></span>
+      </button>
+    </div>
+    <h2>Üniteden seç</h2>
+    <div class="dizi">
+      ${UNITELER.map(u => { const i = uniteIst(u.id);
+        return `<button class="unite" data-cu="${u.id}">
+          <span class="unite-no">${u.no}</span>
+          <span class="unite-ad"><b>${kacisla(u.ad)}</b><span>${i.toplam} soru</span></span>
+          ${halka(i.oran)}</button>`; }).join("")}
+    </div>
+    <div style="height:16px"></div>`;
+  $("#c-yeni").onclick = () => gorulmemis.length ? oturumBaslat(gorulmemis, "Yeni sorular") : null;
+  $("#c-karisik").onclick = () => oturumBaslat(kacir(SORULAR).slice(0,20), "Karışık");
+  $("#c-zayif").onclick = () => { const z = zayifUnite(); if(z) oturumBaslat(SORULAR.filter(s => s.u === z.id), z.ad); };
+  $("#c-tum").onclick = () => oturumBaslat(SORULAR, "Tüm banka");
+  $("#sayfa-calis").querySelectorAll("[data-cu]").forEach(b =>
+    b.onclick = () => { const u = UNITELER.find(x => x.id === +b.dataset.cu); oturumBaslat(SORULAR.filter(s => s.u === u.id), u.ad); });
+}
+function zayifUnite(){
+  const denenmis = UNITELER.filter(u => uniteIst(u.id).cozulen >= 3);
+  if(!denenmis.length) return null;
+  return denenmis.sort((a,b) => uniteIst(a.id).oran - uniteIst(b.id).oran)[0];
+}
+
+/* ============================================================
+   YANLIŞLARIM
+   ============================================================ */
+function yanlisCiz(){
+  const h = yanlisHavuzu();
+  const el = $("#sayfa-yanlis");
+  if(!h.length){
+    el.innerHTML = `<h1>Yanlışlarım</h1>
+      <div class="bos"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+      <p>Tekrar kutun boş.<br>Yanlış yaptığın her soru buraya düşer ve üç kez doğru bilene kadar kalır.</p></div>`;
+    return;
+  }
+  const kutular = [1,2,3].map(k => h.filter(s => D.kayit[s.id].kutu === k).length);
+  el.innerHTML = `
+    <h1>Yanlışlarım</h1>
+    <p class="giris">Aralıklı tekrar: yanlış yaptığın soru 1. kutuya düşer, her doğru cevapta bir üst kutuya çıkar, 4. kutuya ulaşınca listeden çıkar. Bir yanlış onu tekrar 1'e indirir.</p>
+    <div class="ist">
+      <div><b>${kutular[0]}</b><span>1. kutu · taze</span></div>
+      <div><b>${kutular[1]}</b><span>2. kutu</span></div>
+      <div><b>${kutular[2]}</b><span>3. kutu · son adım</span></div>
+    </div>
+    <button class="dg ana genis" id="y-basla">${h.length} soruyu tekrar et</button>
+    <h2>Bekleyen sorular</h2>
+    <div class="dizi">
+      ${h.slice(0,40).map(s => `<div class="kart" style="padding:11px 13px">
+        <div class="soru-unite" style="margin-bottom:4px">${kacisla(uniteAdi(s.u))} · ${D.kayit[s.id].kutu}. kutu</div>
+        <div style="font-size:14.5px; line-height:1.45">${kacisla(s.s)}</div></div>`).join("")}
+    </div>
+    <div style="height:16px"></div>`;
+  $("#y-basla").onclick = () => oturumBaslat(h, "Tekrar", { sirali:true });
+}
+
+/* ============================================================
+   DENEME
+   ============================================================ */
+function denemeCiz(){
+  const el = $("#sayfa-deneme");
+  const dn = D.denemeler.slice().reverse();
+  el.innerHTML = `
+    <h1>Deneme</h1>
+    <p class="giris">Tüm ünitelerden 20 karışık soru, açıklama olmadan. Sonunda puanını ve hangi soruları kaçırdığını görürsün. Süre yok, istediğin zaman çık.</p>
+    <button class="dg ana genis" id="d-basla" style="padding:15px">20 soruluk deneme başlat</button>
+    ${dn.length ? `<h2>Geçmiş denemeler</h2>
+      <div class="tablo-sar"><table>
+        <thead><tr><th>Tarih</th><th>Doğru</th><th>Puan</th><th>Sonuç</th></tr></thead>
+        <tbody>${dn.map(x => `<tr>
+          <td style="font-family:var(--f-sayi)">${x.t.split("-").reverse().join(".")}</td>
+          <td style="font-family:var(--f-sayi)">${x.dogru}/${x.toplam}</td>
+          <td style="font-family:var(--f-sayi)">${x.puan}</td>
+          <td style="color:${x.puan >= 60 ? "var(--dogru)" : "var(--yanlis)"}; font-weight:600">${x.puan >= 60 ? "Geçti" : "Kaldı"}</td>
+        </tr>`).join("")}</tbody>
+      </table></div>` : ""}
+    <div style="height:16px"></div>`;
+  $("#d-basla").onclick = () => {
+    // Üniteleri dengeli tara: her üniteden en az bir soru, kalanı rastgele.
+    const secili = [];
+    kacir(UNITELER).forEach(u => {
+      const havuz = kacir(SORULAR.filter(s => s.u === u.id));
+      if(havuz.length) secili.push(havuz[0]);
+    });
+    const kalanHavuz = kacir(SORULAR.filter(s => !secili.includes(s)));
+    while(secili.length < 20 && kalanHavuz.length) secili.push(kalanHavuz.pop());
+    oturumBaslat(kacir(secili).slice(0,20), "Deneme", { sinav:true });
+  };
+}
+
+/* ============================================================
+   KAYDIRMA — fare tekerleği / PageUp / PageDown olmadan
+   ============================================================ */
+const govde = () => $("#govde");
+function basaDon(){ const g = govde(); if(g) g.scrollTo({ top:0, behavior:"auto" }); }
+
+(function kaydirmaKur(){
+  const g = govde(), yukari = $("#k-yukari"), asagi = $("#k-asagi"), kutu = $("#kaydir");
+
+  function durumTazele(){
+    const kaydirilabilir = g.scrollHeight - g.clientHeight > 8;
+    kutu.style.display = kaydirilabilir ? "flex" : "none";
+    yukari.disabled = g.scrollTop <= 2;
+    asagi.disabled  = g.scrollTop >= g.scrollHeight - g.clientHeight - 2;
+  }
+
+  /* Tek tık: bir ekran boyu (biraz örtüşmeli, okuma yeri kaybolmasın).
+     Basılı tutma: kısa adımlarla sürekli kaydırır. */
+  function adim(yon, buyuk){
+    g.scrollBy({ top: yon * (buyuk ? g.clientHeight * 0.82 : 46), behavior: buyuk ? "smooth" : "auto" });
+  }
+  [[yukari,-1],[asagi,1]].forEach(([dugme, yon]) => {
+    let sayac = null, tekrar = null, basiliKaydi = false;
+    const birak = () => { clearTimeout(sayac); clearInterval(tekrar); sayac = tekrar = null; };
+    dugme.addEventListener("pointerdown", e => {
+      if(e.button) return;
+      basiliKaydi = false;
+      sayac = setTimeout(() => { basiliKaydi = true; tekrar = setInterval(() => adim(yon, false), 16); }, 300);
+    });
+    ["pointerup","pointerleave","pointercancel"].forEach(o => dugme.addEventListener(o, birak));
+    dugme.addEventListener("click", () => { if(!basiliKaydi) adim(yon, true); basiliKaydi = false; });
+  });
+
+  g.addEventListener("scroll", durumTazele, { passive:true });
+  new ResizeObserver(durumTazele).observe(g.firstElementChild);
+  window.addEventListener("resize", durumTazele);
+  durumTazele();
+
+  /* Klavyesi olan için: yön tuşları ve boşluk da gövdeyi kaydırsın */
+  document.addEventListener("keydown", e => {
+    if(/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName)) return;
+    const tus = { ArrowDown:[1,false], ArrowUp:[-1,false], PageDown:[1,true], PageUp:[-1,true], " ":[1,true] }[e.key];
+    if(!tus) return;
+    e.preventDefault();
+    adim(tus[0] * (tus[1] ? 1 : 3), tus[1]);
+  });
+})();
+
+/* ============================================================
+   TEMA
+   ============================================================ */
+function temaUygula(){
+  if(D.tema) document.documentElement.setAttribute("data-theme", D.tema);
+  else document.documentElement.removeAttribute("data-theme");
+}
+$("#temaDugme").onclick = () => {
+  const suan = D.tema || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  D.tema = suan === "dark" ? "light" : "dark";
+  kaydet(); temaUygula();
+};
+
+/* ============================================================
+   BAŞLAT
+   ============================================================ */
+(function(){
+  SORULAR.forEach((s, i) => s.id = i);
+  UNITELER.forEach((u, i) => { if(!u.id) u.id = i + 1; u.no = i + 1; });
+  yukle();
+  temaUygula();
+  git("konular");
+})();
+</script>
+<!--ARTIFACT-BITIS-->
+</body>
+</html>
